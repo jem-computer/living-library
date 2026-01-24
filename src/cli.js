@@ -4,7 +4,6 @@ import { detectPlanningDir } from './detect-planning.js';
 import { startDevServer, registerShutdownHandlers, logFileChanges } from './dev-server.js';
 import { startSpinner } from './ui/spinner.js';
 import { colors, formatStartupBanner } from './ui/colors.js';
-import { promptScaffold } from './scaffold/prompt.js';
 
 // Import package.json for version
 const require = createRequire(import.meta.url);
@@ -48,13 +47,9 @@ async function startDev(verbose) {
   const detected = await detectPlanningDir();
 
   if (!detected) {
-    // No .planning found - offer to scaffold
-    const didScaffold = await promptScaffold();
-    if (!didScaffold) {
-      process.exit(1);
-    }
-    // User scaffolded - exit so they can run again
-    process.exit(0);
+    console.error(colors.error('No .planning directory found.'));
+    console.error(colors.dim('Run in a directory with a .planning folder.'));
+    process.exit(1);
   }
 
   // Log if found in parent directory (monorepo case)
@@ -121,6 +116,5 @@ ${colors.bold('Examples:')}
   npx living-library --verbose
 
 Run in a directory with a .planning folder to start the dev server.
-If no .planning folder is found, you'll be prompted to create one.
 `);
 }
