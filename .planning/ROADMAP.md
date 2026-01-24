@@ -12,7 +12,7 @@ This roadmap delivers a zero-config documentation site generator for GSD `.plann
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: CLI Foundation & Dev Server** - Zero-config dev server that runs anywhere
+- [x] **Phase 1: CLI Foundation & Dev Server** - Zero-config dev server that runs anywhere
 - [ ] **Phase 2: Content & Navigation** - GSD-aware content parsing and responsive UI
 - [ ] **Phase 3: Theming & Search** - Dark mode and full-text search across docs
 - [ ] **Phase 4: Static Build & GSD Features** - Production deployment and differentiators
@@ -26,9 +26,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Package setup and entry points
-- [ ] 01-02-PLAN.md — Terminal UI and dev server modules
-- [ ] 01-03-PLAN.md — CLI wiring and end-to-end verification
+- [x] 01-01-PLAN.md — Package setup and entry points
+- [x] 01-02-PLAN.md — Terminal UI and dev server modules
+- [x] 01-03-PLAN.md — CLI wiring and end-to-end verification
 
 **Success Criteria** (what must be TRUE):
   1. User runs `npx living-library` and dev server starts within 5 seconds
@@ -94,7 +94,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. CLI Foundation & Dev Server | 0/3 | Planned | - |
+| 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete | 2026-01-24 |
 | 2. Content & Navigation | 0/TBD | Not started | - |
 | 3. Theming & Search | 0/TBD | Not started | - |
 | 4. Static Build & GSD Features | 0/TBD | Not started | - |

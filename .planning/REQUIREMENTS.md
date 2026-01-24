@@ -9,8 +9,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### CLI Distribution
 
-- [ ] **CLI-01**: User can run `npx living-library` to start dev server
-- [ ] **CLI-02**: Dev server auto-detects `.planning` folder in current directory
+- [x] **CLI-01**: User can run `npx living-library` to start dev server
+- [x] **CLI-02**: Dev server auto-detects `.planning` folder in current directory
 - [ ] **CLI-03**: User can run `npx living-library build` to generate static site
 - [ ] **CLI-04**: Build outputs to `./dist` (or configurable directory)
 
@@ -19,7 +19,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **CONT-01**: All `.md` files in `.planning` render as HTML pages
 - [ ] **CONT-02**: Markdown supports CommonMark (tables, code blocks, links, images)
 - [ ] **CONT-03**: Code blocks have syntax highlighting (Shiki)
-- [ ] **CONT-04**: File changes trigger live reload without full page refresh
+- [x] **CONT-04**: File changes trigger live reload without full page refresh
 
 ### Navigation
 
@@ -89,14 +89,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CLI-01 | Phase 1 | Pending |
-| CLI-02 | Phase 1 | Pending |
+| CLI-01 | Phase 1 | Complete |
+| CLI-02 | Phase 1 | Complete |
 | CLI-03 | Phase 4 | Pending |
 | CLI-04 | Phase 4 | Pending |
 | CONT-01 | Phase 2 | Pending |
 | CONT-02 | Phase 2 | Pending |
 | CONT-03 | Phase 2 | Pending |
-| CONT-04 | Phase 1 | Pending |
+| CONT-04 | Phase 1 | Complete |
 | NAV-01 | Phase 2 | Pending |
 | NAV-02 | Phase 2 | Pending |
 | NAV-03 | Phase 2 | Pending |
