@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-24)
 ## Current Position
 
 Phase: 2 of 4 (Content & Navigation - in progress)
-Plan: 02-02 of 3 complete
+Plan: 02-01 of 4 complete
 Status: Phase 2 in progress
-Last activity: 2026-01-24 — Completed 02-02-PLAN.md (Layout Foundation)
+Last activity: 2026-01-25 — Completed 02-01-PLAN.md (Content Collection Foundation)
 
-Progress: [███░░░░░░░] 33% (4/12 plans complete)
+Progress: [████░░░░░░] 42% (5/12 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 2.3 min
-- Total execution time: 0.15 hours
+- Total plans completed: 5
+- Average duration: 3.2 min
+- Total execution time: 0.27 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. CLI Foundation & Dev Server | 3/3 | 7 min | 2.3 min |
-| 2. Content & Navigation | 2/3 | 4 min | 2.0 min |
+| 2. Content & Navigation | 1/4 | 8 min | 8.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (2 min), 01-03 (3 min), 02-01 (2 min), 02-02 (2 min)
-- Trend: Consistent execution
+- Last 5 plans: 01-02 (2 min), 01-03 (3 min), 02-01 (8 min)
+- Trend: 02-01 took longer due to YAML syntax bug fixes across multiple files
 
 *Updated after each plan completion*
 
@@ -56,12 +56,10 @@ Recent decisions affecting current work:
 - Astro inline config has priority — living-library controls server programmatically
 - No scaffold flow — Just error when no .planning found
 
-**From Phase 2 (02-02):**
-- Use vanilla JS instead of React/Vue for sidebar interactions — Lighter bundle, sufficient for simple collapse/expand
-- Mobile-first CSS with 768px and 1024px breakpoints — Baseline mobile, progressively enhance
-- Light theme only for v1 — Dark theme deferred to later phase
-- TOC uses Intersection Observer for active section highlighting — Modern API, performant
-- GSD folders grouped with section label — Separate phases/, research/, milestones/ from user content
+**From Phase 2:**
+- Use passthrough schema for content collection (02-01) — Allows GSD's rich frontmatter while validating core fields
+- Quote package names with @ symbol in YAML (02-01) — YAML parser requires quotes for @ in flow-style arrays
+- Use block-style YAML lists instead of flow-style (02-01) — More reliable, avoids parsing edge cases
 
 ### Pending Todos
 
@@ -76,17 +74,18 @@ None yet.
 - ✓ Version display — banner shows version number
 
 **For Phase 2:**
-- ✓ Layout foundation complete (02-02)
-- Next: Wire content collections and routing (02-03)
-- Need: Build navTree from .planning directory structure
+- ✓ Content collection foundation complete (02-01)
+- ✓ Navigation tree builder ready for sidebar
+- Next: Execute remaining Phase 2 plans (02-02, 02-03, 02-04)
+- Watch for: YAML syntax in new planning documents (use block-style lists)
 
 ## Session Continuity
 
-Last session: 2026-01-24 (phase 2 in progress)
-Stopped at: Completed 02-02-PLAN.md (Layout Foundation)
+Last session: 2026-01-25 (phase 2 in progress)
+Stopped at: Completed 02-01-PLAN.md (Content Collection Foundation)
 Resume file: None
-Next: Execute 02-03 (Content Rendering)
+Next: Execute 02-02 (Layout & Styles), then 02-03, 02-04
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-24*
+*Last updated: 2026-01-25*
