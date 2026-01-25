@@ -1,0 +1,316 @@
+/* ============================================
+   Living Library - Global Styles
+   ============================================ */
+
+/* CSS Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+/* CSS Custom Properties */
+:root {
+  /* Layout dimensions */
+  --sidebar-width: 260px;
+  --toc-width: 200px;
+  --content-max-width: 800px;
+  --header-height: 60px;
+
+  /* Light theme colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f7f7;
+  --bg-hover: #f0f0f0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border-color: #e5e5e5;
+  --link-color: #0969da;
+  --link-hover: #0550ae;
+  --code-bg: #f6f8fa;
+  --code-border: #d0d7de;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+}
+
+/* Utility Classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Markdown Content Styles */
+.markdown-content {
+  max-width: var(--content-max-width);
+  padding: var(--spacing-xl);
+}
+
+/* Typography */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.markdown-content h1 {
+  font-size: var(--font-size-3xl);
+  margin-top: 0;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.markdown-content h2 {
+  font-size: var(--font-size-2xl);
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.markdown-content h3 {
+  font-size: var(--font-size-xl);
+}
+
+.markdown-content h4 {
+  font-size: var(--font-size-lg);
+}
+
+.markdown-content h5,
+.markdown-content h6 {
+  font-size: var(--font-size-base);
+}
+
+/* Paragraphs and text */
+.markdown-content p {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+/* Links */
+.markdown-content a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.markdown-content a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* Lists */
+.markdown-content ul,
+.markdown-content ol {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  padding-left: 2em;
+}
+
+.markdown-content li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.markdown-content li > p {
+  margin-bottom: var(--spacing-xs);
+}
+
+.markdown-content ul ul,
+.markdown-content ul ol,
+.markdown-content ol ul,
+.markdown-content ol ol {
+  margin-top: var(--spacing-xs);
+  margin-bottom: 0;
+}
+
+/* Code */
+.markdown-content code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 0.85em;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  background-color: var(--code-bg);
+  border-radius: 3px;
+}
+
+.markdown-content pre {
+  padding: var(--spacing-md);
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  overflow: auto;
+  font-size: 0.85em;
+  line-height: 1.45;
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+}
+
+.markdown-content pre code {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: 0;
+  font-size: 100%;
+}
+
+/* Blockquotes */
+.markdown-content blockquote {
+  margin: 0 0 var(--spacing-md);
+  padding: 0 1em;
+  color: var(--text-secondary);
+  border-left: 0.25em solid var(--border-color);
+}
+
+.markdown-content blockquote > :first-child {
+  margin-top: 0;
+}
+
+.markdown-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Tables */
+.markdown-content table {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+  border-spacing: 0;
+  border-collapse: collapse;
+  overflow: auto;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  padding: 6px 13px;
+  border: 1px solid var(--border-color);
+}
+
+.markdown-content table th {
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  text-align: left;
+}
+
+.markdown-content table tr {
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+.markdown-content table tr:nth-child(2n) {
+  background-color: var(--bg-secondary);
+}
+
+/* Horizontal rules */
+.markdown-content hr {
+  height: 0.25em;
+  padding: 0;
+  margin: var(--spacing-xl) 0;
+  background-color: var(--border-color);
+  border: 0;
+}
+
+/* Images */
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  margin: var(--spacing-md) 0;
+  border-radius: 6px;
+}
+
+/* Task lists */
+.markdown-content .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-content .task-list-item input[type="checkbox"] {
+  margin-right: var(--spacing-sm);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .markdown-content {
+    padding: var(--spacing-md);
+  }
+
+  .markdown-content h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .markdown-content h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .markdown-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
