@@ -2,7 +2,12 @@
 phase: 01-cli-foundation-dev-server
 plan: 02
 subsystem: cli
-tags: [picocolors, ora, astro, inquirer, terminal-ui]
+tags:
+  - picocolors
+  - ora
+  - astro
+  - inquirer
+  - terminal-ui
 
 # Dependency graph
 requires:
@@ -13,11 +18,17 @@ provides:
   - Dev server wrapper for programmatic Astro control
   - Scaffold prompt for .planning structure creation
   - Graceful shutdown handlers for signal handling
-affects: [01-03, cli-workflows]
+affects:
+  - 01-03
+  - cli-workflows
 
 # Tech tracking
 tech-stack:
-  added: [picocolors, ora, @inquirer/prompts, get-port]
+  added:
+    - picocolors
+    - ora
+    - "@inquirer/prompts"
+    - get-port
   patterns:
     - CI-aware terminal output degradation
     - Programmatic Astro server with inline config

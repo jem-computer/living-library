@@ -2,7 +2,12 @@
 phase: 02-content-navigation
 plan: 02
 subsystem: ui
-tags: [astro, css, layout, responsive, gitbook]
+tags:
+  - astro
+  - css
+  - layout
+  - responsive
+  - gitbook
 
 # Dependency graph
 requires:
@@ -14,7 +19,9 @@ provides:
   - Global CSS with theme variables and markdown styles
   - Collapsible navigation sidebar with folder tree
   - Table of contents from headings hierarchy
-affects: [02-03-content-rendering, 03-search-navigation]
+affects:
+  - 02-03-content-rendering
+  - 03-search-navigation
 
 # Tech tracking
 tech-stack:

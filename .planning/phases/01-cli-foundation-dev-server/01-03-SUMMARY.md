@@ -2,7 +2,10 @@
 phase: 01-cli-foundation-dev-server
 plan: 03
 subsystem: cli
-tags: [cli-wiring, integration, dev-server]
+tags:
+  - cli-wiring
+  - integration
+  - dev-server
 
 requires:
   - phase: 01-01
@@ -12,11 +15,13 @@ requires:
 provides:
   - Complete CLI entry point wiring all modules together
   - End-to-end dev server experience
-affects: [phase-2-content]
+affects:
+  - phase-2-content
 
 tech-stack:
   added: []
-  removed: [@inquirer/prompts]
+  removed:
+    - "@inquirer/prompts"
   patterns:
     - Module integration via imports
     - Graceful error handling with colored output

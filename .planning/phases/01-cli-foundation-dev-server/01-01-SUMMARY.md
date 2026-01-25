@@ -6,15 +6,39 @@
 phase: 01-cli-foundation-dev-server
 plan: 01
 subsystem: cli-foundation
-tags: [npm, esm, cli, package-setup, find-up]
+tags:
+  - npm
+  - esm
+  - cli
+  - package-setup
+  - find-up
 requires: []
-provides: [executable-package, planning-detection, cli-skeleton]
-affects: [01-02, 01-03]
+provides:
+  - executable-package
+  - planning-detection
+  - cli-skeleton
+affects:
+  - 01-02
+  - 01-03
 tech-stack:
-  added: [astro@5.16.11, get-port@7.1.0, find-up@7.0.0, picocolors@1.1.1, ora@8.1.1, @inquirer/prompts@7.2.0]
-  patterns: [esm-modules, shebang-entry, find-up-detection]
+  added:
+    - "astro@5.16.11"
+    - "get-port@7.1.0"
+    - "find-up@7.0.0"
+    - "picocolors@1.1.1"
+    - "ora@8.1.1"
+    - "@inquirer/prompts@7.2.0"
+  patterns:
+    - esm-modules
+    - shebang-entry
+    - find-up-detection
 key-files:
-  created: [package.json, tsconfig.json, bin/living-library.js, src/cli.js, src/detect-planning.js]
+  created:
+    - package.json
+    - tsconfig.json
+    - bin/living-library.js
+    - src/cli.js
+    - src/detect-planning.js
   modified: []
 decisions:
   - decision: "Use native parseArgs instead of commander"
