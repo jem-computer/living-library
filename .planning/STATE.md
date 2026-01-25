@@ -9,28 +9,29 @@ See: .planning/PROJECT.md (updated 2026-01-24)
 
 ## Current Position
 
-Phase: 1 of 4 complete (CLI Foundation & Dev Server ✓)
-Plan: Ready to plan Phase 2
-Status: Phase 1 complete
-Last activity: 2026-01-24 — Phase 1 verified and complete
+Phase: 2 of 4 (Content & Navigation - in progress)
+Plan: 02-02 of 3 complete
+Status: Phase 2 in progress
+Last activity: 2026-01-24 — Completed 02-02-PLAN.md (Layout Foundation)
 
-Progress: [██░░░░░░░░] 25% (1/4 phases)
+Progress: [███░░░░░░░] 33% (4/12 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 2.3 min
-- Total execution time: 0.12 hours
+- Total execution time: 0.15 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. CLI Foundation & Dev Server | 3/3 | 7 min | 2.3 min |
+| 2. Content & Navigation | 2/3 | 4 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (2 min), 01-03 (3 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (2 min), 01-03 (3 min), 02-01 (2 min), 02-02 (2 min)
 - Trend: Consistent execution
 
 *Updated after each plan completion*
@@ -55,6 +56,13 @@ Recent decisions affecting current work:
 - Astro inline config has priority — living-library controls server programmatically
 - No scaffold flow — Just error when no .planning found
 
+**From Phase 2 (02-02):**
+- Use vanilla JS instead of React/Vue for sidebar interactions — Lighter bundle, sufficient for simple collapse/expand
+- Mobile-first CSS with 768px and 1024px breakpoints — Baseline mobile, progressively enhance
+- Light theme only for v1 — Dark theme deferred to later phase
+- TOC uses Intersection Observer for active section highlighting — Modern API, performant
+- GSD folders grouped with section label — Separate phases/, research/, milestones/ from user content
+
 ### Pending Todos
 
 None yet.
@@ -68,15 +76,16 @@ None yet.
 - ✓ Version display — banner shows version number
 
 **For Phase 2:**
-- Need to create Astro pages and content rendering
-- Need to wire markdown processing
+- ✓ Layout foundation complete (02-02)
+- Next: Wire content collections and routing (02-03)
+- Need: Build navTree from .planning directory structure
 
 ## Session Continuity
 
-Last session: 2026-01-24 (phase 1 complete)
-Stopped at: Phase 1 verified and complete
+Last session: 2026-01-24 (phase 2 in progress)
+Stopped at: Completed 02-02-PLAN.md (Layout Foundation)
 Resume file: None
-Next: /gsd:plan-phase 2
+Next: Execute 02-03 (Content Rendering)
 
 ---
 *State initialized: 2026-01-24*
