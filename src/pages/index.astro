@@ -1,0 +1,71 @@
+---
+/**
+ * Homepage - redirects to PROJECT.md or first available doc
+ *
+ * Checks for PROJECT entry and redirects, falls back to first entry,
+ * or shows message if .planning is empty.
+ */
+
+import { getEntry, getCollection } from 'astro:content';
+
+// Try to get PROJECT entry
+const projectEntry = await getEntry('planning', 'PROJECT');
+
+if (projectEntry) {
+  // PROJECT.md exists - redirect to it
+  return Astro.redirect('/PROJECT');
+}
+
+// No PROJECT.md - try to get first entry
+const allEntries = await getCollection('planning');
+
+if (allEntries.length > 0) {
+  // Redirect to first entry
+  const firstEntry = allEntries[0];
+  return Astro.redirect(`/${firstEntry.id}`);
+}
+
+// No entries at all - show message
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living Library</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    .message {
+      text-align: center;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+      margin: 0 0 1rem;
+    }
+    p {
+      color: #666;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="message">
+    <h1>No Planning Documents Found</h1>
+    <p>The .planning folder exists but contains no markdown files.</p>
+    <p>Add some .md files to get started.</p>
+  </div>
+</body>
+</html>
