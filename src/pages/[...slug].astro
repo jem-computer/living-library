@@ -1,0 +1,49 @@
+---
+/**
+ * Dynamic catch-all route for all .planning markdown files
+ *
+ * Generates static pages for every entry in the 'planning' content collection.
+ * Builds navigation tree once in getStaticPaths and passes to all pages.
+ */
+
+import { getCollection, render } from 'astro:content';
+import DocLayout from '../layouts/DocLayout.astro';
+import { buildNavTree } from '../lib/navigation.js';
+
+export async function getStaticPaths() {
+  // Get all entries from planning collection
+  const entries = await getCollection('planning');
+
+  // Build navigation tree once from all entries
+  const navTree = buildNavTree(entries);
+
+  // Return array mapping each entry to params and props
+  return entries.map(entry => ({
+    params: {
+      slug: entry.id
+    },
+    props: {
+      entry,
+      navTree
+    }
+  }));
+}
+
+// Get entry and navTree from props
+const { entry, navTree } = Astro.props;
+
+// Render the entry to get Content component and headings
+const { Content, headings } = await render(entry);
+
+// Get current path from URL
+const currentPath = Astro.url.pathname;
+
+// Derive title from entry data or filename
+// entry.id is like "PROJECT" or "phases/01-foundation/01-01-PLAN"
+const filename = entry.id.split('/').pop() || 'Unknown';
+const title = entry.data?.title || filename;
+---
+
+<DocLayout headings={headings} currentPath={currentPath} navTree={navTree} title={title}>
+  <Content />
+</DocLayout>
