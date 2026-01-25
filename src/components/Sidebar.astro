@@ -44,7 +44,7 @@ function renderNode(node: NavNode, depth = 0): any {
           aria-expanded={shouldExpand ? 'true' : 'false'}
           style={`padding-left: ${depth * 0.75}rem`}
         >
-          <span class="folder-icon" data-icon>{shouldExpand ? '▼' : '▶'}</span>
+          <span class="folder-icon">▶</span>
           <span class="folder-name">{node.name}</span>
         </button>
         <ul class="folder-contents" data-contents style={shouldExpand ? '' : 'display: none'}>
@@ -138,12 +138,26 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
     background-color: var(--bg-hover);
   }
 
+  .folder-toggle:focus {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .folder-toggle:focus:not(:focus-visible) {
+    outline: none;
+  }
+
   .folder-icon {
     display: inline-block;
     width: 1rem;
     margin-right: var(--spacing-sm);
     font-size: 0.75rem;
     color: var(--text-secondary);
+    transition: transform var(--transition-base);
+  }
+
+  .folder-toggle[aria-expanded="true"] .folder-icon {
+    transform: rotate(90deg);
   }
 
   .folder-name {
@@ -154,6 +168,13 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
     list-style: none;
     padding: 0;
     margin: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-base), opacity var(--transition-fast);
+  }
+
+  .folder-contents[style*="display: none"] {
+    max-height: 0;
+    opacity: 0;
   }
 
   .nav-item {
@@ -173,11 +194,21 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
     background-color: var(--bg-hover);
   }
 
+  .nav-item a:focus {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+  .nav-item a:focus:not(:focus-visible) {
+    outline: none;
+  }
+
   .nav-item a.current,
   .nav-item a[aria-current="page"] {
     background-color: var(--bg-secondary);
     color: var(--link-color);
-    font-weight: 500;
+    font-weight: 600;
+    border-left: 3px solid var(--link-color);
   }
 </style>
 
@@ -188,9 +219,8 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
   folders.forEach(folder => {
     const toggle = folder.querySelector('[data-toggle]');
     const contents = folder.querySelector('[data-contents]');
-    const icon = folder.querySelector('[data-icon]');
 
-    if (!toggle || !contents || !icon) return;
+    if (!toggle || !contents) return;
 
     toggle.addEventListener('click', () => {
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
@@ -198,13 +228,34 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
 
       toggle.setAttribute('aria-expanded', String(newState));
       contents.style.display = newState ? '' : 'none';
-      icon.textContent = newState ? '▼' : '▶';
+    });
+
+    // Keyboard support: Enter and Space toggle folders
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle.click();
+      }
     });
   });
 
-  // Scroll current page into view
-  const currentLink = document.querySelector('.sidebar a[aria-current="page"]');
-  if (currentLink) {
-    currentLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  }
+  // Scroll current page into view after page load
+  window.addEventListener('load', () => {
+    const currentLink = document.querySelector('.sidebar a[aria-current="page"]');
+    if (currentLink) {
+      // Expand all parent folders containing current page
+      let parent = currentLink.closest('[data-contents]');
+      while (parent) {
+        parent.style.display = '';
+        const toggle = parent.previousElementSibling;
+        if (toggle && toggle.hasAttribute('data-toggle')) {
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+        parent = parent.parentElement?.closest('[data-contents]');
+      }
+
+      // Scroll into view
+      currentLink.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  });
 </script>
