@@ -1,10 +1,11 @@
 import { defineConfig } from 'astro/config';
 import relativeLinks from 'astro-rehype-relative-markdown-links';
+import pagefind from 'astro-pagefind';
 
 // This config is used by the dev server
 // living-library passes root and server options programmatically
 export default defineConfig({
-  // Intentionally minimal - let programmatic API control settings
+  integrations: [pagefind()],
   markdown: {
     rehypePlugins: [relativeLinks],
     shikiConfig: {
