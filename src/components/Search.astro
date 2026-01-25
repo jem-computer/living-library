@@ -1,0 +1,95 @@
+---
+/**
+ * Search Component
+ * Wraps astro-pagefind Search with Living Library styling
+ */
+import PagefindSearch from "astro-pagefind/components/Search";
+---
+
+<div class="search-wrapper">
+  <PagefindSearch
+    id="search"
+    className="pagefind-ui"
+    uiOptions={{
+      showImages: false,
+      excerptLength: 30,
+      pageSize: 5,
+      showSubResults: true,
+      placeholder: "Search docs..."
+    }}
+  />
+</div>
+
+<style>
+  .search-wrapper {
+    position: relative;
+  }
+
+  /* Pagefind UI Customization */
+  .search-wrapper :global(.pagefind-ui) {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: var(--link-color);
+    --pagefind-ui-text: var(--text-primary);
+    --pagefind-ui-background: var(--bg-primary);
+    --pagefind-ui-border: var(--border-color);
+    --pagefind-ui-tag: var(--bg-secondary);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 6px;
+    --pagefind-ui-font: inherit;
+  }
+
+  /* Search input styling */
+  .search-wrapper :global(.pagefind-ui__search-input) {
+    height: 36px;
+    font-size: var(--font-size-sm);
+  }
+
+  /* Results dropdown styling */
+  .search-wrapper :global(.pagefind-ui__results-area) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    margin-top: 4px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Result item styling */
+  .search-wrapper :global(.pagefind-ui__result) {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .search-wrapper :global(.pagefind-ui__result:last-child) {
+    border-bottom: none;
+  }
+
+  .search-wrapper :global(.pagefind-ui__result-link) {
+    color: var(--link-color);
+    font-weight: 500;
+  }
+
+  .search-wrapper :global(.pagefind-ui__result-excerpt) {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  /* Highlight matches */
+  .search-wrapper :global(mark) {
+    background-color: rgba(255, 220, 0, 0.3);
+    color: inherit;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+
+  /* Dark mode adjustments */
+  :global(.dark) .search-wrapper :global(mark) {
+    background-color: rgba(255, 220, 0, 0.2);
+  }
+</style>
