@@ -2,6 +2,7 @@ import { parseArgs } from 'node:util';
 import { createRequire } from 'node:module';
 import { detectPlanningDir } from './detect-planning.js';
 import { startDevServer, registerShutdownHandlers, logFileChanges } from './dev-server.js';
+import { runBuild } from './build.js';
 import { startSpinner } from './ui/spinner.js';
 import { colors, formatStartupBanner } from './ui/colors.js';
 
@@ -13,7 +14,7 @@ const pkg = require('../package.json');
  * CLI entry point
  */
 export async function run() {
-  const { values } = parseArgs({
+  const { values, positionals } = parseArgs({
     options: {
       verbose: { type: 'boolean', short: 'v', default: false },
       help: { type: 'boolean', short: 'h', default: false },
@@ -34,16 +35,7 @@ export async function run() {
     return;
   }
 
-  // Main flow: detect .planning and start server
-  await startDev(values.verbose);
-}
-
-/**
- * Main dev server flow
- * @param {boolean} verbose
- */
-async function startDev(verbose) {
-  // Step 1: Detect .planning folder
+  // Detect .planning folder (needed by both dev and build)
   const detected = await detectPlanningDir();
 
   if (!detected) {
@@ -57,7 +49,30 @@ async function startDev(verbose) {
     console.log(colors.dim(`Found .planning in: ${detected.relative}`));
   }
 
-  // Step 2: Start dev server with spinner
+  // Command routing
+  const command = positionals[0] || 'dev';
+
+  if (command === 'build') {
+    await runBuild({
+      root: detected.path,
+      verbose: values.verbose
+    });
+    return;
+  } else if (command === 'dev') {
+    await startDev(values.verbose, detected);
+  } else {
+    console.error(colors.error(`Unknown command: ${command}`));
+    process.exit(1);
+  }
+}
+
+/**
+ * Main dev server flow
+ * @param {boolean} verbose
+ * @param {object} detected - Already detected .planning directory
+ */
+async function startDev(verbose, detected) {
+  // Step 1: Start dev server with spinner
   const spinner = startSpinner('Starting dev server...');
 
   try {
@@ -101,10 +116,14 @@ ${colors.bold('living-library')} ${colors.version(pkg.version)}
 Documentation viewer for .planning folders
 
 ${colors.bold('Usage:')}
-  npx living-library [options]
+  npx living-library [command] [options]
+
+${colors.bold('Commands:')}
+  dev     Start development server (default)
+  build   Generate static site to ./dist
 
 ${colors.bold('Options:')}
-  -v, --verbose  Show detailed Astro output
+  -v, --verbose  Show detailed output
   -h, --help     Show this help message
   --version      Show version number
 
@@ -112,9 +131,12 @@ ${colors.bold('Examples:')}
   ${colors.dim('# Start dev server in current directory')}
   npx living-library
 
-  ${colors.dim('# Start with verbose output for debugging')}
-  npx living-library --verbose
+  ${colors.dim('# Build static site')}
+  npx living-library build
 
-Run in a directory with a .planning folder to start the dev server.
+  ${colors.dim('# Build with verbose output for debugging')}
+  npx living-library build --verbose
+
+Run in a directory with a .planning folder.
 `);
 }
