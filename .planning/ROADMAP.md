@@ -41,10 +41,13 @@ Plans:
 **Goal**: User sees their `.planning` docs as a navigable documentation site
 **Depends on**: Phase 1
 **Requirements**: CONT-01, CONT-02, CONT-03, NAV-01, NAV-02, NAV-03, NAV-04, GSD-01, GSD-02, GSD-03
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] TBD (created during `/gsd:plan-phase 2`)
+- [ ] 02-01-PLAN.md — Content collection and navigation tree builder
+- [ ] 02-02-PLAN.md — Layout components and global styles
+- [ ] 02-03-PLAN.md — Page routing and content rendering
+- [ ] 02-04-PLAN.md — Sidebar interactivity and mobile menu
 
 **Success Criteria** (what must be TRUE):
   1. All `.md` files in `.planning` render as HTML with working links and images
@@ -95,7 +98,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete | 2026-01-24 |
-| 2. Content & Navigation | 0/TBD | Not started | - |
+| 2. Content & Navigation | 0/4 | Not started | - |
 | 3. Theming & Search | 0/TBD | Not started | - |
 | 4. Static Build & GSD Features | 0/TBD | Not started | - |
 
