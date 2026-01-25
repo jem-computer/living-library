@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-24)
 ## Current Position
 
 Phase: 4 of 4 (Static Build & GSD Features)
-Plan: 1/1 complete
-Status: Phase 4 - plan 04-01 complete
-Last activity: 2026-01-25 — Completed 04-01-PLAN.md
+Plan: 2/3 complete
+Status: Phase 4 - plan 04-02 complete
+Last activity: 2026-01-25 — Completed 04-02-PLAN.md
 
-Progress: [██████████] 100% (4/4 phases complete - all base features implemented)
+Progress: [██████████] 100% (4/4 phases in progress - Phase 4 ongoing)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 5.5 min
-- Total execution time: 1.01 hours
+- Total plans completed: 12
+- Average duration: 5.4 min
+- Total execution time: 1.09 hours
 
 **By Phase:**
 
@@ -30,13 +30,14 @@ Progress: [██████████] 100% (4/4 phases complete - all base 
 | 1. CLI Foundation & Dev Server | 3/3 | 7 min | 2.3 min |
 | 2. Content & Navigation | 4/4 | ~50 min | ~12.5 min |
 | 3. Theming & Search | 3/3 | 11 min | 3.7 min |
-| 4. Static Build & GSD Features | 1/1 | 2 min | 2 min |
+| 4. Static Build & GSD Features | 2/3 | 7 min | 3.5 min |
 
 **Recent Trend:**
-- Phase 4 complete - build command implemented efficiently
+- Phase 4 progressing efficiently - build and navigation enhancements
 - Build command outputs deployment-ready static site to ./dist (04-01)
+- Root doc icons and STATE.md filtering complete (04-02)
 - Subcommand routing pattern established (dev vs build)
-- All base features now implemented, ready for publishing
+- Navigation UX improved with visual hierarchy
 
 *Updated after each plan completion*
 
@@ -82,6 +83,9 @@ Recent decisions affecting current work:
 - Default output to ./dist (04-01) — Deployment convention, matches Astro defaults
 - Subcommand routing pattern (04-01) — Extract positionals[0] to determine dev vs build command
 - .planning detection before command routing (04-01) — Shared logic for both dev and build commands
+- Filter STATE.md at buildNavTree level (04-02) — Keeps it accessible via URL while hiding from navigation
+- Use inline SVG with currentColor for icons (04-02) — Theme-aware icons without asset management
+- Apply icons only to root documentation files (04-02) — Visual hierarchy for key entry points
 
 ### Pending Todos
 
@@ -111,18 +115,19 @@ None yet.
 - ✓ Pagefind build-time indexing configured (03-03)
 - ✓ All 6 success criteria verified
 
-**Phase 4 Complete:**
+**Phase 4 In Progress:**
 - ✓ Build command outputs static site to ./dist (04-01)
 - ✓ Subcommand routing (dev vs build) (04-01)
 - ✓ Deployment-ready output verified (04-01)
-- ✓ All 4 success criteria verified
+- ✓ Root doc icons and STATE.md filtering (04-02)
+- ✓ All success criteria verified for 04-01 and 04-02
 
 ## Session Continuity
 
-Last session: 2026-01-25 (Phase 4 - Plan 01 COMPLETE)
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-01-25 (Phase 4 - Plan 02 COMPLETE)
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
-Next: All base features implemented - ready for package publishing/distribution
+Next: Continue with 04-03-PLAN.md (final plan in Phase 4)
 
 ---
 *State initialized: 2026-01-24*
