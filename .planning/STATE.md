@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-24)
 
 ## Current Position
 
-Phase: 3 of 4 (Theming & Search - COMPLETE)
-Plan: 3/3 complete
-Status: Phase 3 verified and complete, ready for Phase 4
-Last activity: 2026-01-25 — Completed Phase 3 execution
+Phase: 4 of 4 (Static Build & GSD Features)
+Plan: 1/1 complete
+Status: Phase 4 - plan 04-01 complete
+Last activity: 2026-01-25 — Completed 04-01-PLAN.md
 
-Progress: [███████░░░] 75% (3/4 phases complete)
+Progress: [██████████] 100% (4/4 phases complete - all base features implemented)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
-- Average duration: 5.9 min
-- Total execution time: 0.98 hours
+- Total plans completed: 11
+- Average duration: 5.5 min
+- Total execution time: 1.01 hours
 
 **By Phase:**
 
@@ -29,13 +29,14 @@ Progress: [███████░░░] 75% (3/4 phases complete)
 |-------|-------|-------|----------|
 | 1. CLI Foundation & Dev Server | 3/3 | 7 min | 2.3 min |
 | 2. Content & Navigation | 4/4 | ~50 min | ~12.5 min |
-| 3. Theming & Search | 3/4 | 11 min | 3.7 min |
+| 3. Theming & Search | 3/3 | 11 min | 3.7 min |
+| 4. Static Build & GSD Features | 1/1 | 2 min | 2 min |
 
 **Recent Trend:**
-- Phase 3 progressing very efficiently - theme and search integration complete
-- CSS theming and Shiki dual themes configured (03-01)
-- Search component foundation laid (03-02)
-- Theme toggle and search fully integrated into layout (03-03)
+- Phase 4 complete - build command implemented efficiently
+- Build command outputs deployment-ready static site to ./dist (04-01)
+- Subcommand routing pattern established (dev vs build)
+- All base features now implemented, ready for publishing
 
 *Updated after each plan completion*
 
@@ -76,6 +77,12 @@ Recent decisions affecting current work:
 - localStorage then matchMedia preference hierarchy (03-03) — Explicit user choice takes precedence over system preference
 - data-pagefind-body on main content only (03-03) — Navigation, headers, sidebars excluded from search index
 
+**From Phase 4:**
+- Use Astro's build() API for static generation (04-01) — Mirrors dev() pattern, consistent programmatic approach
+- Default output to ./dist (04-01) — Deployment convention, matches Astro defaults
+- Subcommand routing pattern (04-01) — Extract positionals[0] to determine dev vs build command
+- .planning detection before command routing (04-01) — Shared logic for both dev and build commands
+
 ### Pending Todos
 
 None yet.
@@ -104,12 +111,18 @@ None yet.
 - ✓ Pagefind build-time indexing configured (03-03)
 - ✓ All 6 success criteria verified
 
+**Phase 4 Complete:**
+- ✓ Build command outputs static site to ./dist (04-01)
+- ✓ Subcommand routing (dev vs build) (04-01)
+- ✓ Deployment-ready output verified (04-01)
+- ✓ All 4 success criteria verified
+
 ## Session Continuity
 
-Last session: 2026-01-25 (Phase 3 COMPLETE)
-Stopped at: Phase 3 verified and complete
+Last session: 2026-01-25 (Phase 4 - Plan 01 COMPLETE)
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
-Next: `/gsd:plan-phase 4` (Static Build & GSD Features)
+Next: All base features implemented - ready for package publishing/distribution
 
 ---
 *State initialized: 2026-01-24*
