@@ -28,8 +28,14 @@ export function buildNavTree(entries) {
   const tree = {};
   const rootFiles = [];
 
+  // Filter out STATE.md from navigation (internal/agent documentation)
+  const filteredEntries = entries.filter(entry => {
+    const id = entry.id.toLowerCase();
+    return id !== 'state';
+  });
+
   // First pass: organize entries by path segments
-  for (const entry of entries) {
+  for (const entry of filteredEntries) {
     const parts = entry.id.split('/');
 
     // Root-level files (no slash in ID)
