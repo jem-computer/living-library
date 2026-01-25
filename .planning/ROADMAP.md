@@ -62,10 +62,12 @@ Plans:
 **Goal**: Users can search docs and switch between light/dark themes
 **Depends on**: Phase 2
 **Requirements**: THEME-01, THEME-02, THEME-03, SRCH-01, SRCH-02, SRCH-03
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD (created during `/gsd:plan-phase 3`)
+- [ ] 03-01-PLAN.md — Theme CSS variables and Shiki dual themes
+- [ ] 03-02-PLAN.md — Search integration with astro-pagefind
+- [ ] 03-03-PLAN.md — Layout wiring (theme toggle, search, content marking)
 
 **Success Criteria** (what must be TRUE):
   1. Site defaults to light theme with clean, GitBook-style aesthetic
@@ -99,7 +101,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete | 2026-01-24 |
 | 2. Content & Navigation | 4/4 | ✓ Complete | 2026-01-25 |
-| 3. Theming & Search | 0/TBD | Not started | - |
+| 3. Theming & Search | 0/3 | Not started | - |
 | 4. Static Build & GSD Features | 0/TBD | Not started | - |
 
 ---
