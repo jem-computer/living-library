@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-24)
 ## Current Position
 
 Phase: 3 of 4 (Theming & Search - IN PROGRESS)
-Plan: 1/4 complete (03-02 done)
-Status: Phase 3 in progress - search component ready
-Last activity: 2026-01-25 — Completed 03-02-PLAN.md
+Plan: 2/4 complete (03-01, 03-02 done)
+Status: Phase 3 in progress - theme foundation and search component ready
+Last activity: 2026-01-25 — Completed 03-01-PLAN.md
 
-Progress: [████████░░] 80% (8/10 plans complete)
+Progress: [█████████░] 90% (9/10 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 6.4 min
-- Total execution time: 0.85 hours
+- Total plans completed: 9
+- Average duration: 6.0 min
+- Total execution time: 0.88 hours
 
 **By Phase:**
 
@@ -29,11 +29,12 @@ Progress: [████████░░] 80% (8/10 plans complete)
 |-------|-------|-------|----------|
 | 1. CLI Foundation & Dev Server | 3/3 | 7 min | 2.3 min |
 | 2. Content & Navigation | 4/4 | ~50 min | ~12.5 min |
-| 3. Theming & Search | 1/4 | 1 min | 1.0 min |
+| 3. Theming & Search | 2/4 | 3 min | 1.5 min |
 
 **Recent Trend:**
-- Phase 3 starting strong - quick dependency installation plans
-- Search component foundation laid (astro-pagefind + themed wrapper)
+- Phase 3 progressing efficiently - theme foundation and search component complete
+- CSS theming and Shiki dual themes configured (03-01)
+- Search component foundation laid (03-02)
 
 *Updated after each plan completion*
 
@@ -64,6 +65,9 @@ Recent decisions affecting current work:
 - Reverted to user project root for Astro (02-03) — PACKAGE_ROOT approach broke content collection, original design works for dogfooding but may break for published package
 
 **From Phase 3:**
+- Use .dark class selector for theme switching (03-01) — Matches common conventions (Tailwind), easy to toggle via JavaScript
+- Use github-light/github-dark Shiki themes (03-01) — Consistent with GitHub-style markdown rendering aesthetic
+- Configure Shiki dual themes with themes object (03-01) — Generates CSS variables for theme-aware syntax highlighting
 - Use CSS variables for theming consistency (03-02) — Search component uses CSS variables from global.css for automatic theme adaptation
 - Override Pagefind UI CSS variables (03-02) — Map Pagefind's design system to Living Library's for seamless integration
 - Absolute dropdown positioning (03-02) — Position search results as dropdown to prevent layout shifts
@@ -89,6 +93,7 @@ None yet.
 - ✓ All 7 success criteria verified
 
 **Phase 3 In Progress:**
+- ✓ Theme foundation with CSS variables (03-01)
 - ✓ Search component foundation (03-02)
 - Next: Integrate astro-pagefind into config (03-03)
 - Next: Add Search to header layout (03-03)
@@ -96,8 +101,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-25T11:23:58Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-01-25T11:25:01Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
 Next: Execute 03-03-PLAN.md (Search integration into layout)
 
