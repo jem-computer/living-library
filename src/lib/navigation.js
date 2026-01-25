@@ -36,7 +36,7 @@ export function buildNavTree(entries) {
     if (parts.length === 1) {
       rootFiles.push({
         name: getDisplayName(entry.id),
-        path: entry.id,
+        path: `/${entry.id}`,
       });
       continue;
     }
@@ -55,7 +55,7 @@ export function buildNavTree(entries) {
         }
         current._files.push({
           name: getDisplayName(part),
-          path: entry.id,
+          path: `/${entry.id}`,
         });
       } else {
         // This is a folder
@@ -131,8 +131,11 @@ export function sortGsdItems(items) {
   const gsdFolders = ['phases', 'research', 'milestones', 'todos'];
 
   return items.sort((a, b) => {
-    const aIsGsd = gsdFolders.some(folder => a.path.startsWith(folder));
-    const bIsGsd = gsdFolders.some(folder => b.path.startsWith(folder));
+    // Remove leading slash for comparison
+    const aPath = a.path.replace(/^\//, '');
+    const bPath = b.path.replace(/^\//, '');
+    const aIsGsd = gsdFolders.some(folder => aPath.startsWith(folder));
+    const bIsGsd = gsdFolders.some(folder => bPath.startsWith(folder));
 
     // GSD folders come before non-GSD
     if (aIsGsd && !bIsGsd) return -1;
