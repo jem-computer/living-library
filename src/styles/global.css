@@ -294,6 +294,22 @@ body {
   margin-right: var(--spacing-sm);
 }
 
+/* Mobile Menu Enhancements */
+@media (max-width: 767px) {
+  /* Prevent scroll when mobile menu is open */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+
+  /* Larger tap targets for mobile */
+  .mobile-menu-toggle {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .markdown-content {
