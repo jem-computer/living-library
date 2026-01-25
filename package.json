@@ -11,7 +11,8 @@
     "src"
   ],
   "scripts": {
-    "dev": "node bin/living-library.js"
+    "dev": "node bin/living-library.js",
+    "build": "astro build"
   },
   "keywords": [
     "documentation",
