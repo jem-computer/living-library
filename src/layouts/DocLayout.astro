@@ -7,6 +7,8 @@
 
 import Sidebar from '../components/Sidebar.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import Search from '../components/Search.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -28,11 +30,33 @@ const pageTitle = title ? `${title} | Living Library` : 'Living Library';
   <meta name="generator" content={Astro.generator}>
   <title>{pageTitle}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Theme initialization - prevents FOUC -->
+  <script is:inline>
+    const theme = (() => {
+      const stored = localStorage.getItem("theme");
+      if (stored === "dark" || stored === "light") {
+        return stored;
+      }
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
+      return "light";
+    })();
+
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    localStorage.setItem("theme", theme);
+  </script>
 </head>
 <body>
   <div class="layout-wrapper">
     <!-- Header -->
-    <header class="site-header">
+    <header class="site-header" data-pagefind-ignore>
       <div class="header-content">
         <button class="mobile-menu-toggle mobile-only" data-menu-toggle aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="hamburger-icon">☰</span>
@@ -40,25 +64,29 @@ const pageTitle = title ? `${title} | Living Library` : 'Living Library';
         <h1 class="site-title">
           <a href="/">Living Library</a>
         </h1>
+        <div class="header-actions">
+          <Search />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
 
     <!-- Main Layout Grid -->
     <div class="doc-layout">
       <!-- Left Sidebar -->
-      <aside class="sidebar-left" data-sidebar>
+      <aside class="sidebar-left" data-pagefind-ignore data-sidebar>
         <Sidebar tree={navTree} currentPath={currentPath} />
       </aside>
 
       <!-- Main Content -->
-      <main class="content">
+      <main class="content" data-pagefind-body>
         <article class="markdown-content">
           <slot />
         </article>
       </main>
 
       <!-- Right Sidebar (TOC) -->
-      <aside class="sidebar-right">
+      <aside class="sidebar-right" data-pagefind-ignore>
         <TableOfContents headings={headings} />
       </aside>
     </div>
@@ -104,6 +132,20 @@ const pageTitle = title ? `${title} | Living Library` : 'Living Library';
 
     .site-title a:hover {
       color: var(--link-color);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-left: auto;
+    }
+
+    /* Hide search on small mobile, show toggle */
+    @media (max-width: 480px) {
+      .header-actions :global(.search-wrapper) {
+        display: none;
+      }
     }
 
     .mobile-menu-toggle {
