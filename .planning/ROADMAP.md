@@ -13,7 +13,7 @@ This roadmap delivers a zero-config documentation site generator for GSD `.plann
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: CLI Foundation & Dev Server** - Zero-config dev server that runs anywhere
-- [ ] **Phase 2: Content & Navigation** - GSD-aware content parsing and responsive UI
+- [x] **Phase 2: Content & Navigation** - GSD-aware content parsing and responsive UI
 - [ ] **Phase 3: Theming & Search** - Dark mode and full-text search across docs
 - [ ] **Phase 4: Static Build & GSD Features** - Production deployment and differentiators
 
@@ -44,10 +44,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Content collection and navigation tree builder
-- [ ] 02-02-PLAN.md — Layout components and global styles
-- [ ] 02-03-PLAN.md — Page routing and content rendering
-- [ ] 02-04-PLAN.md — Sidebar interactivity and mobile menu
+- [x] 02-01-PLAN.md — Content collection and navigation tree builder
+- [x] 02-02-PLAN.md — Layout components and global styles
+- [x] 02-03-PLAN.md — Page routing and content rendering
+- [x] 02-04-PLAN.md — Sidebar interactivity and mobile menu
 
 **Success Criteria** (what must be TRUE):
   1. All `.md` files in `.planning` render as HTML with working links and images
@@ -98,10 +98,10 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete | 2026-01-24 |
-| 2. Content & Navigation | 0/4 | Not started | - |
+| 2. Content & Navigation | 4/4 | ✓ Complete | 2026-01-25 |
 | 3. Theming & Search | 0/TBD | Not started | - |
 | 4. Static Build & GSD Features | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-24*
-*Last updated: 2026-01-24*
+*Last updated: 2026-01-25*

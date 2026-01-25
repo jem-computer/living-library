@@ -16,17 +16,17 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Content Rendering
 
-- [ ] **CONT-01**: All `.md` files in `.planning` render as HTML pages
-- [ ] **CONT-02**: Markdown supports CommonMark (tables, code blocks, links, images)
-- [ ] **CONT-03**: Code blocks have syntax highlighting (Shiki)
+- [x] **CONT-01**: All `.md` files in `.planning` render as HTML pages
+- [x] **CONT-02**: Markdown supports CommonMark (tables, code blocks, links, images)
+- [x] **CONT-03**: Code blocks have syntax highlighting (Shiki)
 - [x] **CONT-04**: File changes trigger live reload without full page refresh
 
 ### Navigation
 
-- [ ] **NAV-01**: Left sidebar shows folder structure as collapsible tree
-- [ ] **NAV-02**: Right sidebar shows table of contents from current page headings
-- [ ] **NAV-03**: Sidebar collapses to hamburger menu on mobile
-- [ ] **NAV-04**: Current page highlighted in sidebar
+- [x] **NAV-01**: Left sidebar shows folder structure as collapsible tree
+- [x] **NAV-02**: Right sidebar shows table of contents from current page headings
+- [x] **NAV-03**: Sidebar collapses to hamburger menu on mobile
+- [x] **NAV-04**: Current page highlighted in sidebar
 
 ### Search
 
@@ -42,9 +42,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### GSD Structure Awareness
 
-- [ ] **GSD-01**: Navigation groups files by GSD structure (phases, research, milestones, todos)
-- [ ] **GSD-02**: Phase folders display in numbered order (01-skill-infrastructure, 02-card-system)
-- [ ] **GSD-03**: Root docs (PROJECT.md, ROADMAP.md, etc.) appear prominently
+- [x] **GSD-01**: Navigation groups files by GSD structure (phases, research, milestones, todos)
+- [x] **GSD-02**: Phase folders display in numbered order (01-skill-infrastructure, 02-card-system)
+- [x] **GSD-03**: Root docs (PROJECT.md, ROADMAP.md, etc.) appear prominently
 - [ ] **GSD-04**: Milestone timeline shows completed vs active milestones
 
 ## v2 Requirements
@@ -93,23 +93,23 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CLI-02 | Phase 1 | Complete |
 | CLI-03 | Phase 4 | Pending |
 | CLI-04 | Phase 4 | Pending |
-| CONT-01 | Phase 2 | Pending |
-| CONT-02 | Phase 2 | Pending |
-| CONT-03 | Phase 2 | Pending |
+| CONT-01 | Phase 2 | Complete |
+| CONT-02 | Phase 2 | Complete |
+| CONT-03 | Phase 2 | Complete |
 | CONT-04 | Phase 1 | Complete |
-| NAV-01 | Phase 2 | Pending |
-| NAV-02 | Phase 2 | Pending |
-| NAV-03 | Phase 2 | Pending |
-| NAV-04 | Phase 2 | Pending |
+| NAV-01 | Phase 2 | Complete |
+| NAV-02 | Phase 2 | Complete |
+| NAV-03 | Phase 2 | Complete |
+| NAV-04 | Phase 2 | Complete |
 | SRCH-01 | Phase 3 | Pending |
 | SRCH-02 | Phase 3 | Pending |
 | SRCH-03 | Phase 3 | Pending |
 | THEME-01 | Phase 3 | Pending |
 | THEME-02 | Phase 3 | Pending |
 | THEME-03 | Phase 3 | Pending |
-| GSD-01 | Phase 2 | Pending |
-| GSD-02 | Phase 2 | Pending |
-| GSD-03 | Phase 2 | Pending |
+| GSD-01 | Phase 2 | Complete |
+| GSD-02 | Phase 2 | Complete |
+| GSD-03 | Phase 2 | Complete |
 | GSD-04 | Phase 4 | Pending |
 
 **Coverage:**
