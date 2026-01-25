@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "astro": "^5.16.11",
+    "astro-rehype-relative-markdown-links": "^0.18.1",
     "find-up": "^7.0.0",
     "get-port": "^7.1.0",
     "ora": "^8.1.1",
