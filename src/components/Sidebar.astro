@@ -19,6 +19,19 @@ interface Props {
 
 const { tree, currentPath } = Astro.props;
 
+// Icons for root documentation files (inline SVG)
+const rootDocIcons: Record<string, string> = {
+  'PROJECT': '<path d="M8 1l6 3v8l-6 3-6-3V4z" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  'ROADMAP': '<path d="M3 4h10M3 8h10M3 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 11l-2 2 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  'REQUIREMENTS': '<rect x="3" y="3" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l1.5 1.5L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'
+};
+
+// Helper to get icon for a root doc
+function getRootDocIcon(name: string): string | null {
+  const baseName = name.replace('.md', '').toUpperCase();
+  return rootDocIcons[baseName] || null;
+}
+
 // Helper to determine if a node or its children contain the current path
 function containsCurrentPath(node: NavNode, path: string): boolean {
   if (node.path === path) return true;
@@ -104,9 +117,14 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
           <a
             href={node.path}
             aria-current={isCurrent ? 'page' : undefined}
-            class:list={[{ current: isCurrent }]}
+            class:list={['nav-link', { current: isCurrent, 'has-icon': getRootDocIcon(node.name) }]}
           >
-            {node.name}
+            {getRootDocIcon(node.name) && (
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="nav-icon">
+                <Fragment set:html={getRootDocIcon(node.name)} />
+              </svg>
+            )}
+            <span>{node.name}</span>
           </a>
         </li>
       );
@@ -295,6 +313,25 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
     text-decoration: none;
     border-radius: 4px;
     transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .nav-icon {
+    flex-shrink: 0;
+    color: var(--text-muted);
+  }
+
+  .nav-link.current .nav-icon {
+    color: var(--link-color);
+  }
+
+  .nav-link:hover .nav-icon {
+    color: var(--text-primary);
   }
 
   .nav-item a:hover {
