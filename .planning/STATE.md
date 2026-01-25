@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-24)
 ## Current Position
 
 Phase: 3 of 4 (Theming & Search - IN PROGRESS)
-Plan: 2/4 complete (03-01, 03-02 done)
-Status: Phase 3 in progress - theme foundation and search component ready
-Last activity: 2026-01-25 — Completed 03-01-PLAN.md
+Plan: 3/4 complete (03-01, 03-02, 03-03 done)
+Status: Phase 3 in progress - theme and search integration complete
+Last activity: 2026-01-25 — Completed 03-03-PLAN.md
 
-Progress: [█████████░] 90% (9/10 plans complete)
+Progress: [█████████░] 100% (10/10 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 6.0 min
-- Total execution time: 0.88 hours
+- Total plans completed: 10
+- Average duration: 5.9 min
+- Total execution time: 0.98 hours
 
 **By Phase:**
 
@@ -29,12 +29,13 @@ Progress: [█████████░] 90% (9/10 plans complete)
 |-------|-------|-------|----------|
 | 1. CLI Foundation & Dev Server | 3/3 | 7 min | 2.3 min |
 | 2. Content & Navigation | 4/4 | ~50 min | ~12.5 min |
-| 3. Theming & Search | 2/4 | 3 min | 1.5 min |
+| 3. Theming & Search | 3/4 | 11 min | 3.7 min |
 
 **Recent Trend:**
-- Phase 3 progressing efficiently - theme foundation and search component complete
+- Phase 3 progressing very efficiently - theme and search integration complete
 - CSS theming and Shiki dual themes configured (03-01)
 - Search component foundation laid (03-02)
+- Theme toggle and search fully integrated into layout (03-03)
 
 *Updated after each plan completion*
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - Use CSS variables for theming consistency (03-02) — Search component uses CSS variables from global.css for automatic theme adaptation
 - Override Pagefind UI CSS variables (03-02) — Map Pagefind's design system to Living Library's for seamless integration
 - Absolute dropdown positioning (03-02) — Position search results as dropdown to prevent layout shifts
+- Theme init script runs is:inline in <head> (03-03) — Prevents FOUC by applying theme before body renders
+- localStorage then matchMedia preference hierarchy (03-03) — Explicit user choice takes precedence over system preference
+- data-pagefind-body on main content only (03-03) — Navigation, headers, sidebars excluded from search index
 
 ### Pending Todos
 
@@ -95,16 +99,17 @@ None yet.
 **Phase 3 In Progress:**
 - ✓ Theme foundation with CSS variables (03-01)
 - ✓ Search component foundation (03-02)
-- Next: Integrate astro-pagefind into config (03-03)
-- Next: Add Search to header layout (03-03)
-- Next: Theme toggle implementation (03-04)
+- ✓ Theme toggle and search integration complete (03-03)
+- ✓ FOUC prevention with inline theme init script (03-03)
+- ✓ Pagefind build-time indexing configured (03-03)
+- Next: Final Phase 3 polish (03-04) if planned
 
 ## Session Continuity
 
-Last session: 2026-01-25T11:25:01Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-01-25T11:38:57Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None
-Next: Execute 03-03-PLAN.md (Search integration into layout)
+Next: Check if 03-04 exists, otherwise Phase 3 complete
 
 ---
 *State initialized: 2026-01-24*
