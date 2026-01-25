@@ -48,27 +48,35 @@ function buildHierarchy(headings: Heading[]): TocNode[] {
 }
 
 const tocTree = buildHierarchy(filteredHeadings);
-
-// Recursive render function
-function renderTocItem(item: TocNode): any {
-  return (
-    <li>
-      <a href={`#${item.slug}`}>{item.text}</a>
-      {item.children.length > 0 && (
-        <ul>
-          {item.children.map(child => renderTocItem(child))}
-        </ul>
-      )}
-    </li>
-  );
-}
 ---
 
 {tocTree.length > 0 && (
   <nav class="toc" aria-label="Table of contents">
     <h2 class="toc-heading">On this page</h2>
     <ul class="toc-list">
-      {tocTree.map(item => renderTocItem(item))}
+      {tocTree.map(item => (
+        <li>
+          <a href={`#${item.slug}`}>{item.text}</a>
+          {item.children.length > 0 && (
+            <ul>
+              {item.children.map(child => (
+                <li>
+                  <a href={`#${child.slug}`}>{child.text}</a>
+                  {child.children.length > 0 && (
+                    <ul>
+                      {child.children.map(grandchild => (
+                        <li>
+                          <a href={`#${grandchild.slug}`}>{grandchild.text}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
     </ul>
   </nav>
 )}

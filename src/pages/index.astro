@@ -6,18 +6,16 @@
  * or shows message if .planning is empty.
  */
 
-import { getEntry, getCollection } from 'astro:content';
+import { getCollection } from 'astro:content';
 
-// Try to get PROJECT entry
-const projectEntry = await getEntry('planning', 'PROJECT');
+// Try to find PROJECT entry (content collection IDs are lowercase)
+const allEntries = await getCollection('planning');
+const projectEntry = allEntries.find(entry => entry.id.toLowerCase() === 'project');
 
 if (projectEntry) {
   // PROJECT.md exists - redirect to it
-  return Astro.redirect('/PROJECT');
+  return Astro.redirect(`/${projectEntry.id}`);
 }
-
-// No PROJECT.md - try to get first entry
-const allEntries = await getCollection('planning');
 
 if (allEntries.length > 0) {
   // Redirect to first entry

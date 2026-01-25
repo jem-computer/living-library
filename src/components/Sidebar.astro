@@ -28,62 +28,168 @@ function containsCurrentPath(node: NavNode, path: string): boolean {
   return false;
 }
 
-// Recursive function to render tree nodes
-function renderNode(node: NavNode, depth = 0): any {
-  const isFolder = !!node.children && node.children.length > 0;
-  const isCurrent = node.path === currentPath;
-  const hasCurrentChild = isFolder && containsCurrentPath(node, currentPath);
-  const shouldExpand = hasCurrentChild;
-
-  if (isFolder) {
-    return (
-      <li class="nav-folder" data-folder>
-        <button
-          class="folder-toggle"
-          data-toggle
-          aria-expanded={shouldExpand ? 'true' : 'false'}
-          style={`padding-left: ${depth * 0.75}rem`}
-        >
-          <span class="folder-icon">▶</span>
-          <span class="folder-name">{node.name}</span>
-        </button>
-        <ul class="folder-contents" data-contents style={shouldExpand ? '' : 'display: none'}>
-          {node.children!.map(child => renderNode(child, depth + 1))}
-        </ul>
-      </li>
-    );
-  } else {
-    return (
-      <li class="nav-item">
-        <a
-          href={node.path}
-          aria-current={isCurrent ? 'page' : undefined}
-          class={isCurrent ? 'current' : ''}
-          style={`padding-left: ${depth * 0.75 + 0.5}rem`}
-        >
-          {node.name}
-        </a>
-      </li>
-    );
-  }
-}
-
 // Group GSD folders
 const gsdFolders = ['phases', 'research', 'milestones', 'todos'];
 const gsdNodes = tree.filter(node => gsdFolders.includes(node.name.toLowerCase()));
 const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerCase()));
 ---
 
+<!-- Recursive NavItem component defined inline -->
+{/* Note: Using Astro's component recursion pattern */}
 <nav class="sidebar" aria-label="Site navigation">
   <ul class="nav-tree">
-    {regularNodes.map(node => renderNode(node))}
+    {regularNodes.map(node => {
+      const isFolder = !!node.children && node.children.length > 0;
+      const isCurrent = node.path === currentPath;
+      const hasCurrentChild = isFolder && containsCurrentPath(node, currentPath);
+      const shouldExpand = hasCurrentChild;
+
+      return isFolder ? (
+        <li class="nav-folder" data-folder>
+          <button
+            class="folder-toggle"
+            data-toggle
+            aria-expanded={shouldExpand ? 'true' : 'false'}
+          >
+            <span class="folder-icon">▶</span>
+            <span class="folder-name">{node.name}</span>
+          </button>
+          <ul class="folder-contents" data-contents style={shouldExpand ? '' : 'display: none'}>
+            {node.children!.map(child => {
+              const childIsFolder = !!child.children && child.children.length > 0;
+              const childIsCurrent = child.path === currentPath;
+              const childHasCurrentChild = childIsFolder && containsCurrentPath(child, currentPath);
+              const childShouldExpand = childHasCurrentChild;
+
+              return childIsFolder ? (
+                <li class="nav-folder" data-folder>
+                  <button
+                    class="folder-toggle"
+                    data-toggle
+                    aria-expanded={childShouldExpand ? 'true' : 'false'}
+                  >
+                    <span class="folder-icon">▶</span>
+                    <span class="folder-name">{child.name}</span>
+                  </button>
+                  <ul class="folder-contents" data-contents style={childShouldExpand ? '' : 'display: none'}>
+                    {child.children!.map(grandchild => (
+                      <li class="nav-item">
+                        <a
+                          href={grandchild.path}
+                          aria-current={grandchild.path === currentPath ? 'page' : undefined}
+                          class:list={[{ current: grandchild.path === currentPath }]}
+                        >
+                          {grandchild.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li class="nav-item">
+                  <a
+                    href={child.path}
+                    aria-current={childIsCurrent ? 'page' : undefined}
+                    class:list={[{ current: childIsCurrent }]}
+                  >
+                    {child.name}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </li>
+      ) : (
+        <li class="nav-item">
+          <a
+            href={node.path}
+            aria-current={isCurrent ? 'page' : undefined}
+            class:list={[{ current: isCurrent }]}
+          >
+            {node.name}
+          </a>
+        </li>
+      );
+    })}
 
     {gsdNodes.length > 0 && (
       <>
         <li class="nav-section-label">
           <span>GSD Structure</span>
         </li>
-        {gsdNodes.map(node => renderNode(node))}
+        {gsdNodes.map(node => {
+          const isFolder = !!node.children && node.children.length > 0;
+          const isCurrent = node.path === currentPath;
+          const hasCurrentChild = isFolder && containsCurrentPath(node, currentPath);
+          const shouldExpand = hasCurrentChild;
+
+          return isFolder ? (
+            <li class="nav-folder" data-folder>
+              <button
+                class="folder-toggle"
+                data-toggle
+                aria-expanded={shouldExpand ? 'true' : 'false'}
+              >
+                <span class="folder-icon">▶</span>
+                <span class="folder-name">{node.name}</span>
+              </button>
+              <ul class="folder-contents" data-contents style={shouldExpand ? '' : 'display: none'}>
+                {node.children!.map(child => {
+                  const childIsFolder = !!child.children && child.children.length > 0;
+                  const childIsCurrent = child.path === currentPath;
+                  const childHasCurrentChild = childIsFolder && containsCurrentPath(child, currentPath);
+                  const childShouldExpand = childHasCurrentChild;
+
+                  return childIsFolder ? (
+                    <li class="nav-folder" data-folder>
+                      <button
+                        class="folder-toggle"
+                        data-toggle
+                        aria-expanded={childShouldExpand ? 'true' : 'false'}
+                      >
+                        <span class="folder-icon">▶</span>
+                        <span class="folder-name">{child.name}</span>
+                      </button>
+                      <ul class="folder-contents" data-contents style={childShouldExpand ? '' : 'display: none'}>
+                        {child.children!.map(grandchild => (
+                          <li class="nav-item">
+                            <a
+                              href={grandchild.path}
+                              aria-current={grandchild.path === currentPath ? 'page' : undefined}
+                              class:list={[{ current: grandchild.path === currentPath }]}
+                            >
+                              {grandchild.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ) : (
+                    <li class="nav-item">
+                      <a
+                        href={child.path}
+                        aria-current={childIsCurrent ? 'page' : undefined}
+                        class:list={[{ current: childIsCurrent }]}
+                      >
+                        {child.name}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+          ) : (
+            <li class="nav-item">
+              <a
+                href={node.path}
+                aria-current={isCurrent ? 'page' : undefined}
+                class:list={[{ current: isCurrent }]}
+              >
+                {node.name}
+              </a>
+            </li>
+          );
+        })}
       </>
     )}
   </ul>
@@ -168,6 +274,7 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
     list-style: none;
     padding: 0;
     margin: 0;
+    padding-left: 1rem;
     overflow: hidden;
     transition: max-height var(--transition-base), opacity var(--transition-fast);
   }
@@ -227,14 +334,14 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
       const newState = !isExpanded;
 
       toggle.setAttribute('aria-expanded', String(newState));
-      contents.style.display = newState ? '' : 'none';
+      (contents as HTMLElement).style.display = newState ? '' : 'none';
     });
 
     // Keyboard support: Enter and Space toggle folders
     toggle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        toggle.click();
+        (toggle as HTMLElement).click();
       }
     });
   });
@@ -244,14 +351,14 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
     const currentLink = document.querySelector('.sidebar a[aria-current="page"]');
     if (currentLink) {
       // Expand all parent folders containing current page
-      let parent = currentLink.closest('[data-contents]');
+      let parent = currentLink.closest('[data-contents]') as HTMLElement | null;
       while (parent) {
         parent.style.display = '';
         const toggle = parent.previousElementSibling;
         if (toggle && toggle.hasAttribute('data-toggle')) {
           toggle.setAttribute('aria-expanded', 'true');
         }
-        parent = parent.parentElement?.closest('[data-contents]');
+        parent = parent.parentElement?.closest('[data-contents]') as HTMLElement | null;
       }
 
       // Scroll into view
