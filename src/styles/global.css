@@ -22,6 +22,7 @@ body {
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* CSS Custom Properties */
@@ -63,6 +64,21 @@ body {
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 200ms ease;
+}
+
+/* Dark theme overrides */
+.dark {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #242424;
+  --bg-hover: #2a2a2a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #b0b0b0;
+  --text-muted: #808080;
+  --border-color: #333333;
+  --link-color: #58a6ff;
+  --link-hover: #79b8ff;
+  --code-bg: #161b22;
+  --code-border: #30363d;
 }
 
 /* Utility Classes */
@@ -329,4 +345,14 @@ body {
     overflow-x: auto;
     white-space: nowrap;
   }
+}
+
+/* Shiki code block dark mode */
+.dark .astro-code,
+.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
