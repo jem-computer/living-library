@@ -30,15 +30,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Search
 
-- [ ] **SRCH-01**: Search box in header searches across all docs
-- [ ] **SRCH-02**: Search results show file name and context snippet
-- [ ] **SRCH-03**: Search index built at compile time (Pagefind)
+- [x] **SRCH-01**: Search box in header searches across all docs
+- [x] **SRCH-02**: Search results show file name and context snippet
+- [x] **SRCH-03**: Search index built at compile time (Pagefind)
 
 ### Theming
 
-- [ ] **THEME-01**: Light theme as default (clean, GitBook-style)
-- [ ] **THEME-02**: Dark theme available via toggle
-- [ ] **THEME-03**: Respects system color scheme preference
+- [x] **THEME-01**: Light theme as default (clean, GitBook-style)
+- [x] **THEME-02**: Dark theme available via toggle
+- [x] **THEME-03**: Respects system color scheme preference
 
 ### GSD Structure Awareness
 
@@ -101,12 +101,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NAV-02 | Phase 2 | Complete |
 | NAV-03 | Phase 2 | Complete |
 | NAV-04 | Phase 2 | Complete |
-| SRCH-01 | Phase 3 | Pending |
-| SRCH-02 | Phase 3 | Pending |
-| SRCH-03 | Phase 3 | Pending |
-| THEME-01 | Phase 3 | Pending |
-| THEME-02 | Phase 3 | Pending |
-| THEME-03 | Phase 3 | Pending |
+| SRCH-01 | Phase 3 | Complete |
+| SRCH-02 | Phase 3 | Complete |
+| SRCH-03 | Phase 3 | Complete |
+| THEME-01 | Phase 3 | Complete |
+| THEME-02 | Phase 3 | Complete |
+| THEME-03 | Phase 3 | Complete |
 | GSD-01 | Phase 2 | Complete |
 | GSD-02 | Phase 2 | Complete |
 | GSD-03 | Phase 2 | Complete |

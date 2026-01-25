@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: CLI Foundation & Dev Server** - Zero-config dev server that runs anywhere
 - [x] **Phase 2: Content & Navigation** - GSD-aware content parsing and responsive UI
-- [ ] **Phase 3: Theming & Search** - Dark mode and full-text search across docs
+- [x] **Phase 3: Theming & Search** - Dark mode and full-text search across docs
 - [ ] **Phase 4: Static Build & GSD Features** - Production deployment and differentiators
 
 ## Phase Details
@@ -65,9 +65,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Theme CSS variables and Shiki dual themes
-- [ ] 03-02-PLAN.md — Search integration with astro-pagefind
-- [ ] 03-03-PLAN.md — Layout wiring (theme toggle, search, content marking)
+- [x] 03-01-PLAN.md — Theme CSS variables and Shiki dual themes
+- [x] 03-02-PLAN.md — Search integration with astro-pagefind
+- [x] 03-03-PLAN.md — Layout wiring (theme toggle, search, content marking)
 
 **Success Criteria** (what must be TRUE):
   1. Site defaults to light theme with clean, GitBook-style aesthetic
@@ -101,7 +101,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete | 2026-01-24 |
 | 2. Content & Navigation | 4/4 | ✓ Complete | 2026-01-25 |
-| 3. Theming & Search | 0/3 | Not started | - |
+| 3. Theming & Search | 3/3 | ✓ Complete | 2026-01-25 |
 | 4. Static Build & GSD Features | 0/TBD | Not started | - |
 
 ---
