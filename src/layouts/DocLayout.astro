@@ -1,0 +1,267 @@
+---
+/**
+ * Main Documentation Layout
+ * 3-column GitBook-style layout: sidebar, content, TOC
+ * Responsive with mobile menu toggle
+ */
+
+import Sidebar from '../components/Sidebar.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import '../styles/global.css';
+
+interface Props {
+  headings: any[];
+  currentPath: string;
+  navTree: any[];
+  title?: string;
+}
+
+const { headings, currentPath, navTree, title = 'Living Library' } = Astro.props;
+const pageTitle = title ? `${title} | Living Library` : 'Living Library';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content={Astro.generator}>
+  <title>{pageTitle}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <div class="layout-wrapper">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-content">
+        <button class="mobile-menu-toggle mobile-only" data-menu-toggle aria-label="Toggle navigation menu">
+          <span class="hamburger-icon">☰</span>
+        </button>
+        <h1 class="site-title">
+          <a href="/">Living Library</a>
+        </h1>
+      </div>
+    </header>
+
+    <!-- Main Layout Grid -->
+    <div class="doc-layout">
+      <!-- Left Sidebar -->
+      <aside class="sidebar-left" data-sidebar>
+        <Sidebar tree={navTree} currentPath={currentPath} />
+      </aside>
+
+      <!-- Main Content -->
+      <main class="content">
+        <article class="markdown-content">
+          <slot />
+        </article>
+      </main>
+
+      <!-- Right Sidebar (TOC) -->
+      <aside class="sidebar-right">
+        <TableOfContents headings={headings} />
+      </aside>
+    </div>
+  </div>
+
+  <style>
+    .layout-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .site-header {
+      height: var(--header-height);
+      background-color: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      height: 100%;
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .site-title {
+      margin: 0;
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+    }
+
+    .site-title a {
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .site-title a:hover {
+      color: var(--link-color);
+    }
+
+    .mobile-menu-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: none;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: var(--font-size-xl);
+      transition: background-color var(--transition-fast);
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .hamburger-icon {
+      display: block;
+      line-height: 1;
+    }
+
+    /* Main Layout Grid */
+    .doc-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 1920px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Sidebars - hidden on mobile by default */
+    .sidebar-left,
+    .sidebar-right {
+      display: none;
+    }
+
+    .sidebar-left {
+      grid-area: sidebar;
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background-color: var(--bg-primary);
+      transform: translateX(-100%);
+      transition: transform var(--transition-base);
+      z-index: 90;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-left.open {
+      transform: translateX(0);
+    }
+
+    .content {
+      grid-area: content;
+      min-width: 0; /* Prevent grid blowout */
+      background-color: var(--bg-primary);
+    }
+
+    .sidebar-right {
+      grid-area: toc;
+    }
+
+    /* Tablet: show left sidebar, hide TOC */
+    @media (min-width: 768px) {
+      .doc-layout {
+        grid-template-columns: var(--sidebar-width) 1fr;
+        grid-template-areas: "sidebar content";
+      }
+
+      .sidebar-left {
+        display: block;
+        position: static;
+        transform: none;
+        box-shadow: none;
+        border-right: 1px solid var(--border-color);
+      }
+
+      .sidebar-right {
+        display: none;
+      }
+    }
+
+    /* Desktop: show all 3 columns */
+    @media (min-width: 1024px) {
+      .doc-layout {
+        grid-template-columns: var(--sidebar-width) minmax(0, var(--content-max-width)) var(--toc-width);
+        grid-template-areas: "sidebar content toc";
+        justify-content: center;
+        gap: var(--spacing-xl);
+      }
+
+      .sidebar-right {
+        display: block;
+      }
+    }
+
+    /* Wide desktop: give more breathing room */
+    @media (min-width: 1440px) {
+      .doc-layout {
+        gap: var(--spacing-xl);
+      }
+    }
+
+    /* Mobile overlay for sidebar */
+    @media (max-width: 767px) {
+      .sidebar-left.open::before {
+        content: '';
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+      }
+    }
+  </style>
+
+  <script>
+    // Mobile menu toggle
+    const toggle = document.querySelector('[data-menu-toggle]');
+    const sidebar = document.querySelector('[data-sidebar]');
+
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (
+          sidebar.classList.contains('open') &&
+          !sidebar.contains(target) &&
+          !toggle.contains(target)
+        ) {
+          sidebar.classList.remove('open');
+        }
+      });
+
+      // Close sidebar when navigating on mobile
+      sidebar.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'A') {
+          sidebar.classList.remove('open');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

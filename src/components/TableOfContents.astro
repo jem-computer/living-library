@@ -1,0 +1,163 @@
+---
+/**
+ * Table of Contents Component
+ * Builds hierarchical TOC from headings array
+ * Only shows H2 and H3 headings
+ */
+
+interface Heading {
+  depth: number;
+  text: string;
+  slug: string;
+}
+
+interface TocNode extends Heading {
+  children: TocNode[];
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+// Filter to only H2 and H3
+const filteredHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+
+// Build hierarchical tree from flat headings array
+function buildHierarchy(headings: Heading[]): TocNode[] {
+  const toc: TocNode[] = [];
+  const stack: TocNode[] = [{ depth: 0, text: '', slug: '', children: toc }];
+
+  for (const heading of headings) {
+    const item: TocNode = { ...heading, children: [] };
+
+    // Pop stack until we find the parent level
+    while (stack[stack.length - 1].depth >= heading.depth) {
+      stack.pop();
+    }
+
+    // Add to parent's children
+    stack[stack.length - 1].children.push(item);
+
+    // Push current item onto stack
+    stack.push(item);
+  }
+
+  return toc;
+}
+
+const tocTree = buildHierarchy(filteredHeadings);
+
+// Recursive render function
+function renderTocItem(item: TocNode): any {
+  return (
+    <li>
+      <a href={`#${item.slug}`}>{item.text}</a>
+      {item.children.length > 0 && (
+        <ul>
+          {item.children.map(child => renderTocItem(child))}
+        </ul>
+      )}
+    </li>
+  );
+}
+---
+
+{tocTree.length > 0 && (
+  <nav class="toc" aria-label="Table of contents">
+    <h2 class="toc-heading">On this page</h2>
+    <ul class="toc-list">
+      {tocTree.map(item => renderTocItem(item))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc {
+    position: sticky;
+    top: var(--spacing-md);
+    height: fit-content;
+    max-height: calc(100vh - var(--header-height) - var(--spacing-xl));
+    overflow-y: auto;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .toc-heading {
+    margin: 0 0 var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-list li {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .toc-list a {
+    display: block;
+    padding: var(--spacing-xs) 0;
+    color: var(--text-secondary);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color var(--transition-fast);
+  }
+
+  .toc-list a:hover {
+    color: var(--link-color);
+  }
+
+  /* Nested lists - indent children */
+  .toc-list ul {
+    list-style: none;
+    padding-left: var(--spacing-md);
+    margin-top: var(--spacing-xs);
+  }
+
+  /* Highlight active section */
+  .toc-list a.active {
+    color: var(--link-color);
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  // Highlight current section based on scroll position
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute('id');
+        const tocLink = document.querySelector(`.toc a[href="#${id}"]`);
+
+        if (tocLink) {
+          if (entry.isIntersecting) {
+            // Remove active class from all links
+            document.querySelectorAll('.toc a').forEach(link => {
+              link.classList.remove('active');
+            });
+            // Add active class to current link
+            tocLink.classList.add('active');
+          }
+        }
+      });
+    },
+    {
+      rootMargin: '0px 0px -80% 0px',
+      threshold: 1.0
+    }
+  );
+
+  // Observe all headings that have IDs
+  document.querySelectorAll('h2[id], h3[id]').forEach((heading) => {
+    observer.observe(heading);
+  });
+</script>
