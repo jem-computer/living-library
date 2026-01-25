@@ -81,10 +81,12 @@ Plans:
 **Goal**: Users can deploy production sites and see GSD-specific enhancements
 **Depends on**: Phase 3
 **Requirements**: CLI-03, CLI-04, GSD-04
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD (created during `/gsd:plan-phase 4`)
+- [ ] 04-01-PLAN.md — Build command infrastructure (CLI subcommand, build.js module)
+- [ ] 04-02-PLAN.md — Root docs prominence and STATE.md filtering
+- [ ] 04-03-PLAN.md — Milestone timeline page and navigation integration
 
 **Success Criteria** (what must be TRUE):
   1. User runs `npx living-library build` and static site outputs to `./dist`
@@ -102,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete | 2026-01-24 |
 | 2. Content & Navigation | 4/4 | ✓ Complete | 2026-01-25 |
 | 3. Theming & Search | 3/3 | ✓ Complete | 2026-01-25 |
-| 4. Static Build & GSD Features | 0/TBD | Not started | - |
+| 4. Static Build & GSD Features | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-24*
