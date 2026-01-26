@@ -8,7 +8,9 @@
   },
   "files": [
     "bin",
-    "src"
+    "src",
+    "astro.config.mjs",
+    "tsconfig.json"
   ],
   "scripts": {
     "dev": "node bin/living-library.js",
