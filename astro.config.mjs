@@ -13,7 +13,14 @@ export default defineConfig({
         light: 'github-light',
         dark: 'github-dark',
       },
-      wrap: true
+      wrap: true,
+      // Handle unknown languages gracefully - don't crash on svg, mermaid, etc.
+      langAlias: {
+        svg: 'xml',
+        mermaid: 'text',
+        plantuml: 'text',
+        diagram: 'text',
+      },
     }
   }
 });
