@@ -34,6 +34,7 @@ Plans:
 **Goal**: GSD-specific markdown syntax renders beautifully without changing source files
 **Depends on**: Phase 5 (need working package to test rendering)
 **Requirements**: RENDER-01, RENDER-02, RENDER-03, RENDER-04, RENDER-05, RENDER-06
+**Plans:** 3 plans
 
 **Success Criteria:**
 1. `@.planning/ROADMAP.md` renders as a clickable link to `/roadmap`
@@ -42,6 +43,11 @@ Plans:
 4. `<process>` blocks have numbered/styled sections
 5. `<execution_context>` blocks are collapsible (default collapsed)
 6. All GSD XML blocks have consistent, professional styling
+
+Plans:
+- [ ] 06-01-PLAN.md — Create remark plugin for @path transformations
+- [ ] 06-02-PLAN.md — Create rehype plugin for GSD XML block styling
+- [ ] 06-03-PLAN.md — Wire plugins into Astro config and add CSS styles
 
 ---
 
@@ -71,4 +77,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-01-25*
-*Last updated: 2026-01-25*
+*Last updated: 2026-01-26*
