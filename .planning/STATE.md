@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 ## Current Position
 
-Phase: 5 (not started)
-Plan: —
-Status: Ready to plan Phase 5
-Last activity: 2026-01-25 — v1.1 roadmap created
+Phase: 5 of 5 (Distribution & Naming)
+Plan: 01 of 2
+Status: In progress
+Last activity: 2026-01-26 — Completed 05-01-PLAN.md
 
-Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v1.1 Phase 5 next)
+Progress: [█████████████████░░░] 93% (14/15 plans complete)
 
 ## Performance Metrics
 
@@ -32,6 +32,7 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v1.
 | 2. Content & Navigation | 4/4 | ✓ Complete |
 | 3. Theming & Search | 3/3 | ✓ Complete |
 | 4. Static Build & GSD Features | 3/3 | ✓ Complete |
+| 5. Distribution & Naming | 1/2 | In progress |
 
 ## Accumulated Context
 
@@ -45,6 +46,11 @@ Key v1.0 decisions:
 - Native parseArgs for CLI (✓ Good)
 - Dark theme added beyond original scope (✓ Good)
 
+Key v1.1 decisions (Phase 5):
+- Environment variable handoff for path resolution (PLANNING_ROOT pattern)
+- process.cwd() fallback preserves local development workflow
+- Include astro.config.mjs and tsconfig.json in npm package files
+
 ### Pending Todos
 
 - Find available npm package name (living-library may be taken)
@@ -55,11 +61,11 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-25 (v1.1 roadmap created)
-Stopped at: Ready for Phase 5 planning
+Last session: 2026-01-26 (Phase 5 execution)
+Stopped at: Completed 05-01-PLAN.md (Distribution Path Resolution)
 Resume file: None
-Next: `/gsd:plan-phase 5`
+Next: Execute 05-02-PLAN.md or close v1.1 milestone
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-25 — v1.1 milestone started*
+*Last updated: 2026-01-26 — Phase 5 Plan 01 complete*
