@@ -48,15 +48,16 @@ But any `.planning` folder with markdown files will work.
 ## CLI Options
 
 ```bash
-# Dev server
-npx living-library [options]
-  --port, -p     Port number (default: 4321, auto-finds free port)
-  --verbose, -v  Show detailed output
+npx living-library [command] [options]
 
-# Static build
-npx living-library build [options]
-  --output, -o   Output directory (default: ./dist)
-  --verbose, -v  Show detailed output
+Commands:
+  dev     Start development server (default)
+  build   Generate static site to ./dist
+
+Options:
+  -v, --verbose  Show detailed output
+  -h, --help     Show this help message
+  --version      Show version number
 ```
 
 ## Part of the development coven
