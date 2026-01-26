@@ -2,16 +2,16 @@
 
 Zero-config documentation site generator for GSD `.planning` folders.
 
-Run `npx living-library` in any repo with a `.planning` folder and instantly browse your project documentation as a clean, searchable site.
+Run `npx @templeofsilicon/living-library` in any repo with a `.planning` folder and instantly browse your project documentation as a clean, searchable site.
 
 ## Usage
 
 ```bash
 # Start dev server with live reload
-npx living-library
+npx @templeofsilicon/living-library
 
 # Build static site for deployment
-npx living-library build
+npx @templeofsilicon/living-library build
 ```
 
 That's it. No config files, no setup.
@@ -48,7 +48,7 @@ But any `.planning` folder with markdown files will work.
 ## CLI Options
 
 ```bash
-npx living-library [command] [options]
+npx @templeofsilicon/living-library [command] [options]
 
 Commands:
   dev     Start development server (default)
