@@ -30,7 +30,7 @@ import { getEntry } from 'astro:content';
  * @returns {Promise<Milestone[]>} Array of milestones, newest first
  */
 export async function getMilestones() {
-  const roadmap = await getEntry('planning', 'ROADMAP');
+  const roadmap = await getEntry('planning', 'roadmap');
 
   if (!roadmap) {
     console.warn('ROADMAP.md not found in .planning - timeline will be empty');
