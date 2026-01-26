@@ -34,7 +34,9 @@
     "astro-rehype-relative-markdown-links": "^0.18.1",
     "find-up": "^7.0.0",
     "get-port": "^7.1.0",
+    "mdast-util-find-and-replace": "^3.0.2",
     "ora": "^8.1.1",
-    "picocolors": "^1.1.1"
+    "picocolors": "^1.1.1",
+    "unist-builder": "^4.0.0"
   }
 }
