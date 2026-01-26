@@ -1,6 +1,6 @@
 {
   "name": "@templeofsilicon/living-library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Storybook-style documentation viewer for .planning folders",
   "type": "module",
   "bin": {
