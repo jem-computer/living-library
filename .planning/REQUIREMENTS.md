@@ -11,8 +11,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **CLI-01**: User can run `npx living-library` to start dev server
 - [x] **CLI-02**: Dev server auto-detects `.planning` folder in current directory
-- [ ] **CLI-03**: User can run `npx living-library build` to generate static site
-- [ ] **CLI-04**: Build outputs to `./dist` (or configurable directory)
+- [x] **CLI-03**: User can run `npx living-library build` to generate static site
+- [x] **CLI-04**: Build outputs to `./dist` (or configurable directory)
 
 ### Content Rendering
 
@@ -45,7 +45,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **GSD-01**: Navigation groups files by GSD structure (phases, research, milestones, todos)
 - [x] **GSD-02**: Phase folders display in numbered order (01-skill-infrastructure, 02-card-system)
 - [x] **GSD-03**: Root docs (PROJECT.md, ROADMAP.md, etc.) appear prominently
-- [ ] **GSD-04**: Milestone timeline shows completed vs active milestones
+- [x] **GSD-04**: Milestone timeline shows completed vs active milestones
 
 ## v2 Requirements
 
@@ -91,8 +91,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | CLI-01 | Phase 1 | Complete |
 | CLI-02 | Phase 1 | Complete |
-| CLI-03 | Phase 4 | Pending |
-| CLI-04 | Phase 4 | Pending |
+| CLI-03 | Phase 4 | Complete |
+| CLI-04 | Phase 4 | Complete |
 | CONT-01 | Phase 2 | Complete |
 | CONT-02 | Phase 2 | Complete |
 | CONT-03 | Phase 2 | Complete |
@@ -110,7 +110,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GSD-01 | Phase 2 | Complete |
 | GSD-02 | Phase 2 | Complete |
 | GSD-03 | Phase 2 | Complete |
-| GSD-04 | Phase 4 | Pending |
+| GSD-04 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total
@@ -119,4 +119,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-24*
-*Last updated: 2026-01-24 after roadmap creation*
+*Last updated: 2026-01-25 — All v1 requirements complete*
