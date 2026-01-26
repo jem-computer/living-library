@@ -41,7 +41,16 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 
 ### Active
 
-(None — planning v1.1)
+**v1.1 — Production Ready**
+
+- [ ] npm package works when installed (path resolution fix)
+- [ ] Zero-config works in external repos (not just dogfooding)
+- [ ] Available npm package name (rename if needed)
+- [ ] `@file` references render as clickable links
+- [ ] XML semantic blocks (`<objective>`, `<process>`, etc.) render with styling
+- [ ] Todo aggregation page (collect from all phases)
+- [ ] Phase dependencies visualization
+- [ ] Roadmap visualization page
 
 ### Out of Scope
 

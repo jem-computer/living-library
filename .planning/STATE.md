@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Core value:** Any repo with a `.planning` folder can instantly preview it as a clean, searchable documentation site
-**Current focus:** v1.0 shipped — planning next milestone
+**Current focus:** v1.1 Production Ready — Phase 5 next
 
 ## Current Position
 
-Phase: — (milestone complete)
+Phase: 5 (not started)
 Plan: —
-Status: v1.0 SHIPPED
-Last activity: 2026-01-25 — Milestone v1.0 complete
+Status: Ready to plan Phase 5
+Last activity: 2026-01-25 — v1.1 roadmap created
 
-Progress: [████████████████████] 100% (v1.0 shipped)
+Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v1.1 Phase 5 next)
 
 ## Performance Metrics
 
@@ -47,20 +47,19 @@ Key v1.0 decisions:
 
 ### Pending Todos
 
-- npm publish (when ready for public release)
-- Fix content collection paths for published package (uses process.cwd())
+- Find available npm package name (living-library may be taken)
 
 ### Blockers/Concerns
 
-None — v1.0 shipped successfully.
+None.
 
 ## Session Continuity
 
-Last session: 2026-01-25 (v1.0 COMPLETE)
-Stopped at: Milestone archived
+Last session: 2026-01-25 (v1.1 roadmap created)
+Stopped at: Ready for Phase 5 planning
 Resume file: None
-Next: `/gsd:new-milestone` when ready to plan v1.1
+Next: `/gsd:plan-phase 5`
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-25 — v1.0 milestone complete*
+*Last updated: 2026-01-25 — v1.1 milestone started*
