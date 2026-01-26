@@ -1,0 +1,446 @@
+---
+/**
+ * Milestone Timeline Page
+ * Displays project milestones and phases with completion status
+ * Uses native HTML <details> for expandable cards
+ */
+
+import DocLayout from '../layouts/DocLayout.astro';
+import { getMilestones } from '../lib/milestones.js';
+import { buildNavTree } from '../lib/navigation.js';
+import { getCollection } from 'astro:content';
+
+const docs = await getCollection('planning');
+const navTree = buildNavTree(docs);
+const milestones = await getMilestones();
+const currentPath = '/timeline';
+---
+
+<DocLayout
+  headings={[]}
+  currentPath={currentPath}
+  navTree={navTree}
+  title="Timeline"
+>
+  <div class="timeline-page">
+    <header class="page-header">
+      <h1>Project Timeline</h1>
+      <p class="page-description">
+        Milestone history and phase completion status
+      </p>
+    </header>
+
+    {milestones.length === 0 ? (
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="4" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="4" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M4 6v4M8 4h5M8 12h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        <h2>No milestones found</h2>
+        <p>Create a ROADMAP.md in .planning/ to see your project timeline.</p>
+      </div>
+    ) : (
+      <div class="timeline">
+        {milestones.map((milestone) => (
+          <article class="milestone-card" data-status={milestone.status}>
+            <div class="timeline-marker">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+
+            <details class="milestone-details" open={milestone.active}>
+              <summary class="milestone-header">
+                <div class="milestone-meta">
+                  <div class="milestone-title-row">
+                    <h2 class="milestone-version">{milestone.version}</h2>
+                    {milestone.active && (
+                      <span class="milestone-badge milestone-badge--current">Current</span>
+                    )}
+                    {milestone.status === 'complete' && (
+                      <span class="milestone-badge milestone-badge--complete">Complete</span>
+                    )}
+                  </div>
+                  <p class="milestone-name">{milestone.name}</p>
+                  <p class="milestone-description">{milestone.description}</p>
+                </div>
+
+                <div class="milestone-stats">
+                  <div class="stat">
+                    <span class="stat-value">{milestone.completedPhases}/{milestone.phaseCount}</span>
+                    <span class="stat-label">Phases</span>
+                  </div>
+                  <div class="progress-ring">
+                    <svg width="60" height="60" viewBox="0 0 60 60">
+                      <circle
+                        cx="30"
+                        cy="30"
+                        r="26"
+                        fill="none"
+                        stroke="var(--border-color)"
+                        stroke-width="4"
+                      />
+                      <circle
+                        cx="30"
+                        cy="30"
+                        r="26"
+                        fill="none"
+                        stroke="var(--link-color)"
+                        stroke-width="4"
+                        stroke-dasharray={`${(milestone.completedPhases / milestone.phaseCount) * 163.36} 163.36`}
+                        stroke-linecap="round"
+                        transform="rotate(-90 30 30)"
+                      />
+                      <text
+                        x="30"
+                        y="30"
+                        text-anchor="middle"
+                        dominant-baseline="central"
+                        font-size="14"
+                        font-weight="600"
+                        fill="var(--text-primary)"
+                      >
+                        {Math.round((milestone.completedPhases / milestone.phaseCount) * 100)}%
+                      </text>
+                    </svg>
+                  </div>
+                </div>
+              </summary>
+
+              <div class="milestone-phases">
+                <ul class="phase-list">
+                  {milestone.phases.map((phase) => (
+                    <li class="phase-item" data-complete={phase.complete}>
+                      <div class="phase-check">
+                        {phase.complete ? '✓' : '○'}
+                      </div>
+                      <div class="phase-content">
+                        <h3 class="phase-name">
+                          Phase {phase.number}: {phase.name}
+                        </h3>
+                        <p class="phase-description">{phase.description}</p>
+                        {phase.completedDate && (
+                          <p class="phase-date">
+                            Completed: <time datetime={phase.completedDate}>{phase.completedDate}</time>
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</DocLayout>
+
+<style>
+  .timeline-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-xxl);
+  }
+
+  .page-header h1 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .page-description {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    color: var(--text-secondary);
+  }
+
+  .empty-state svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+  }
+
+  .empty-state h2 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+  }
+
+  .empty-state p {
+    margin: 0;
+    font-size: var(--font-size-base);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+  }
+
+  .milestone-card {
+    position: relative;
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .milestone-card:last-child .timeline-line {
+    display: none;
+  }
+
+  /* Timeline Marker (left side) */
+  .timeline-marker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6px;
+  }
+
+  .timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    border: 3px solid var(--border-color);
+    z-index: 2;
+    transition: all var(--transition-base);
+  }
+
+  .milestone-card[data-status="active"] .timeline-dot {
+    background-color: var(--link-color);
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+
+  .milestone-card[data-status="complete"] .timeline-dot {
+    background-color: var(--text-success, #10b981);
+    border-color: var(--text-success, #10b981);
+  }
+
+  .timeline-line {
+    width: 2px;
+    flex: 1;
+    background-color: var(--border-color);
+    margin-top: 4px;
+  }
+
+  /* Milestone Card */
+  .milestone-details {
+    flex: 1;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow var(--transition-base);
+  }
+
+  .milestone-details:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .milestone-card[data-status="active"] .milestone-details {
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 1px var(--link-color);
+  }
+
+  .milestone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .milestone-header::-webkit-details-marker {
+    display: none;
+  }
+
+  .milestone-header:hover {
+    background-color: var(--bg-hover);
+  }
+
+  .milestone-meta {
+    flex: 1;
+  }
+
+  .milestone-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .milestone-version {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .milestone-badge {
+    padding: 2px 8px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .milestone-badge--current {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--link-color);
+  }
+
+  .milestone-badge--complete {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--text-success, #10b981);
+  }
+
+  .milestone-name {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .milestone-description {
+    margin: 0;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+  }
+
+  /* Milestone Stats */
+  .milestone-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-value {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  .progress-ring {
+    flex-shrink: 0;
+  }
+
+  /* Phases List */
+  .milestone-phases {
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .phase-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-md) 0 0 0;
+  }
+
+  .phase-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: 6px;
+    transition: background-color var(--transition-fast);
+  }
+
+  .phase-item:hover {
+    background-color: var(--bg-hover);
+  }
+
+  .phase-check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    border-radius: 50%;
+  }
+
+  .phase-item[data-complete="true"] .phase-check {
+    color: var(--text-success, #10b981);
+  }
+
+  .phase-item[data-complete="false"] .phase-check {
+    color: var(--text-muted);
+  }
+
+  .phase-content {
+    flex: 1;
+  }
+
+  .phase-name {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .phase-description {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  .phase-date {
+    margin: var(--spacing-xs) 0 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .timeline-page {
+      padding: var(--spacing-lg);
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .milestone-header {
+      flex-direction: column;
+    }
+
+    .milestone-stats {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>
