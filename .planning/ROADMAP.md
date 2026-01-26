@@ -12,15 +12,20 @@ v1.0 shipped but only works when run locally (dogfooding). v1.1 makes it product
 
 ### Phase 5: Distribution & Naming
 
-**Goal**: Package works when installed via npm — users can run `npx [package-name]` in any repo
+**Goal**: Package works when installed via npm — users can run `npx living-library` in any repo
 **Depends on**: Nothing (first phase of v1.1)
 **Requirements**: DIST-01, DIST-02, DIST-03, DIST-04
+**Plans:** 2 plans
 
 **Success Criteria:**
-1. `npx [package-name]` works in a fresh repo with a `.planning` folder (not this repo)
+1. `npx living-library` works in a fresh repo with a `.planning` folder (not this repo)
 2. Content collection paths resolve to user's project, not node_modules
 3. Package name is available on npm and published successfully
 4. README accurately reflects package name and usage instructions
+
+Plans:
+- [ ] 05-01-PLAN.md — Fix path resolution with PLANNING_ROOT env var
+- [ ] 05-02-PLAN.md — Test with npm pack and publish to npm
 
 ---
 
