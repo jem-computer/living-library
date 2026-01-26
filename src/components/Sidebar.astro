@@ -130,6 +130,22 @@ const regularNodes = tree.filter(node => !gsdFolders.includes(node.name.toLowerC
       );
     })}
 
+    {/* Timeline link - special page */}
+    <li class="nav-item">
+      <a
+        href="/timeline"
+        aria-current={currentPath === '/timeline' ? 'page' : undefined}
+        class:list={['nav-link', { current: currentPath === '/timeline' }]}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="nav-icon">
+          <circle cx="4" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="4" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M4 6v4M8 4h5M8 12h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>Timeline</span>
+      </a>
+    </li>
+
     {gsdNodes.length > 0 && (
       <>
         <li class="nav-section-label">
