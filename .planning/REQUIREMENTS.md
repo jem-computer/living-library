@@ -9,10 +9,10 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Distribution
 
-- [ ] **DIST-01**: Package works when installed via `npx` from npm registry (path resolution)
-- [ ] **DIST-02**: Zero-config works in external repos (tested outside this repo)
-- [ ] **DIST-03**: Package published under available npm name
-- [ ] **DIST-04**: README reflects correct package name and usage
+- [x] **DIST-01**: Package works when installed via `npx` from npm registry (path resolution) ✓
+- [x] **DIST-02**: Zero-config works in external repos (tested outside this repo) ✓
+- [x] **DIST-03**: Package published under available npm name (`@templeofsilicon/living-library`) ✓
+- [x] **DIST-04**: README reflects correct package name and usage ✓
 
 ### Prettier Rendering
 
@@ -55,10 +55,10 @@ Explicitly excluded. Documented to prevent scope creep.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DIST-01 | Phase 5 | Pending |
-| DIST-02 | Phase 5 | Pending |
-| DIST-03 | Phase 5 | Pending |
-| DIST-04 | Phase 5 | Pending |
+| DIST-01 | Phase 5 | Complete |
+| DIST-02 | Phase 5 | Complete |
+| DIST-03 | Phase 5 | Complete |
+| DIST-04 | Phase 5 | Complete |
 | RENDER-01 | Phase 6 | Pending |
 | RENDER-02 | Phase 6 | Pending |
 | RENDER-03 | Phase 6 | Pending |

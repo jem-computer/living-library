@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Core value:** Any repo with a `.planning` folder can instantly preview it as a clean, searchable documentation site
-**Current focus:** v1.1 Production Ready — Phase 5 next
+**Current focus:** v1.1 Production Ready — Phase 6 next
 
 ## Current Position
 
-Phase: 5 of 5 (Distribution & Naming)
-Plan: 01 of 2
-Status: In progress
-Last activity: 2026-01-26 — Completed 05-01-PLAN.md
+Phase: 6 (not started)
+Plan: —
+Status: Phase 5 complete, ready for Phase 6
+Last activity: 2026-01-26 — Published @templeofsilicon/living-library@1.0.1
 
-Progress: [█████████████████░░░] 93% (14/15 plans complete)
+Progress: [███████░░░░░░░░░░░░░] 33% (Phase 5 of 7 complete)
 
 ## Performance Metrics
 
@@ -32,7 +32,7 @@ Progress: [█████████████████░░░] 93% (14
 | 2. Content & Navigation | 4/4 | ✓ Complete |
 | 3. Theming & Search | 3/3 | ✓ Complete |
 | 4. Static Build & GSD Features | 3/3 | ✓ Complete |
-| 5. Distribution & Naming | 1/2 | In progress |
+| 5. Distribution & Naming | 2/2 | ✓ Complete |
 
 ## Accumulated Context
 
@@ -50,10 +50,12 @@ Key v1.1 decisions (Phase 5):
 - Environment variable handoff for path resolution (PLANNING_ROOT pattern)
 - process.cwd() fallback preserves local development workflow
 - Include astro.config.mjs and tsconfig.json in npm package files
+- Scoped package: @templeofsilicon/living-library
+- langAlias for unknown code blocks (svg→xml, mermaid→text)
 
 ### Pending Todos
 
-- Find available npm package name (living-library may be taken)
+None.
 
 ### Blockers/Concerns
 
@@ -61,11 +63,11 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-26 (Phase 5 execution)
-Stopped at: Completed 05-01-PLAN.md (Distribution Path Resolution)
+Last session: 2026-01-26 (Phase 5 complete)
+Stopped at: Published @templeofsilicon/living-library@1.0.1 to npm
 Resume file: None
-Next: Execute 05-02-PLAN.md or close v1.1 milestone
+Next: `/gsd:plan-phase 6` for Prettier Rendering
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-26 — Phase 5 Plan 01 complete*
+*Last updated: 2026-01-26 — Phase 5 complete, npm published*

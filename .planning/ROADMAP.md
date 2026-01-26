@@ -10,22 +10,22 @@ v1.0 shipped but only works when run locally (dogfooding). v1.1 makes it product
 
 ## Phases
 
-### Phase 5: Distribution & Naming
+### Phase 5: Distribution & Naming ✓
 
-**Goal**: Package works when installed via npm — users can run `npx living-library` in any repo
+**Goal**: Package works when installed via npm — users can run `npx @templeofsilicon/living-library` in any repo
 **Depends on**: Nothing (first phase of v1.1)
 **Requirements**: DIST-01, DIST-02, DIST-03, DIST-04
-**Plans:** 2 plans
+**Completed**: 2026-01-26
 
 **Success Criteria:**
-1. `npx living-library` works in a fresh repo with a `.planning` folder (not this repo)
-2. Content collection paths resolve to user's project, not node_modules
-3. Package name is available on npm and published successfully
-4. README accurately reflects package name and usage instructions
+1. ✓ `npx @templeofsilicon/living-library` works in a fresh repo with a `.planning` folder
+2. ✓ Content collection paths resolve to user's project via PLANNING_ROOT env var
+3. ✓ Package published as `@templeofsilicon/living-library@1.0.1`
+4. ✓ README accurately reflects scoped package name and usage instructions
 
 Plans:
-- [ ] 05-01-PLAN.md — Fix path resolution with PLANNING_ROOT env var
-- [ ] 05-02-PLAN.md — Test with npm pack and publish to npm
+- [x] 05-01-PLAN.md — Fix path resolution with PLANNING_ROOT env var
+- [x] 05-02-PLAN.md — Test with npm pack and publish to npm
 
 ---
 
