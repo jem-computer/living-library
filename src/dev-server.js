@@ -31,6 +31,9 @@ export async function startDevServer({ root, verbose = false }) {
     console.log(colors.warn(`Port ${DEFAULT_PORT} in use, using ${port}`));
   }
 
+  // Set environment variable for content.config.ts to read
+  process.env.PLANNING_ROOT = root;
+
   // Start Astro dev server with inline config
   // Note: inline config has highest priority per Astro docs
   const server = await dev({

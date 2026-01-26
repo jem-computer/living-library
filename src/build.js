@@ -16,6 +16,9 @@ import { colors } from './ui/colors.js';
  */
 export async function runBuild({ root, output = './dist', verbose = false }) {
   try {
+    // Set environment variable for content.config.ts to read
+    process.env.PLANNING_ROOT = root;
+
     await build({
       root: path.resolve(root),
       outDir: output,
