@@ -2,6 +2,8 @@
    Living Library - Global Styles
    ============================================ */
 
+@import './gsd-blocks.css';
+
 /* CSS Reset & Base */
 *,
 *::before,
