@@ -1,0 +1,203 @@
+/* ============================================
+   GSD Block Styles
+   ============================================ */
+
+/* Base block styles */
+.gsd-block {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md);
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+/* Block header */
+.gsd-header {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+}
+
+/* Objective block - blue accent */
+.gsd-objective {
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: #3b82f6;
+}
+
+.dark .gsd-objective {
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+/* Process block - purple accent */
+.gsd-process {
+  background-color: rgba(139, 92, 246, 0.08);
+  border-color: #8b5cf6;
+}
+
+.dark .gsd-process {
+  background-color: rgba(139, 92, 246, 0.15);
+}
+
+/* Success criteria - green accent */
+.gsd-success-criteria {
+  background-color: rgba(34, 197, 94, 0.08);
+  border-color: #22c55e;
+}
+
+.dark .gsd-success-criteria {
+  background-color: rgba(34, 197, 94, 0.15);
+}
+
+/* Context block - amber accent */
+.gsd-context {
+  background-color: rgba(245, 158, 11, 0.08);
+  border-color: #f59e0b;
+}
+
+.dark .gsd-context {
+  background-color: rgba(245, 158, 11, 0.15);
+}
+
+/* Tasks block - slate accent */
+.gsd-tasks {
+  background-color: rgba(100, 116, 139, 0.08);
+  border-color: #64748b;
+}
+
+.dark .gsd-tasks {
+  background-color: rgba(100, 116, 139, 0.15);
+}
+
+/* Verification block - cyan accent */
+.gsd-verification {
+  background-color: rgba(6, 182, 212, 0.08);
+  border-color: #06b6d4;
+}
+
+.dark .gsd-verification {
+  background-color: rgba(6, 182, 212, 0.15);
+}
+
+/* Output block - pink accent */
+.gsd-output {
+  background-color: rgba(236, 72, 153, 0.08);
+  border-color: #ec4899;
+}
+
+.dark .gsd-output {
+  background-color: rgba(236, 72, 153, 0.15);
+}
+
+/* Task items */
+.gsd-task {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  margin: var(--spacing-sm) 0;
+}
+
+.gsd-task-auto {
+  border-color: #22c55e;
+}
+
+.gsd-task-checkpoint\:human-verify {
+  border-color: #f59e0b;
+}
+
+.gsd-task-checkpoint\:decision {
+  border-color: #8b5cf6;
+}
+
+.gsd-task-checkpoint\:human-action {
+  border-color: #ef4444;
+}
+
+/* Collapsible blocks (execution_context) */
+.gsd-collapsible {
+  margin: var(--spacing-lg) 0;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+}
+
+.gsd-collapsible .gsd-summary {
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.gsd-collapsible .gsd-summary::-webkit-details-marker {
+  display: none;
+}
+
+.gsd-collapsible .gsd-summary::before {
+  content: '>';
+  display: inline-block;
+  transition: transform var(--transition-fast);
+  font-family: monospace;
+}
+
+.gsd-collapsible[open] .gsd-summary::before {
+  transform: rotate(90deg);
+}
+
+.gsd-collapsible .gsd-content {
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Execution context specific styling - gray/muted */
+.gsd-execution-context {
+  background-color: transparent;
+}
+
+.gsd-execution-context .gsd-content {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* External file references */
+.gsd-external-ref {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  font-size: 0.85em;
+  padding: 0.15em 0.4em;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Internal planning links - match regular links but add subtle indicator */
+.markdown-content a[href^="/"] {
+  /* Uses default link styling from global.css */
+}
+
+/* Nested content in blocks */
+.gsd-block p:last-child,
+.gsd-content p:last-child {
+  margin-bottom: 0;
+}
+
+.gsd-block ul,
+.gsd-block ol,
+.gsd-content ul,
+.gsd-content ol {
+  margin-bottom: 0;
+}
+
+/* Code blocks inside GSD blocks */
+.gsd-block pre,
+.gsd-content pre {
+  margin: var(--spacing-sm) 0;
+}
