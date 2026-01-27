@@ -16,12 +16,12 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Prettier Rendering
 
-- [ ] **RENDER-01**: `@.planning/file.md` references render as clickable links to those pages
-- [ ] **RENDER-02**: `@/absolute/path.md` references render as external file indicators
-- [ ] **RENDER-03**: `<objective>` blocks render with distinct styling (icon, border, background)
-- [ ] **RENDER-04**: `<process>` blocks render with distinct styling
-- [ ] **RENDER-05**: `<execution_context>` blocks render as collapsible sections
-- [ ] **RENDER-06**: Other GSD XML blocks (`<success_criteria>`, `<context>`, etc.) have consistent styling
+- [x] **RENDER-01**: `@.planning/file.md` references render as clickable links to those pages ✓
+- [x] **RENDER-02**: `@/absolute/path.md` references render as external file indicators ✓
+- [x] **RENDER-03**: `<objective>` blocks render with distinct styling (icon, border, background) ✓
+- [x] **RENDER-04**: `<process>` blocks render with distinct styling ✓
+- [x] **RENDER-05**: `<execution_context>` blocks render as collapsible sections ✓
+- [x] **RENDER-06**: Other GSD XML blocks (`<success_criteria>`, `<context>`, etc.) have consistent styling ✓
 
 ### GSD Enhancements
 
@@ -59,12 +59,12 @@ Explicitly excluded. Documented to prevent scope creep.
 | DIST-02 | Phase 5 | Complete |
 | DIST-03 | Phase 5 | Complete |
 | DIST-04 | Phase 5 | Complete |
-| RENDER-01 | Phase 6 | Pending |
-| RENDER-02 | Phase 6 | Pending |
-| RENDER-03 | Phase 6 | Pending |
-| RENDER-04 | Phase 6 | Pending |
-| RENDER-05 | Phase 6 | Pending |
-| RENDER-06 | Phase 6 | Pending |
+| RENDER-01 | Phase 6 | Complete |
+| RENDER-02 | Phase 6 | Complete |
+| RENDER-03 | Phase 6 | Complete |
+| RENDER-04 | Phase 6 | Complete |
+| RENDER-05 | Phase 6 | Complete |
+| RENDER-06 | Phase 6 | Complete |
 | GSD-05 | Phase 7 | Pending |
 | GSD-06 | Phase 7 | Pending |
 | GSD-07 | Phase 7 | Pending |
