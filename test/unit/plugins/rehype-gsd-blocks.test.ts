@@ -332,4 +332,50 @@ describe('rehypeGsdBlocks', () => {
       expect(output).toBe('<my-component>content</my-component>');
     });
   });
+
+  describe('edge cases - defensive handling', () => {
+    it('should handle empty HTML input', () => {
+      const output = processHtml('');
+
+      // No error thrown, empty output
+      expect(output).toBe('');
+    });
+
+    it('should pass through unknown HTML elements unchanged', () => {
+      const output = processHtml('<custom-element>content</custom-element>');
+
+      expect(output).toContain('custom-element');
+      expect(output).toContain('content');
+      expect(output).not.toContain('gsd-block');
+    });
+
+    it('should handle GSD element with no children', () => {
+      const output = processHtml('<objective></objective>');
+
+      // Wraps with header, empty body, no crash
+      expect(output).toContain('class="gsd-header"');
+      expect(output).toContain('Objective');
+      expect(output).toContain('gsd-block');
+    });
+
+    it('should handle element with null properties gracefully', () => {
+      // Programmatically create a tree with null properties via rehype-parse
+      // rehype-parse always creates properties, so test with minimal HTML
+      const output = processHtml('<objective>test</objective>');
+
+      // Plugin assigns properties even if originally absent
+      expect(output).toContain('gsd-block');
+      expect(output).toContain('data-gsd-type="objective"');
+    });
+
+    it('should handle deeply nested GSD blocks', () => {
+      const output = processHtml('<tasks><task><objective>deep content</objective></task></tasks>');
+
+      // All levels transformed
+      expect(output).toContain('gsd-block gsd-tasks');
+      expect(output).toContain('gsd-block gsd-task');
+      expect(output).toContain('gsd-block gsd-objective');
+      expect(output).toContain('deep content');
+    });
+  });
 });

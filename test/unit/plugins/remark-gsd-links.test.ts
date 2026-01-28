@@ -199,4 +199,70 @@ describe('remarkGsdLinks', () => {
       expect(result).not.toContain('[@.planning/ROADMAP.md]');
     });
   });
+
+  describe('edge cases - defensive handling', () => {
+    it('should handle empty markdown', () => {
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkGsdLinks)
+        .use(remarkStringify);
+
+      const result = processor.processSync('').toString();
+
+      expect(result.trim()).toBe('');
+    });
+
+    it('should pass through @ not followed by a path', () => {
+      const input = 'Email me at user@example.com';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkGsdLinks)
+        .use(remarkStringify);
+
+      const result = processor.processSync(input).toString();
+
+      // @ without .planning/ or / prefix — preserved as text
+      expect(result).toContain('user@example.com');
+      expect(result).not.toContain('<span');
+      expect(result).not.toContain('](/');
+    });
+
+    it('should handle markdown with only whitespace', () => {
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkGsdLinks)
+        .use(remarkStringify);
+
+      const result = processor.processSync('   \n\n  ').toString();
+
+      // No error thrown, output is whitespace/empty
+      expect(result.trim()).toBe('');
+    });
+
+    it('should handle @ at end of line', () => {
+      const input = 'Contact @';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkGsdLinks)
+        .use(remarkStringify);
+
+      const result = processor.processSync(input).toString();
+
+      // No crash, text preserved
+      expect(result).toContain('Contact @');
+    });
+
+    it('should handle deeply nested markdown with @refs', () => {
+      const input = '> - Item with @.planning/ROADMAP.md ref';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkGsdLinks)
+        .use(remarkStringify);
+
+      const result = processor.processSync(input).toString();
+
+      // @ref inside blockquote inside list — still transforms
+      expect(result).toContain('[@.planning/ROADMAP.md](/roadmap)');
+    });
+  });
 });

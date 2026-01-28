@@ -284,6 +284,75 @@ Goal line 2
     });
   });
 
+  describe('edge cases - defensive handling', () => {
+    it('should handle empty markdown', () => {
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkNormalizeGsdTags)
+        .use(remarkStringify);
+
+      const result = processor.processSync('').toString();
+
+      expect(result.trim()).toBe('');
+    });
+
+    it('should handle paragraph with multiple children (not just text)', () => {
+      // Paragraph containing a link + text — should not be converted
+      const input = 'Some text with [a link](http://example.com) and more text';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkNormalizeGsdTags)
+        .use(remarkRehype, { allowDangerousHtml: true })
+        .use(rehypeStringify, { allowDangerousHtml: true });
+
+      const result = processor.processSync(input).toString();
+
+      // Not converted, no crash
+      expect(result).toContain('<p>');
+      expect(result).toContain('a link');
+    });
+
+    it('should handle text node with empty value', () => {
+      // Empty paragraph-like content — plugin should not crash
+      const input = '\n\n\n';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkNormalizeGsdTags)
+        .use(remarkStringify);
+
+      const result = processor.processSync(input).toString();
+
+      // No crash, empty or whitespace output
+      expect(result.trim()).toBe('');
+    });
+
+    it('should pass through non-GSD angle brackets', () => {
+      const input = '<div>regular html</div>';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkNormalizeGsdTags)
+        .use(remarkRehype, { allowDangerousHtml: true })
+        .use(rehypeStringify, { allowDangerousHtml: true });
+
+      const result = processor.processSync(input).toString();
+
+      // Non-GSD tags pass through unchanged
+      expect(result).toContain('regular html');
+    });
+
+    it('should handle markdown with only GSD closing tags', () => {
+      const input = '</objective>';
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkNormalizeGsdTags)
+        .use(remarkRehype, { allowDangerousHtml: true })
+        .use(rehypeStringify, { allowDangerousHtml: true });
+
+      // No crash — closing tag without opening passes through
+      expect(() => processor.processSync(input)).not.toThrow();
+    });
+  });
+
   describe('integration with remark pipeline', () => {
     it('should work in full markdown-to-html pipeline', () => {
       const input = `# Test Document
