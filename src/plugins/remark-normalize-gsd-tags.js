@@ -8,6 +8,9 @@ import { visit, CONTINUE, SKIP } from 'unist-util-visit';
  * 1. Markdown parsers don't recognize custom XML tags as HTML (treats as text)
  * 2. HTML5 doesn't support underscores in tag names
  *
+ * Defensive: transforms what it recognizes, silently passes through everything else.
+ * Never throws to caller — malformed nodes or unexpected content returns unchanged.
+ *
  * @returns {Function} Unified transformer function
  */
 export function remarkNormalizeGsdTags() {
@@ -22,40 +25,67 @@ export function remarkNormalizeGsdTags() {
   const gsdTagPattern = new RegExp(`^<(${gsdTags.join('|')})(\\s[^>]*)?>`, 'i');
 
   return (tree) => {
-    // Convert paragraph nodes containing GSD tags to html nodes
-    visit(tree, 'paragraph', (node, index, parent) => {
-      // Check if paragraph contains only a single text node
-      if (node.children.length === 1 && node.children[0].type === 'text') {
-        const text = node.children[0].value;
+    // Guard: null/undefined tree — return early
+    if (!tree) return;
 
-        // Check if text starts with a GSD tag
-        if (gsdTagPattern.test(text)) {
-          // Convert paragraph to html node
-          parent.children[index] = {
-            type: 'html',
-            value: text,
-            position: node.position
-          };
-          return SKIP;
+    // First pass: Convert paragraph nodes containing GSD tags to html nodes
+    try {
+      visit(tree, 'paragraph', (node, index, parent) => {
+        // Guard: ensure children array exists and has content
+        if (!Array.isArray(node.children) || node.children.length === 0) {
+          return CONTINUE;
         }
-      }
-      return CONTINUE;
-    });
 
-    // Normalize underscores to hyphens in all html nodes
-    visit(tree, 'html', (node) => {
-      // Replace underscores with hyphens in all tag names
-      node.value = node.value.replace(
-        /<(\/?)([\w_-]+)([^>]*)>/g,
-        (match, slash, tagName, rest) => {
-          if (tagName.includes('_')) {
-            const normalizedTag = tagName.replace(/_/g, '-');
-            return `<${slash}${normalizedTag}${rest}>`;
+        // Check if paragraph contains only a single text node
+        if (node.children.length === 1 && node.children[0].type === 'text') {
+          const text = node.children[0].value;
+
+          // Guard: ensure text value exists
+          if (!text) return CONTINUE;
+
+          // Check if text starts with a GSD tag
+          if (gsdTagPattern.test(text)) {
+            // Guard: ensure parent and index are valid
+            if (!parent || !Array.isArray(parent.children) || index < 0 || index >= parent.children.length) {
+              return CONTINUE;
+            }
+
+            // Convert paragraph to html node
+            parent.children[index] = {
+              type: 'html',
+              value: text,
+              position: node.position
+            };
+            return SKIP;
           }
-          return match;
         }
-      );
-      return CONTINUE;
-    });
+        return CONTINUE;
+      });
+    } catch {
+      // Malformed tree in first pass — skip to second pass
+    }
+
+    // Second pass: Normalize underscores to hyphens in all html nodes
+    try {
+      visit(tree, 'html', (node) => {
+        // Guard: ensure node.value exists
+        if (!node.value) return CONTINUE;
+
+        // Replace underscores with hyphens in all tag names
+        node.value = node.value.replace(
+          /<(\/?)([\w_-]+)([^>]*)>/g,
+          (match, slash, tagName, rest) => {
+            if (tagName.includes('_')) {
+              const normalizedTag = tagName.replace(/_/g, '-');
+              return `<${slash}${normalizedTag}${rest}>`;
+            }
+            return match;
+          }
+        );
+        return CONTINUE;
+      });
+    } catch {
+      // Malformed tree in second pass — return tree unchanged
+    }
   };
 }

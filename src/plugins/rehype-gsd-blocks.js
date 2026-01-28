@@ -7,6 +7,9 @@ import { h } from 'hastscript';
  * Transforms semantic GSD blocks like <objective>, <process>, <execution_context>
  * into appropriately styled HTML with classes for CSS targeting.
  *
+ * Defensive: transforms what it recognizes, silently passes through everything else.
+ * Never throws to caller — malformed nodes or unexpected content returns unchanged.
+ *
  * @returns {Function} Unified transformer function
  */
 export function rehypeGsdBlocks() {
@@ -24,74 +27,93 @@ export function rehypeGsdBlocks() {
   };
 
   return (tree) => {
+    // Guard: null/undefined tree — return early
+    if (!tree) return;
+
     // First pass: normalize underscores to hyphens in tag names
     // HTML5 doesn't support underscores in tag names, so convert them
-    visit(tree, 'element', (node) => {
-      if (node.tagName && node.tagName.includes('_')) {
-        node.tagName = node.tagName.replace(/_/g, '-');
-      }
-      return CONTINUE;
-    });
+    try {
+      visit(tree, 'element', (node) => {
+        if (node.tagName && node.tagName.includes('_')) {
+          node.tagName = node.tagName.replace(/_/g, '-');
+        }
+        return CONTINUE;
+      });
+    } catch {
+      // Malformed tree in first pass — skip to second pass
+    }
 
     // Second pass: transform GSD tags
-    visit(tree, 'element', (node) => {
-      const tagName = node.tagName;
-      const config = gsdTags[tagName];
+    try {
+      visit(tree, 'element', (node) => {
+        const tagName = node.tagName;
+        const config = gsdTags[tagName];
 
-      // Skip if not a GSD tag
-      if (!config) {
-        return CONTINUE;
-      }
-
-      // Add base classes and data attribute
-      node.properties = node.properties || {};
-      node.properties.className = node.properties.className || [];
-      if (typeof node.properties.className === 'string') {
-        node.properties.className = [node.properties.className];
-      }
-      node.properties.className.push('gsd-block', `gsd-${tagName}`);
-      node.properties.dataGsdType = tagName;
-
-      // Handle task-specific attributes
-      if (tagName === 'task') {
-        const taskType = node.properties?.type;
-        if (taskType) {
-          node.properties.className.push(`gsd-task-${taskType}`);
+        // Skip if not a GSD tag
+        if (!config) {
+          return CONTINUE;
         }
-      }
 
-      // Handle collapsible blocks (execution_context)
-      if (config.collapsible) {
-        const summary = h('summary.gsd-summary', config.title);
-        const contentDiv = h('div.gsd-content', node.children);
+        // Add base classes and data attribute — guard against null properties
+        node.properties = node.properties || {};
+        const className = node.properties.className;
+        node.properties.className = Array.isArray(className)
+          ? className
+          : (className ? [className] : []);
+        node.properties.className.push('gsd-block', `gsd-${tagName}`);
+        node.properties.dataGsdType = tagName;
 
-        const details = h(
-          'details.gsd-collapsible',
-          config.defaultClosed ? {} : { open: true },
-          [summary, contentDiv]
-        );
-
-        // Replace node with details element
-        Object.assign(node, details);
-        return CONTINUE;
-      }
-
-      // Handle non-collapsible blocks with title
-      if (config.title) {
-        const header = h('div.gsd-header', config.title);
-        node.children = [header, ...node.children];
-      }
-
-      // Handle task name attribute
-      if (tagName === 'task') {
-        const taskName = node.properties?.name;
-        if (taskName) {
-          const taskHeader = h('div.gsd-task-header', taskName);
-          node.children = [taskHeader, ...node.children];
+        // Handle task-specific attributes
+        if (tagName === 'task') {
+          const taskType = node.properties?.type;
+          if (taskType) {
+            node.properties.className.push(`gsd-task-${taskType}`);
+          }
         }
-      }
 
-      return CONTINUE;
-    });
+        // Handle collapsible blocks (execution_context)
+        if (config.collapsible) {
+          const children = Array.isArray(node.children) ? node.children : [];
+          const summary = h('summary.gsd-summary', config.title);
+          const contentDiv = h('div.gsd-content', children);
+
+          const details = h(
+            'details.gsd-collapsible',
+            config.defaultClosed ? {} : { open: true },
+            [summary, contentDiv]
+          );
+
+          // Replace node with details element — guard against malformed details
+          if (details && typeof details === 'object') {
+            Object.assign(node, details);
+          }
+          return CONTINUE;
+        }
+
+        // Guard: ensure children array exists
+        if (!Array.isArray(node.children)) {
+          node.children = [];
+        }
+
+        // Handle non-collapsible blocks with title
+        if (config.title) {
+          const header = h('div.gsd-header', config.title);
+          node.children = [header, ...node.children];
+        }
+
+        // Handle task name attribute
+        if (tagName === 'task') {
+          const taskName = node.properties?.name;
+          if (taskName) {
+            const taskHeader = h('div.gsd-task-header', taskName);
+            node.children = [taskHeader, ...node.children];
+          }
+        }
+
+        return CONTINUE;
+      });
+    } catch {
+      // Malformed tree in second pass — return tree unchanged
+    }
   };
 }
