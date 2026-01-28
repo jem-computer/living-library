@@ -201,4 +201,135 @@ describe('rehypeGsdBlocks', () => {
       expect(output).toContain('Run tests');
     });
   });
+
+  describe('execution-context blocks (collapsible)', () => {
+    it('wraps <execution-context> in details element', () => {
+      const input = '<execution-context>Background info</execution-context>';
+      const output = processHtml(input);
+
+      expect(output).toContain('<details');
+      expect(output).toContain('class="gsd-collapsible"');
+    });
+
+    it('creates summary element with title', () => {
+      const input = '<execution-context>Background info</execution-context>';
+      const output = processHtml(input);
+
+      expect(output).toContain('<summary');
+      expect(output).toContain('class="gsd-summary"');
+      expect(output).toContain('Execution Context');
+    });
+
+    it('wraps content in gsd-content div', () => {
+      const input = '<execution-context>Background info</execution-context>';
+      const output = processHtml(input);
+
+      expect(output).toContain('class="gsd-content"');
+      expect(output).toContain('Background info');
+    });
+
+    it('defaults to closed (no open attribute)', () => {
+      const input = '<execution-context>Hidden by default</execution-context>';
+      const output = processHtml(input);
+
+      expect(output).not.toContain('open');
+    });
+  });
+
+  describe('underscore normalization', () => {
+    it('normalizes execution_context to execution-context collapsible block', () => {
+      const input = '<execution_context>Content</execution_context>';
+      const output = processHtml(input);
+
+      // When normalized, execution_context becomes execution-context which is collapsible
+      expect(output).toContain('<details');
+      expect(output).toContain('class="gsd-collapsible"');
+      expect(output).toContain('Execution Context');
+      expect(output).not.toContain('execution_context');
+    });
+
+    it('normalizes success_criteria to success-criteria', () => {
+      const input = '<success_criteria>Test passes</success_criteria>';
+      const output = processHtml(input);
+
+      expect(output).toContain('gsd-success-criteria');
+      expect(output).toContain('data-gsd-type="success-criteria"');
+      expect(output).not.toContain('success_criteria');
+    });
+
+    it('preserves hyphens in existing hyphenated tags', () => {
+      const input = '<execution-context>Content</execution-context>';
+      const output = processHtml(input);
+
+      expect(output).toContain('<details');
+      expect(output).toContain('class="gsd-collapsible"');
+    });
+  });
+
+  describe('edge cases', () => {
+    it('passes through unknown tags unchanged', () => {
+      const input = '<custom-tag>content</custom-tag>';
+      const output = processHtml(input);
+
+      expect(output).toBe('<custom-tag>content</custom-tag>');
+      expect(output).not.toContain('gsd-block');
+    });
+
+    it('handles nested GSD tags', () => {
+      const input = '<tasks><task>content</task></tasks>';
+      const output = processHtml(input);
+
+      expect(output).toContain('gsd-block gsd-tasks');
+      expect(output).toContain('gsd-block gsd-task');
+      expect(output).toContain('Tasks');
+    });
+
+    it('handles empty content', () => {
+      const input = '<objective></objective>';
+      const output = processHtml(input);
+
+      expect(output).toContain('class="gsd-header"');
+      expect(output).toContain('Objective');
+    });
+
+    it('preserves inner HTML', () => {
+      const input = '<objective><strong>bold</strong> text</objective>';
+      const output = processHtml(input);
+
+      expect(output).toContain('<strong>bold</strong>');
+      expect(output).toContain('text');
+    });
+
+    it('transforms multiple GSD blocks', () => {
+      const input = '<objective>First</objective><process>Second</process>';
+      const output = processHtml(input);
+
+      expect(output).toContain('gsd-objective');
+      expect(output).toContain('gsd-process');
+      expect(output).toContain('Objective');
+      expect(output).toContain('Process');
+    });
+
+    it('transforms GSD block inside another element', () => {
+      const input = '<div><objective>content</objective></div>';
+      const output = processHtml(input);
+
+      expect(output).toContain('gsd-block gsd-objective');
+      expect(output).toContain('class="gsd-header"');
+    });
+
+    it('passes through regular HTML unchanged', () => {
+      const input = '<div>content</div>';
+      const output = processHtml(input);
+
+      expect(output).toBe('<div>content</div>');
+    });
+
+    it('passes through non-GSD custom tags unchanged', () => {
+      const input = '<my-component>content</my-component>';
+      const output = processHtml(input);
+
+      expect(output).toBe('<my-component>content</my-component>');
+    });
+  });
 });
