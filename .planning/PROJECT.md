@@ -54,7 +54,12 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 
 ### Active
 
-(None — ready for v1.2 planning)
+**v1.2 — Testing & Robustness**
+
+- [ ] Test framework setup (vitest)
+- [ ] Unit tests for parsing logic (milestones, todos, dependencies)
+- [ ] Edge case handling for malformed/empty files
+- [ ] Error handling improvements with helpful messages
 
 ### Out of Scope
 
