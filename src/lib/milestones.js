@@ -1,8 +1,9 @@
 /**
  * Parse ROADMAP.md to extract milestone and phase data for timeline
+ * Includes both current milestone and archived milestones from milestones/ folder
  */
 
-import { getEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 
 /**
  * @typedef {Object} Phase
@@ -23,33 +24,62 @@ import { getEntry } from 'astro:content';
  * @property {number} completedPhases - Completed phase count
  * @property {Phase[]} phases - Array of phases
  * @property {string} description - Milestone description
+ * @property {string} [shippedDate] - When milestone was shipped (for archived)
  */
 
 /**
- * Parse ROADMAP.md to extract milestones and phases
+ * Parse all milestones - current from ROADMAP.md and archived from milestones/ folder
  * @returns {Promise<Milestone[]>} Array of milestones, newest first
  */
 export async function getMilestones() {
+  const milestones = [];
+
+  // Get current milestone from ROADMAP.md
+  const currentMilestone = await getCurrentMilestone();
+  if (currentMilestone) {
+    milestones.push(currentMilestone);
+  }
+
+  // Get archived milestones from milestones/ folder
+  const archivedMilestones = await getArchivedMilestones();
+  milestones.push(...archivedMilestones);
+
+  // Sort by version (newest first) - parse version numbers for proper sorting
+  milestones.sort((a, b) => {
+    const parseVersion = (v) => {
+      const match = v.match(/v?(\d+)\.(\d+)/);
+      return match ? parseFloat(`${match[1]}.${match[2]}`) : 0;
+    };
+    return parseVersion(b.version) - parseVersion(a.version);
+  });
+
+  return milestones;
+}
+
+/**
+ * Get current milestone from .planning/ROADMAP.md
+ * @returns {Promise<Milestone|null>}
+ */
+async function getCurrentMilestone() {
   const roadmap = await getEntry('planning', 'roadmap');
 
   if (!roadmap) {
-    console.warn('ROADMAP.md not found in .planning - timeline will be empty');
-    return [];
+    console.warn('ROADMAP.md not found in .planning');
+    return null;
   }
 
   const body = roadmap.body;
   const phases = parsePhases(body);
 
   if (phases.length === 0) {
-    return [];
+    return null;
   }
 
-  // Parse milestone header: # Milestone vX.X: Name
   const milestoneInfo = parseMilestoneHeader(body);
   const completedPhases = phases.filter(p => p.complete).length;
   const allComplete = completedPhases === phases.length;
 
-  return [{
+  return {
     version: milestoneInfo.version,
     name: milestoneInfo.name,
     status: allComplete ? 'complete' : 'active',
@@ -58,7 +88,54 @@ export async function getMilestones() {
     completedPhases,
     phases,
     description: milestoneInfo.goal
-  }];
+  };
+}
+
+/**
+ * Get archived milestones from .planning/milestones/v*-ROADMAP.md files
+ * @returns {Promise<Milestone[]>}
+ */
+async function getArchivedMilestones() {
+  const milestones = [];
+
+  try {
+    const allDocs = await getCollection('planning');
+
+    // Filter for archived roadmap files: milestones/v1.0-roadmap, etc.
+    const archivedRoadmaps = allDocs.filter(doc =>
+      doc.id.match(/^milestones\/v[\d.]+-roadmap$/i)
+    );
+
+    for (const doc of archivedRoadmaps) {
+      const body = doc.body;
+      const phases = parsePhases(body);
+
+      if (phases.length === 0) continue;
+
+      const milestoneInfo = parseMilestoneHeader(body);
+      const completedPhases = phases.filter(p => p.complete).length;
+
+      // Check for shipped date: **Status:** ✅ SHIPPED 2026-01-25
+      const shippedMatch = body.match(/\*\*Status\*\*:.*SHIPPED\s+(\d{4}-\d{2}-\d{2})/i);
+      const shippedDate = shippedMatch ? shippedMatch[1] : undefined;
+
+      milestones.push({
+        version: milestoneInfo.version,
+        name: milestoneInfo.name,
+        status: 'complete',
+        active: false,
+        phaseCount: phases.length,
+        completedPhases,
+        phases,
+        description: milestoneInfo.goal,
+        shippedDate
+      });
+    }
+  } catch (error) {
+    console.warn('Error loading archived milestones:', error);
+  }
+
+  return milestones;
 }
 
 /**
@@ -113,16 +190,26 @@ function parsePhases(body) {
   while ((match = headerRegex.exec(body)) !== null) {
     const phaseNum = parseInt(match[1], 10);
     const phaseName = match[2].trim();
-    const isComplete = !!match[3];
+    const hasCheckmark = !!match[3];
 
-    // Extract goal from **Goal**: line that follows
+    // Extract content between this phase header and the next ### or ---
     const afterHeader = body.slice(match.index);
-    const goalMatch = afterHeader.match(/\*\*Goal\*\*:\s*([^\n]+)/);
+    const nextSectionMatch = afterHeader.match(/\n(?:###|---)/);
+    const phaseContent = nextSectionMatch
+      ? afterHeader.slice(0, nextSectionMatch.index)
+      : afterHeader;
+
+    // Extract goal from **Goal**: line
+    const goalMatch = phaseContent.match(/\*\*Goal\*\*:\s*([^\n]+)/);
     const description = goalMatch ? goalMatch[1].trim() : phaseName;
 
-    // Extract completion date from **Completed**: line
-    const completedMatch = afterHeader.match(/\*\*Completed\*\*:\s*(\d{4}-\d{2}-\d{2})/);
+    // Extract completion date from **Completed:** line (note: colon may be inside or outside the bold)
+    // Matches both **Completed:** date and **Completed**: date
+    const completedMatch = phaseContent.match(/\*\*Completed:?\*\*:?\s*(\d{4}-\d{2}-\d{2})/);
     const completedDate = completedMatch ? completedMatch[1] : undefined;
+
+    // Phase is complete if it has ✓ OR has a completed date
+    const isComplete = hasCheckmark || !!completedDate;
 
     phases.push({
       number: phaseNum,
