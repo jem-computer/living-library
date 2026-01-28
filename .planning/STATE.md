@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-27)
 
 **Core value:** Any repo with a `.planning` folder can instantly preview it as a clean, searchable documentation site
-**Current focus:** Planning next milestone (v1.2)
+**Current focus:** Phase 8 - Test Infrastructure
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining v1.2 requirements
-Last activity: 2026-01-27 — Milestone v1.2 started
+Phase: 8 of 11 (Test Infrastructure)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-01-27 — Roadmap created for v1.2
 
-Progress: v1.0 + v1.1 shipped
+Progress: [##########..........] v1.0+v1.1 shipped, v1.2 starting
 
 ## Performance Metrics
 
@@ -22,15 +22,14 @@ Progress: v1.0 + v1.1 shipped
 - Total plans completed: 13
 - Average duration: 7.5 min per plan
 - Total execution time: ~1.6 hours
-- Timeline: 2 days (2026-01-24 → 2026-01-25)
 
 **v1.1 Milestone:**
 - Total plans completed: 9
-- Timeline: 3 days (2026-01-25 → 2026-01-27)
+- Timeline: 3 days
 
 **Cumulative:**
-- Phases: 7
-- Plans: 22
+- Phases: 7 complete
+- Plans: 22 complete
 - LOC: 5,708
 
 ## Accumulated Context
@@ -38,6 +37,10 @@ Progress: v1.0 + v1.1 shipped
 ### Decisions
 
 See PROJECT.md Key Decisions table for complete record.
+
+Recent:
+- Cytoscape.js for dependency graphs
+- Two-plugin approach for GSD tags
 
 ### Pending Todos
 
@@ -51,10 +54,10 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-27
-Stopped at: v1.1 milestone complete
+Stopped at: v1.2 roadmap created
 Resume file: None
-Next: `/gsd:new-milestone` to start v1.2
+Next: `/gsd:plan-phase 8`
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-27 — v1.1 milestone complete*
+*Last updated: 2026-01-27 — v1.2 roadmap created*

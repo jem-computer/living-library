@@ -1,0 +1,104 @@
+# Roadmap: living-library v1.2
+
+## Overview
+
+v1.2 focuses on testing and robustness. We establish vitest infrastructure, write unit tests for the parsing and plugin logic that makes living-library GSD-aware, then harden edge case handling so malformed input produces helpful errors instead of crashes.
+
+## Milestones
+
+- v1.0 MVP (Phases 1-4) - shipped 2026-01-25
+- v1.1 Production Ready (Phases 5-7) - shipped 2026-01-27
+- v1.2 Testing & Robustness (Phases 8-11) - in progress
+
+## Phases
+
+- [ ] **Phase 8: Test Infrastructure** - vitest setup, test utilities, coverage
+- [ ] **Phase 9: Parsing Tests** - Unit tests for milestone/todo/dependency parsing
+- [ ] **Phase 10: Plugin Tests** - Unit tests for remark/rehype plugins
+- [ ] **Phase 11: Edge Cases & Errors** - Graceful handling of malformed input
+
+## Phase Details
+
+### Phase 8: Test Infrastructure
+**Goal**: Testing foundation exists and first tests pass
+**Depends on**: Nothing (first phase of v1.2)
+**Requirements**: TEST-01, TEST-02, TEST-03
+**Success Criteria** (what must be TRUE):
+  1. `npm test` runs vitest and exits cleanly
+  2. At least one passing test exists to validate setup
+  3. Test utilities can mock Astro content collection structure
+  4. Coverage report generates showing tested/untested files
+**Plans**: TBD
+
+Plans:
+- [ ] 08-01: vitest configuration and first test
+
+---
+
+### Phase 9: Parsing Tests
+**Goal**: Core parsing logic is covered by unit tests
+**Depends on**: Phase 8
+**Requirements**: PARSE-01, PARSE-02, PARSE-03, PARSE-04
+**Success Criteria** (what must be TRUE):
+  1. getMilestones returns correct structure from sample ROADMAP.md
+  2. getTodos correctly extracts inline and standalone todos
+  3. buildDependencyGraph produces nodes/edges from phase data
+  4. buildNavTree produces correct hierarchy from file structure
+**Plans**: TBD
+
+Plans:
+- [ ] 09-01: Milestone and phase parsing tests
+- [ ] 09-02: Todo extraction tests
+- [ ] 09-03: Dependency graph and nav tree tests
+
+---
+
+### Phase 10: Plugin Tests
+**Goal**: Remark/rehype plugins are covered by unit tests
+**Depends on**: Phase 8
+**Requirements**: PLUG-01, PLUG-02, PLUG-03
+**Success Criteria** (what must be TRUE):
+  1. remarkGsdLinks transforms @path syntax to markdown links
+  2. rehypeGsdBlocks wraps XML tags with styled containers
+  3. remarkNormalizeGsdTags handles angle brackets in raw text
+  4. Plugin tests run against markdown strings, not full Astro builds
+**Plans**: TBD
+
+Plans:
+- [ ] 10-01: Remark plugin tests (remarkGsdLinks, remarkNormalizeGsdTags)
+- [ ] 10-02: Rehype plugin tests (rehypeGsdBlocks)
+
+---
+
+### Phase 11: Edge Cases & Errors
+**Goal**: Malformed input produces helpful messages, not crashes
+**Depends on**: Phases 9, 10 (tests exist to verify fixes)
+**Requirements**: EDGE-01, EDGE-02, EDGE-03, EDGE-04, EDGE-05, ERR-01, ERR-02
+**Success Criteria** (what must be TRUE):
+  1. Empty ROADMAP.md shows "no milestones" instead of crashing
+  2. Phase header without checkbox parses with warning, not error
+  3. Plan file without frontmatter shows fallback title
+  4. Unusual checkbox formats (tabs, extra spaces) still parse
+  5. Empty .planning folder shows "no content" message
+  6. Parse errors include file path and line number
+  7. Recoverable issues log warnings, not throw exceptions
+**Plans**: TBD
+
+Plans:
+- [ ] 11-01: Add edge case handling to parsers
+- [ ] 11-02: Add error formatting with context
+
+---
+
+## Progress
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 8. Test Infrastructure | 0/? | Not started | - |
+| 9. Parsing Tests | 0/? | Not started | - |
+| 10. Plugin Tests | 0/? | Not started | - |
+| 11. Edge Cases & Errors | 0/? | Not started | - |
+
+---
+*Roadmap created: 2026-01-27*
+*Milestone: v1.2 Testing & Robustness*
