@@ -37,18 +37,28 @@ export function buildNavTree(entries) {
     ]
   };
 
+  // Handle null/undefined/non-array entries
+  if (!entries || !Array.isArray(entries) || entries.length === 0) {
+    return [gsdSection];
+  }
+
   const tree = {};
   const rootFiles = [];
 
   // Filter out STATE.md from navigation (internal/agent documentation)
+  // Also skip entries with empty or null id
   const filteredEntries = entries.filter(entry => {
+    if (!entry || !entry.id) return false;
     const id = entry.id.toLowerCase();
     return id !== 'state';
   });
 
   // First pass: organize entries by path segments
   for (const entry of filteredEntries) {
-    const parts = entry.id.split('/');
+    const parts = entry.id.split('/').filter(p => p !== '');
+
+    // Skip if split produced no valid segments
+    if (parts.length === 0) continue;
 
     // Root-level files (no slash in ID)
     if (parts.length === 1) {
@@ -150,12 +160,20 @@ function buildTreeFromObject(obj) {
  * @returns {NavNode[]} - Sorted items
  */
 export function sortGsdItems(items) {
+  if (!items || !Array.isArray(items)) return [];
+
   const gsdFolders = ['phases', 'research', 'milestones', 'todos'];
 
   return items.sort((a, b) => {
-    // Remove leading slash for comparison
-    const aPath = a.path.replace(/^\//, '');
-    const bPath = b.path.replace(/^\//, '');
+    // Guard against null/undefined paths — place them last
+    const aPath = (a.path || '').replace(/^\//, '');
+    const bPath = (b.path || '').replace(/^\//, '');
+
+    // Items with no path go last
+    if (!a.path && b.path) return 1;
+    if (a.path && !b.path) return -1;
+    if (!a.path && !b.path) return (a.name || '').localeCompare(b.name || '');
+
     const aIsGsd = gsdFolders.some(folder => aPath.startsWith(folder));
     const bIsGsd = gsdFolders.some(folder => bPath.startsWith(folder));
 
@@ -165,8 +183,8 @@ export function sortGsdItems(items) {
 
     // Both are GSD or both are not - sort by name
     // Phase folders: extract number for numeric sort
-    const aMatch = a.name.match(/^(\d+)-/);
-    const bMatch = b.name.match(/^(\d+)-/);
+    const aMatch = (a.name || '').match(/^(\d+)-/);
+    const bMatch = (b.name || '').match(/^(\d+)-/);
 
     if (aMatch && bMatch) {
       const aNum = parseInt(aMatch[1], 10);
@@ -175,7 +193,7 @@ export function sortGsdItems(items) {
     }
 
     // Default: alphabetical
-    return a.name.localeCompare(b.name);
+    return (a.name || '').localeCompare(b.name || '');
   });
 }
 

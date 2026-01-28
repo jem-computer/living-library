@@ -79,7 +79,7 @@ async function parseRoadmap() {
     return null;
   }
 
-  const body = roadmap.body;
+  const body = roadmap.body || '';
 
   // Parse milestone version from header: # Milestone vX.X: Name
   const milestoneMatch = body.match(/^#\s*Milestone\s+(v[\d.]+):/m);
@@ -111,19 +111,24 @@ async function parseArchivedMilestones() {
     );
 
     for (const doc of archivedRoadmaps) {
-      const body = doc.body;
+      try {
+        const body = doc.body || '';
 
-      // Extract version from filename (e.g., "milestones/v1.0-roadmap" → "v1.0")
-      const versionMatch = doc.id.match(/v([\d.]+)/);
-      const milestone = versionMatch ? `v${versionMatch[1]}` : 'v1.0';
+        // Extract version from filename (e.g., "milestones/v1.0-roadmap" → "v1.0")
+        const versionMatch = doc.id.match(/v([\d.]+)/);
+        const milestone = versionMatch ? `v${versionMatch[1]}` : 'v1.0';
 
-      const phasesData = parsePhases(body, milestone);
+        const phasesData = parsePhases(body, milestone);
 
-      results.push({
-        nodes: phasesData.nodes,
-        edges: phasesData.edges,
-        milestone
-      });
+        results.push({
+          nodes: phasesData.nodes,
+          edges: phasesData.edges,
+          milestone
+        });
+      } catch {
+        // Skip this archived doc, continue with others
+        continue;
+      }
     }
   } catch (error) {
     console.warn('Error loading archived milestones:', error);
@@ -143,65 +148,85 @@ async function parseArchivedMilestones() {
 function parsePhases(body, milestone) {
   const nodes = [];
   const edges = [];
+  const safeBody = body || '';
+  const safeMilestone = milestone || 'v1.0';
 
-  // Match: ### Phase N: Name (with optional ✓)
-  const phaseRegex = /^###\s*Phase\s+(\d+):\s*([^\n✓]+)(✓)?/gm;
-
-  let match;
-  let firstIncompleteFound = false;
-
-  while ((match = phaseRegex.exec(body)) !== null) {
-    const phaseNum = parseInt(match[1], 10);
-    const phaseName = match[2].trim();
-    const hasCheckmark = !!match[3];
-
-    // Extract content between this phase header and the next ### or ---
-    const afterHeader = body.slice(match.index);
-    const nextSectionMatch = afterHeader.match(/\n(?:###|---)/);
-    const phaseContent = nextSectionMatch
-      ? afterHeader.slice(0, nextSectionMatch.index)
-      : afterHeader;
-
-    // Check for completion indicators
-    const completedMatch = phaseContent.match(/\*\*Completed:?\*\*:?\s*(\d{4}-\d{2}-\d{2})/);
-    const isComplete = hasCheckmark || !!completedMatch;
-
-    // Determine status: complete, active (first incomplete), or pending
-    let status = 'pending';
-    if (isComplete) {
-      status = 'complete';
-    } else if (!firstIncompleteFound) {
-      status = 'active';
-      firstIncompleteFound = true;
-    }
-
-    // Build node
-    const paddedNum = padNumber(phaseNum);
-    const slug = slugify(phaseName);
-
-    nodes.push({
-      id: `phase-${phaseNum}`,
-      label: `Phase ${phaseNum}: ${phaseName}`,
-      status,
-      milestone,
-      url: `/phases/${paddedNum}-${slug}/`
-    });
-
-    // Parse dependencies: **Depends on**: Phase N
-    const dependsMatch = phaseContent.match(/\*\*Depends on\*\*:\s*Phase\s*(\d+)/i);
-    if (dependsMatch) {
-      const dependencyPhaseNum = parseInt(dependsMatch[1], 10);
-      edges.push({
-        source: `phase-${dependencyPhaseNum}`,
-        target: `phase-${phaseNum}`
-      });
-    }
-
-    // Also check for "Depends on: Nothing" to explicitly skip edge creation
-    // (no action needed, already handled by not creating edge)
+  if (!safeBody.trim()) {
+    return { nodes, edges };
   }
 
-  return { nodes, edges };
+  try {
+    // Match: ### Phase N: Name (with optional ✓)
+    const phaseRegex = /^###\s*Phase\s+(\d+):\s*([^\n✓]+)(✓)?/gm;
+
+    let match;
+    let firstIncompleteFound = false;
+
+    while ((match = phaseRegex.exec(safeBody)) !== null) {
+      const phaseNum = parseInt(match[1], 10);
+
+      // Skip phases with invalid numbers (NaN)
+      if (isNaN(phaseNum)) continue;
+
+      const phaseName = match[2].trim();
+      const hasCheckmark = !!match[3];
+
+      // Extract content between this phase header and the next ### or ---
+      const afterHeader = safeBody.slice(match.index);
+      const nextSectionMatch = afterHeader.match(/\n(?:###|---)/);
+      const phaseContent = nextSectionMatch
+        ? afterHeader.slice(0, nextSectionMatch.index)
+        : afterHeader;
+
+      // Check for completion indicators
+      const completedMatch = phaseContent.match(/\*\*Completed:?\*\*:?\s*(\d{4}-\d{2}-\d{2})/);
+      const isComplete = hasCheckmark || !!completedMatch;
+
+      // Determine status: complete, active (first incomplete), or pending
+      let status = 'pending';
+      if (isComplete) {
+        status = 'complete';
+      } else if (!firstIncompleteFound) {
+        status = 'active';
+        firstIncompleteFound = true;
+      }
+
+      // Build node
+      const paddedNum = padNumber(phaseNum);
+      const slug = slugify(phaseName);
+
+      nodes.push({
+        id: `phase-${phaseNum}`,
+        label: `Phase ${phaseNum}: ${phaseName}`,
+        status,
+        milestone: safeMilestone,
+        url: `/phases/${paddedNum}-${slug}/`
+      });
+
+      // Parse dependencies: **Depends on**: Phase N
+      const dependsMatch = phaseContent.match(/\*\*Depends on\*\*:\s*Phase\s*(\d+)/i);
+      if (dependsMatch) {
+        const dependencyPhaseNum = parseInt(dependsMatch[1], 10);
+        if (!isNaN(dependencyPhaseNum)) {
+          edges.push({
+            source: `phase-${dependencyPhaseNum}`,
+            target: `phase-${phaseNum}`
+          });
+        }
+      }
+
+      // Also check for "Depends on: Nothing" to explicitly skip edge creation
+      // (no action needed, already handled by not creating edge)
+    }
+
+    // Filter out edges referencing non-existent phase nodes
+    const nodeIds = new Set(nodes.map(n => n.id));
+    const validEdges = edges.filter(e => nodeIds.has(e.source) && nodeIds.has(e.target));
+
+    return { nodes, edges: validEdges };
+  } catch {
+    return { nodes: [], edges: [] };
+  }
 }
 
 /**

@@ -35,9 +35,13 @@ export async function getMilestones() {
   const milestones = [];
 
   // Get current milestone from ROADMAP.md
-  const currentMilestone = await getCurrentMilestone();
-  if (currentMilestone) {
-    milestones.push(currentMilestone);
+  try {
+    const currentMilestone = await getCurrentMilestone();
+    if (currentMilestone) {
+      milestones.push(currentMilestone);
+    }
+  } catch {
+    // Silently continue — archived milestones may still work
   }
 
   // Get archived milestones from milestones/ folder
@@ -68,7 +72,7 @@ async function getCurrentMilestone() {
     return null;
   }
 
-  const body = roadmap.body;
+  const body = roadmap.body || '';
   const phases = parsePhases(body);
 
   if (phases.length === 0) {
@@ -107,29 +111,34 @@ async function getArchivedMilestones() {
     );
 
     for (const doc of archivedRoadmaps) {
-      const body = doc.body;
-      const phases = parsePhases(body);
+      try {
+        const body = doc.body || '';
+        const phases = parsePhases(body);
 
-      if (phases.length === 0) continue;
+        if (phases.length === 0) continue;
 
-      const milestoneInfo = parseMilestoneHeader(body);
-      const completedPhases = phases.filter(p => p.complete).length;
+        const milestoneInfo = parseMilestoneHeader(body);
+        const completedPhases = phases.filter(p => p.complete).length;
 
-      // Check for shipped date: **Status:** ✅ SHIPPED 2026-01-25
-      const shippedMatch = body.match(/\*\*Status\*\*:.*SHIPPED\s+(\d{4}-\d{2}-\d{2})/i);
-      const shippedDate = shippedMatch ? shippedMatch[1] : undefined;
+        // Check for shipped date: **Status:** ✅ SHIPPED 2026-01-25
+        const shippedMatch = body.match(/\*\*Status\*\*:.*SHIPPED\s+(\d{4}-\d{2}-\d{2})/i);
+        const shippedDate = shippedMatch ? shippedMatch[1] : undefined;
 
-      milestones.push({
-        version: milestoneInfo.version,
-        name: milestoneInfo.name,
-        status: 'complete',
-        active: false,
-        phaseCount: phases.length,
-        completedPhases,
-        phases,
-        description: milestoneInfo.goal,
-        shippedDate
-      });
+        milestones.push({
+          version: milestoneInfo.version,
+          name: milestoneInfo.name,
+          status: 'complete',
+          active: false,
+          phaseCount: phases.length,
+          completedPhases,
+          phases,
+          description: milestoneInfo.goal,
+          shippedDate
+        });
+      } catch {
+        // Skip this archived milestone, continue with others
+        continue;
+      }
     }
   } catch (error) {
     console.warn('Error loading archived milestones:', error);
@@ -144,28 +153,38 @@ async function getArchivedMilestones() {
  * @returns {{ version: string, name: string, goal: string }}
  */
 function parseMilestoneHeader(body) {
-  // Match: # Milestone vX.X: Name
-  const headerMatch = body.match(/^#\s*Milestone\s+(v[\d.]+):\s*(.+)$/m);
+  try {
+    const safeBody = body || '';
 
-  // Match: **Goal:** description
-  const goalMatch = body.match(/^\*\*Goal\*\*:\s*(.+)$/m);
+    // Match: # Milestone vX.X: Name
+    const headerMatch = safeBody.match(/^#\s*Milestone\s+(v[\d.]+):\s*(.+)$/m);
 
-  if (headerMatch) {
+    // Match: **Goal:** description
+    const goalMatch = safeBody.match(/^\*\*Goal\*\*:\s*(.+)$/m);
+
+    if (headerMatch) {
+      return {
+        version: headerMatch[1],
+        name: headerMatch[2].trim(),
+        goal: goalMatch ? goalMatch[1].trim() : headerMatch[2].trim()
+      };
+    }
+
+    // Fallback for simple # Title format
+    const simpleTitleMatch = safeBody.match(/^#\s+([^\n]+)/m);
+
     return {
-      version: headerMatch[1],
-      name: headerMatch[2].trim(),
-      goal: goalMatch ? goalMatch[1].trim() : headerMatch[2].trim()
+      version: 'v1.0',
+      name: simpleTitleMatch ? simpleTitleMatch[1].trim() : 'Current Milestone',
+      goal: goalMatch ? goalMatch[1].trim() : 'Project milestone'
+    };
+  } catch {
+    return {
+      version: 'v1.0',
+      name: 'Current Milestone',
+      goal: 'Project milestone'
     };
   }
-
-  // Fallback for simple # Title format
-  const simpleTitleMatch = body.match(/^#\s+([^\n]+)/m);
-
-  return {
-    version: 'v1.0',
-    name: simpleTitleMatch ? simpleTitleMatch[1].trim() : 'Current Milestone',
-    goal: goalMatch ? goalMatch[1].trim() : 'Project milestone'
-  };
 }
 
 /**
@@ -181,77 +200,97 @@ function parseMilestoneHeader(body) {
  */
 function parsePhases(body) {
   const phases = [];
+  const safeBody = body || '';
 
-  // First try header format: ### Phase N: Name (with optional ✓)
-  // This is the GSD workflow format
-  const headerRegex = /^###\s*Phase\s+(\d+):\s*([^\n✓]+)(✓)?/gm;
-
-  let match;
-  while ((match = headerRegex.exec(body)) !== null) {
-    const phaseNum = parseInt(match[1], 10);
-    const phaseName = match[2].trim();
-    const hasCheckmark = !!match[3];
-
-    // Extract content between this phase header and the next ### or ---
-    const afterHeader = body.slice(match.index);
-    const nextSectionMatch = afterHeader.match(/\n(?:###|---)/);
-    const phaseContent = nextSectionMatch
-      ? afterHeader.slice(0, nextSectionMatch.index)
-      : afterHeader;
-
-    // Extract goal from **Goal**: line
-    const goalMatch = phaseContent.match(/\*\*Goal\*\*:\s*([^\n]+)/);
-    const description = goalMatch ? goalMatch[1].trim() : phaseName;
-
-    // Extract completion date from **Completed:** line (note: colon may be inside or outside the bold)
-    // Matches both **Completed:** date and **Completed**: date
-    const completedMatch = phaseContent.match(/\*\*Completed:?\*\*:?\s*(\d{4}-\d{2}-\d{2})/);
-    const completedDate = completedMatch ? completedMatch[1] : undefined;
-
-    // Phase is complete if it has ✓ OR has a completed date
-    const isComplete = hasCheckmark || !!completedDate;
-
-    phases.push({
-      number: phaseNum,
-      name: phaseName,
-      description,
-      complete: isComplete,
-      completedDate
-    });
+  if (!safeBody.trim()) {
+    return phases;
   }
 
-  // If header format found phases, use those
-  if (phases.length > 0) {
-    return phases.sort((a, b) => a.number - b.number);
-  }
+  try {
+    // First try header format: ### Phase N: Name (with optional ✓)
+    // This is the GSD workflow format
+    const headerRegex = /^###\s*Phase\s+(\d+):\s*([^\n✓]+)(✓)?/gm;
 
-  // Fallback: checkbox format (legacy)
-  // Pattern: - [x] **Phase N: Name** - Description
-  const phaseRegex = /^- \[(x| )\] \*\*Phase (\d+): ([^*]+)\*\*\s*[-—]\s*(.+)$/gm;
+    let match;
+    while ((match = headerRegex.exec(safeBody)) !== null) {
+      const phaseNum = parseInt(match[1], 10);
 
-  while ((match = phaseRegex.exec(body)) !== null) {
-    phases.push({
-      number: parseInt(match[2], 10),
-      name: match[3].trim(),
-      description: match[4].trim(),
-      complete: match[1] === 'x',
-      completedDate: undefined
-    });
-  }
+      // Skip phases with invalid numbers (NaN)
+      if (isNaN(phaseNum)) continue;
 
-  // Try to find completion dates from Progress table
-  // Pattern: | 1. Name | 3/3 | ✓ Complete | 2026-01-24 |
-  const tableRegex = /\|\s*\d+\.\s*([^|]+)\s*\|\s*\d+\/\d+\s*\|\s*✓\s*Complete\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/g;
+      const phaseName = match[2].trim();
+      const hasCheckmark = !!match[3];
 
-  while ((match = tableRegex.exec(body)) !== null) {
-    const tableName = match[1].trim();
-    const date = match[2];
+      // Extract content between this phase header and the next ### or ---
+      const afterHeader = safeBody.slice(match.index);
+      const nextSectionMatch = afterHeader.match(/\n(?:###|---)/);
+      const phaseContent = nextSectionMatch
+        ? afterHeader.slice(0, nextSectionMatch.index)
+        : afterHeader;
 
-    // Find matching phase by name
-    const phase = phases.find(p => tableName.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
-    if (phase) {
-      phase.completedDate = date;
+      // Extract goal from **Goal**: line
+      const goalMatch = phaseContent.match(/\*\*Goal\*\*:\s*([^\n]+)/);
+      const description = goalMatch ? goalMatch[1].trim() : phaseName;
+
+      // Extract completion date from **Completed:** line (note: colon may be inside or outside the bold)
+      // Matches both **Completed:** date and **Completed**: date
+      const completedMatch = phaseContent.match(/\*\*Completed:?\*\*:?\s*(\d{4}-\d{2}-\d{2})/);
+      const completedDate = completedMatch ? completedMatch[1] : undefined;
+
+      // Phase is complete if it has ✓ OR has a completed date
+      const isComplete = hasCheckmark || !!completedDate;
+
+      phases.push({
+        number: phaseNum,
+        name: phaseName,
+        description,
+        complete: isComplete,
+        completedDate
+      });
     }
+
+    // If header format found phases, use those
+    if (phases.length > 0) {
+      return phases.sort((a, b) => a.number - b.number);
+    }
+
+    // Fallback: checkbox format (legacy)
+    // Pattern: - [x] **Phase N: Name** - Description
+    // Accept both lowercase [x] and uppercase [X] as complete
+    const phaseRegex = /^- \[([xX ])\] \*\*Phase (\d+): ([^*]+)\*\*\s*[-—]\s*(.+)$/gm;
+
+    while ((match = phaseRegex.exec(safeBody)) !== null) {
+      const phaseNum = parseInt(match[2], 10);
+
+      // Skip phases with invalid numbers (NaN)
+      if (isNaN(phaseNum)) continue;
+
+      phases.push({
+        number: phaseNum,
+        name: match[3].trim(),
+        description: match[4].trim(),
+        complete: match[1].toLowerCase() === 'x',
+        completedDate: undefined
+      });
+    }
+
+    // Try to find completion dates from Progress table
+    // Pattern: | 1. Name | 3/3 | ✓ Complete | 2026-01-24 |
+    const tableRegex = /\|\s*\d+\.\s*([^|]+)\s*\|\s*\d+\/\d+\s*\|\s*✓\s*Complete\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/g;
+
+    while ((match = tableRegex.exec(safeBody)) !== null) {
+      const tableName = match[1].trim();
+      const date = match[2];
+
+      // Find matching phase by name
+      const phase = phases.find(p => tableName.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
+      if (phase) {
+        phase.completedDate = date;
+      }
+    }
+  } catch {
+    // Return whatever phases were parsed so far
+    return phases;
   }
 
   return phases.sort((a, b) => a.number - b.number);

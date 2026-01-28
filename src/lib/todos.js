@@ -74,17 +74,23 @@ async function getStandaloneTodos() {
     );
 
     for (const doc of todoFiles) {
-      // Extract frontmatter data
-      const { title, area, created, files } = doc.data;
+      try {
+        // Extract frontmatter data — handle missing data object
+        const data = doc.data || {};
+        const { title, area, created } = data;
 
-      todos.push({
-        title: title || 'Untitled Todo',
-        area: area || 'general',
-        created: created || null,
-        source: 'standalone',
-        file: doc.id,
-        checked: false  // Todos in pending folder are unchecked by definition
-      });
+        todos.push({
+          title: title || 'Untitled Todo',
+          area: area || 'general',
+          created: created || null,
+          source: 'standalone',
+          file: doc.id,
+          checked: false  // Todos in pending folder are unchecked by definition
+        });
+      } catch {
+        // Skip this todo file, continue with others
+        continue;
+      }
     }
   } catch (error) {
     console.warn('Error loading standalone todos:', error);
@@ -109,33 +115,44 @@ async function getInlineTodos() {
     );
 
     for (const doc of planFiles) {
-      // Parse markdown with GFM support
-      const tree = unified()
-        .use(remarkParse)
-        .use(remarkGfm)
-        .parse(doc.body);
-
-      // Extract area from path: phases/06-prettier-rendering/06-01-PLAN.md -> "prettier-rendering"
-      const area = deriveAreaFromPath(doc.id);
-
-      // Visit all list items
-      visit(tree, 'listItem', (node) => {
-        // Only process task list items (checked !== null)
-        if (node.checked !== null) {
-          const text = extractTextFromNode(node);
-
-          if (text) {
-            todos.push({
-              title: text,
-              area,
-              created: null,  // Inline todos don't have creation dates
-              source: doc.id,
-              file: null,
-              checked: node.checked
-            });
-          }
+      try {
+        // Handle null/undefined/empty body — skip without error
+        const docBody = doc.body;
+        if (!docBody || typeof docBody !== 'string' || !docBody.trim()) {
+          continue;
         }
-      });
+
+        // Parse markdown with GFM support
+        const tree = unified()
+          .use(remarkParse)
+          .use(remarkGfm)
+          .parse(docBody);
+
+        // Extract area from path: phases/06-prettier-rendering/06-01-PLAN.md -> "prettier-rendering"
+        const area = deriveAreaFromPath(doc.id);
+
+        // Visit all list items
+        visit(tree, 'listItem', (node) => {
+          // Only process task list items (checked !== null)
+          if (node.checked !== null) {
+            const text = extractTextFromNode(node);
+
+            if (text) {
+              todos.push({
+                title: text,
+                area,
+                created: null,  // Inline todos don't have creation dates
+                source: doc.id,
+                file: null,
+                checked: node.checked
+              });
+            }
+          }
+        });
+      } catch {
+        // Skip this plan file, continue with others
+        continue;
+      }
     }
   } catch (error) {
     console.warn('Error loading inline todos:', error);
