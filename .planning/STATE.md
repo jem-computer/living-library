@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-27)
 ## Current Position
 
 Phase: 10 of 11 (Plugin Tests)
-Plan: 2 of 3 complete
-Status: In progress
-Last activity: 2026-01-27 — Completed 10-02-PLAN.md
+Plan: 1 of 1 complete
+Status: Phase complete
+Last activity: 2026-01-27 — Completed 10-01-PLAN.md (remark plugin tests)
 
-Progress: [##################..] v1.0+v1.1 shipped, v1.2 in progress (9/11 phases, 29 plans complete)
+Progress: [###################.] v1.0+v1.1 shipped, v1.2 in progress (10/11 phases, 28 plans complete)
 
 ## Performance Metrics
 
@@ -28,14 +28,14 @@ Progress: [##################..] v1.0+v1.1 shipped, v1.2 in progress (9/11 phase
 - Timeline: 3 days
 
 **v1.2 Milestone:**
-- Plans completed: 7
-- Current phase: 10-plugin-tests (in progress, 2/3 done)
-- Average duration: 2.4 min per plan
+- Plans completed: 6
+- Current phase: 10-plugin-tests (complete)
+- Average duration: 2.5 min per plan
 
 **Cumulative:**
-- Phases: 9 complete
-- Plans: 29 complete
-- LOC: ~7,735
+- Phases: 10 complete
+- Plans: 28 complete
+- LOC: ~8,310
 
 ## Accumulated Context
 
@@ -54,8 +54,8 @@ Recent:
 - 100% coverage pattern for parsing modules (09-03)
 - Test accuracy over assumptions - verify actual implementation behavior (09-04)
 - Comprehensive edge case coverage including empty entries and deep nesting (09-04)
-- Test rehype plugins directly through unified pipeline, not Astro builds (10-02)
-- Use processSync for synchronous plugins for faster test execution (10-02)
+- Use unified ecosystem packages directly as dev dependencies for test clarity (10-01)
+- Test actual plugin behavior not assumptions (punctuation in URLs, HTML entities) (10-01)
 
 ### Pending Todos
 
@@ -72,10 +72,10 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-27
-Stopped at: Completed 10-02-PLAN.md
+Stopped at: Completed Phase 10 (Plugin Tests)
 Resume file: None
-Next: `/gsd:execute-plan 10-03` (remarkNormalizeGsdTags tests)
+Next: `/gsd:plan-phase 11` (Astro Components Tests)
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-27 — Phase 10 (Plan 02) - 35 rehypeGsdBlocks tests added, 97% coverage*
+*Last updated: 2026-01-27 — Phase 10 complete (Plugin Tests) - 33 remark plugin tests added, 100% coverage*
