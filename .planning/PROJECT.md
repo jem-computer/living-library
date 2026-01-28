@@ -10,7 +10,7 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 
 ## Current State
 
-**Version:** v1.1 (shipped 2026-01-27)
+**Version:** v1.2 (shipped 2026-01-28)
 
 **Capabilities:**
 - `npx @templeofsilicon/living-library` — Dev server with live reload
@@ -25,10 +25,12 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 - Todo aggregation page (/todos)
 - Dependency graph visualization (/dependencies)
 - Roadmap Kanban board (/roadmap)
+- 181 unit tests with 95.5% average coverage
+- Defensive parsing — malformed input degrades gracefully
 
-**Codebase:** 5,708 LOC (JS/Astro/TS/CSS)
+**Codebase:** 8,991 LOC (JS/Astro/TS/CSS) — 3,087 test LOC
 
-**Tech Stack:** Astro, Pagefind, Shiki, Cytoscape.js, picocolors
+**Tech Stack:** Astro, Pagefind, Shiki, Cytoscape.js, picocolors, Vitest
 
 ## Requirements
 
@@ -51,15 +53,15 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 - ✓ Todo aggregation page — v1.1
 - ✓ Phase dependencies visualization — v1.1
 - ✓ Roadmap visualization page — v1.1
+- ✓ Test framework setup (vitest) — v1.2
+- ✓ Unit tests for parsing logic (milestones, todos, dependencies, navigation) — v1.2
+- ✓ Unit tests for plugin logic (remark-gsd-links, rehype-gsd-blocks, remark-normalize-gsd-tags) — v1.2
+- ✓ Edge case handling for malformed/empty files — v1.2
+- ✓ Defensive hardening across all parsers and plugins — v1.2
 
 ### Active
 
-**v1.2 — Testing & Robustness**
-
-- [ ] Test framework setup (vitest)
-- [ ] Unit tests for parsing logic (milestones, todos, dependencies)
-- [ ] Edge case handling for malformed/empty files
-- [ ] Error handling improvements with helpful messages
+(No active milestone — next milestone not yet planned)
 
 ### Out of Scope
 
@@ -102,6 +104,10 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 | Two-plugin approach for GSD tags | Remark normalization + rehype styling | ✓ Good |
 | Cytoscape.js for graphs | Well-documented, dagre layout support | ✓ Good |
 | CSS Grid for Kanban | Responsive, no JS needed for layout | ✓ Good |
+| Vitest with getViteConfig | Seamless Astro integration for tests | ✓ Good |
+| happy-dom test environment | Lightweight DOM, faster than jsdom | ✓ Good |
+| Silent degradation over error logging | Better UX: raw text > crashes, no console noise | ✓ Good |
+| Unified ecosystem as dev deps | Explicit control for plugin testing | ✓ Good |
 
 ---
-*Last updated: 2026-01-27 after v1.1 milestone*
+*Last updated: 2026-01-28 after v1.2 milestone*

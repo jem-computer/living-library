@@ -1,5 +1,32 @@
 # Project Milestones: living-library
 
+## v1.2 Testing & Robustness (Shipped: 2026-01-28)
+
+**Delivered:** Vitest testing infrastructure, 181 unit tests covering all parsing and plugin modules, and defensive hardening so malformed input degrades gracefully instead of crashing.
+
+**Phases completed:** 8-11 (9 plans total)
+
+**Key accomplishments:**
+
+- Vitest testing infrastructure with Astro integration and content collection mocking
+- 181 unit tests across 7 test files with 95.5% average coverage
+- Comprehensive parsing tests for milestones, todos, dependencies, and navigation
+- Plugin tests for remark-gsd-links, remark-normalize-gsd-tags, and rehype-gsd-blocks
+- Defensive hardening with try-catch, null guards, and graceful degradation across all modules
+
+**Stats:**
+
+- 48 files changed (9,306 insertions, 404 deletions)
+- 8,991 lines of JavaScript/Astro/TypeScript/CSS (3,087 test LOC)
+- 4 phases, 9 plans
+- 2 days (2026-01-27 → 2026-01-28)
+
+**Git range:** `7460097` (phase 8 start) → `ff3dd94` (phase 11 complete)
+
+**What's next:** Performance improvements, additional visualization features
+
+---
+
 ## v1.1 Production Ready (Shipped: 2026-01-27)
 
 **Delivered:** npm package distribution fix, GSD-specific markdown rendering with styled XML blocks, and visualization features (todos, dependencies, roadmap Kanban).
