@@ -8,14 +8,14 @@ v1.2 focuses on testing and robustness. We establish vitest infrastructure, writ
 
 - v1.0 MVP (Phases 1-4) - shipped 2026-01-25
 - v1.1 Production Ready (Phases 5-7) - shipped 2026-01-27
-- v1.2 Testing & Robustness (Phases 8-11) - in progress
+- v1.2 Testing & Robustness (Phases 8-11) - shipped 2026-01-28
 
 ## Phases
 
 - [x] **Phase 8: Test Infrastructure** - vitest setup, test utilities, coverage ✓
 - [x] **Phase 9: Parsing Tests** - Unit tests for milestone/todo/dependency parsing ✓
 - [x] **Phase 10: Plugin Tests** - Unit tests for remark/rehype plugins ✓
-- [ ] **Phase 11: Edge Cases & Errors** - Graceful handling of malformed input
+- [x] **Phase 11: Edge Cases & Errors** - Graceful handling of malformed input ✓
 
 ## Phase Details
 
@@ -84,8 +84,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 11-01-PLAN.md — Harden parsers with defensive edge case handling + tests
-- [ ] 11-02-PLAN.md — Harden plugins with defensive edge case handling + tests
+- [x] 11-01-PLAN.md — Harden parsers with defensive edge case handling + tests ✓
+- [x] 11-02-PLAN.md — Harden plugins with defensive edge case handling + tests ✓
 
 ---
 
@@ -96,7 +96,7 @@ Plans:
 | 8. Test Infrastructure | 1/1 | Complete | 2026-01-27 |
 | 9. Parsing Tests | 4/4 | Complete | 2026-01-27 |
 | 10. Plugin Tests | 2/2 | Complete | 2026-01-27 |
-| 11. Edge Cases & Errors | 0/2 | Not started | - |
+| 11. Edge Cases & Errors | 2/2 | Complete | 2026-01-28 |
 
 ---
 *Roadmap created: 2026-01-27*

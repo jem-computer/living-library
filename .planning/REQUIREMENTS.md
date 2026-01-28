@@ -28,11 +28,11 @@ Requirements for v1.2 release. Focus: Testing & Robustness.
 
 ### Edge Case Handling
 
-- [ ] **EDGE-01**: Graceful handling of empty ROADMAP.md
-- [ ] **EDGE-02**: Graceful handling of malformed phase headers
-- [ ] **EDGE-03**: Graceful handling of missing frontmatter in plan files
-- [ ] **EDGE-04**: Graceful handling of checkboxes with unusual formatting
-- [ ] **EDGE-05**: Graceful handling of empty .planning folder
+- [x] **EDGE-01**: Graceful handling of empty ROADMAP.md ✓
+- [x] **EDGE-02**: Graceful handling of malformed phase headers ✓
+- [x] **EDGE-03**: Graceful handling of missing frontmatter in plan files ✓
+- [x] **EDGE-04**: Graceful handling of checkboxes with unusual formatting ✓
+- [x] **EDGE-05**: Graceful handling of empty .planning folder ✓
 
 ### Error Handling
 
@@ -78,11 +78,11 @@ Explicitly excluded. Documented to prevent scope creep.
 | PLUG-01 | Phase 10 | Complete |
 | PLUG-02 | Phase 10 | Complete |
 | PLUG-03 | Phase 10 | Complete |
-| EDGE-01 | Phase 11 | Pending |
-| EDGE-02 | Phase 11 | Pending |
-| EDGE-03 | Phase 11 | Pending |
-| EDGE-04 | Phase 11 | Pending |
-| EDGE-05 | Phase 11 | Pending |
+| EDGE-01 | Phase 11 | Complete |
+| EDGE-02 | Phase 11 | Complete |
+| EDGE-03 | Phase 11 | Complete |
+| EDGE-04 | Phase 11 | Complete |
+| EDGE-05 | Phase 11 | Complete |
 | ERR-01 | Phase 11 | Removed (silent degradation) |
 | ERR-02 | Phase 11 | Removed (silent degradation) |
 
@@ -93,4 +93,4 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ---
 *Requirements defined: 2026-01-27*
-*Last updated: 2026-01-27 — Phase 10 complete*
+*Last updated: 2026-01-28 — Phase 11 complete, v1.2 milestone complete*
