@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 ## Current Position
 
-Phase: 6 (Prettier Rendering) — complete
-Plan: 3 of 3
-Status: Phase 6 complete (Apply GSD Styles)
-Last activity: 2026-01-27 — Completed 06-03-PLAN.md
+Phase: 7 (GSD Enhancements) — in progress
+Plan: 1 of 4
+Status: Plan 07-01 complete (Todo Extraction Module)
+Last activity: 2026-01-27 — Completed 07-01-PLAN.md
 
-Progress: [██████████████░░░░░░] 67% (Phase 6 of 7 complete)
+Progress: [███████████████░░░░░] 72% (18 of 25 plans complete)
 
 ## Performance Metrics
 
@@ -34,6 +34,7 @@ Progress: [██████████████░░░░░░] 67% (Ph
 | 4. Static Build & GSD Features | 3/3 | ✓ Complete |
 | 5. Distribution & Naming | 2/2 | ✓ Complete |
 | 6. Prettier Rendering | 3/3 | ✓ Complete |
+| 7. GSD Enhancements | 1/4 | ⚙ In Progress |
 
 ## Accumulated Context
 
@@ -64,6 +65,12 @@ Key v1.1 decisions (Phase 6):
 - CSS uses existing global.css variables for consistency with site theme
 - Color palette for semantic meaning: blue (objective), purple (process), green (success), amber (context), cyan (verification), pink (output), slate (tasks)
 
+Key v1.1 decisions (Phase 7):
+- Use unified + remark-parse + remark-gfm for markdown parsing with GFM support
+- Derive area from plan file path (phases/XX-name/) for categorization
+- Sort todos by checked status first, then area, then creation date
+- Recursive text extraction for nested inline formatting in checkboxes
+
 ### Pending Todos
 
 1. Add vitest & @testing-library for testing (area: testing)
@@ -76,10 +83,10 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-27
-Stopped at: Phase 6 verified complete
+Stopped at: Completed 07-01-PLAN.md
 Resume file: None
-Next: `/gsd:plan-phase 7` for GSD Enhancements
+Next: Continue Phase 7 with remaining plans
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-27 — Phase 6 complete (Prettier Rendering)*
+*Last updated: 2026-01-27 — Plan 07-01 complete (Todo Extraction Module)*
