@@ -2,7 +2,7 @@
 
 ## Overview
 
-v1.2 focuses on testing and robustness. We establish vitest infrastructure, write unit tests for the parsing and plugin logic that makes living-library GSD-aware, then harden edge case handling so malformed input produces helpful errors instead of crashes.
+v1.2 focuses on testing and robustness. We establish vitest infrastructure, write unit tests for the parsing and plugin logic that makes living-library GSD-aware, then harden edge case handling so malformed input degrades gracefully instead of crashing.
 
 ## Milestones
 
@@ -72,17 +72,15 @@ Plans:
 ---
 
 ### Phase 11: Edge Cases & Errors
-**Goal**: Malformed input produces helpful messages, not crashes
+**Goal**: Malformed input degrades gracefully, not crashes
 **Depends on**: Phases 9, 10 (tests exist to verify fixes)
-**Requirements**: EDGE-01, EDGE-02, EDGE-03, EDGE-04, EDGE-05, ERR-01, ERR-02
+**Requirements**: EDGE-01, EDGE-02, EDGE-03, EDGE-04, EDGE-05
 **Success Criteria** (what must be TRUE):
   1. Empty ROADMAP.md shows "no milestones" instead of crashing
   2. Phase header without checkbox parses with warning, not error
   3. Plan file without frontmatter shows fallback title
   4. Unusual checkbox formats (tabs, extra spaces) still parse
   5. Empty .planning folder shows "no content" message
-  6. Parse errors include file path and line number
-  7. Recoverable issues log warnings, not throw exceptions
 **Plans**: 2 plans
 
 Plans:

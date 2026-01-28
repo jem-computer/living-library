@@ -36,8 +36,8 @@ Requirements for v1.2 release. Focus: Testing & Robustness.
 
 ### Error Handling
 
-- [ ] **ERR-01**: Helpful error messages when parsing fails (file, line, reason)
-- [ ] **ERR-02**: Console warnings for recoverable issues (not crashes)
+- ~**ERR-01**: Helpful error messages when parsing fails (file, line, reason)~ — Removed: silent degradation chosen over explicit error messages
+- ~**ERR-02**: Console warnings for recoverable issues (not crashes)~ — Removed: silent degradation chosen over console warnings
 
 ## Future Requirements
 
@@ -83,12 +83,12 @@ Explicitly excluded. Documented to prevent scope creep.
 | EDGE-03 | Phase 11 | Pending |
 | EDGE-04 | Phase 11 | Pending |
 | EDGE-05 | Phase 11 | Pending |
-| ERR-01 | Phase 11 | Pending |
-| ERR-02 | Phase 11 | Pending |
+| ERR-01 | Phase 11 | Removed (silent degradation) |
+| ERR-02 | Phase 11 | Removed (silent degradation) |
 
 **Coverage:**
-- v1.2 requirements: 17 total
-- Mapped to phases: 17
+- v1.2 requirements: 15 active (2 removed: ERR-01, ERR-02)
+- Mapped to phases: 15
 - Unmapped: 0 ✓
 
 ---
