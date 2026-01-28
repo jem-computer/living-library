@@ -15,10 +15,10 @@ Requirements for v1.2 release. Focus: Testing & Robustness.
 
 ### Parsing Tests
 
-- [ ] **PARSE-01**: Unit tests for milestone parsing (getMilestones, parsePhases, parseMilestoneHeader)
-- [ ] **PARSE-02**: Unit tests for todo extraction (getTodos, getInlineTodos, getStandaloneTodos)
-- [ ] **PARSE-03**: Unit tests for dependency graph (buildDependencyGraph, parseRoadmap)
-- [ ] **PARSE-04**: Unit tests for navigation tree (buildNavTree)
+- [x] **PARSE-01**: Unit tests for milestone parsing (getMilestones, parsePhases, parseMilestoneHeader) ✓
+- [x] **PARSE-02**: Unit tests for todo extraction (getTodos, getInlineTodos, getStandaloneTodos) ✓
+- [x] **PARSE-03**: Unit tests for dependency graph (buildDependencyGraph, parseRoadmap) ✓
+- [x] **PARSE-04**: Unit tests for navigation tree (buildNavTree) ✓
 
 ### Plugin Tests
 
@@ -71,10 +71,10 @@ Explicitly excluded. Documented to prevent scope creep.
 | TEST-01 | Phase 8 | Complete |
 | TEST-02 | Phase 8 | Complete |
 | TEST-03 | Phase 8 | Complete |
-| PARSE-01 | Phase 9 | Pending |
-| PARSE-02 | Phase 9 | Pending |
-| PARSE-03 | Phase 9 | Pending |
-| PARSE-04 | Phase 9 | Pending |
+| PARSE-01 | Phase 9 | Complete |
+| PARSE-02 | Phase 9 | Complete |
+| PARSE-03 | Phase 9 | Complete |
+| PARSE-04 | Phase 9 | Complete |
 | PLUG-01 | Phase 10 | Pending |
 | PLUG-02 | Phase 10 | Pending |
 | PLUG-03 | Phase 10 | Pending |

@@ -13,7 +13,7 @@ v1.2 focuses on testing and robustness. We establish vitest infrastructure, writ
 ## Phases
 
 - [x] **Phase 8: Test Infrastructure** - vitest setup, test utilities, coverage ✓
-- [ ] **Phase 9: Parsing Tests** - Unit tests for milestone/todo/dependency parsing
+- [x] **Phase 9: Parsing Tests** - Unit tests for milestone/todo/dependency parsing ✓
 - [ ] **Phase 10: Plugin Tests** - Unit tests for remark/rehype plugins
 - [ ] **Phase 11: Edge Cases & Errors** - Graceful handling of malformed input
 
@@ -47,10 +47,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 09-01-PLAN.md - Milestone parsing tests with fixture builders (PARSE-01)
-- [ ] 09-02-PLAN.md - Todo extraction tests for inline and standalone (PARSE-02)
-- [ ] 09-03-PLAN.md - Dependency graph tests (PARSE-03)
-- [ ] 09-04-PLAN.md - Navigation tree and sorting tests (PARSE-04)
+- [x] 09-01-PLAN.md - Milestone parsing tests with fixture builders (PARSE-01) ✓
+- [x] 09-02-PLAN.md - Todo extraction tests for inline and standalone (PARSE-02) ✓
+- [x] 09-03-PLAN.md - Dependency graph tests (PARSE-03) ✓
+- [x] 09-04-PLAN.md - Navigation tree and sorting tests (PARSE-04) ✓
 
 ---
 
@@ -96,7 +96,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 8. Test Infrastructure | 1/1 | Complete | 2026-01-27 |
-| 9. Parsing Tests | 0/4 | Not started | - |
+| 9. Parsing Tests | 4/4 | Complete | 2026-01-27 |
 | 10. Plugin Tests | 0/? | Not started | - |
 | 11. Edge Cases & Errors | 0/? | Not started | - |
 
