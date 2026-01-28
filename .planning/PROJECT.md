@@ -10,20 +10,25 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 
 ## Current State
 
-**Version:** v1.0 (shipped 2026-01-25)
+**Version:** v1.1 (shipped 2026-01-27)
 
 **Capabilities:**
-- `npx living-library` — Dev server with live reload
-- `npx living-library build` — Static site to ./dist
+- `npx @templeofsilicon/living-library` — Dev server with live reload
+- `npx @templeofsilicon/living-library build` — Static site to ./dist
 - GSD-aware navigation (phases, research, milestones)
 - Full-text search with Pagefind
 - Light/dark theme with system preference
 - Milestone timeline from ROADMAP.md
 - Mobile-responsive design
+- @path references render as clickable links
+- GSD XML blocks render with semantic styling
+- Todo aggregation page (/todos)
+- Dependency graph visualization (/dependencies)
+- Roadmap Kanban board (/roadmap)
 
-**Codebase:** 2,790 LOC (JS/Astro/TS/CSS)
+**Codebase:** 5,708 LOC (JS/Astro/TS/CSS)
 
-**Tech Stack:** Astro, Pagefind, Shiki, picocolors
+**Tech Stack:** Astro, Pagefind, Shiki, Cytoscape.js, picocolors
 
 ## Requirements
 
@@ -38,19 +43,18 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 - ✓ Live reload on file changes — v1.0
 - ✓ Markdown rendering with syntax highlighting — v1.0
 - ✓ Milestone timeline visualization — v1.0
+- ✓ npm package works when installed (path resolution fix) — v1.1
+- ✓ Zero-config works in external repos (not just dogfooding) — v1.1
+- ✓ Available npm package name (@templeofsilicon/living-library) — v1.1
+- ✓ `@file` references render as clickable links — v1.1
+- ✓ XML semantic blocks render with styling — v1.1
+- ✓ Todo aggregation page — v1.1
+- ✓ Phase dependencies visualization — v1.1
+- ✓ Roadmap visualization page — v1.1
 
 ### Active
 
-**v1.1 — Production Ready**
-
-- [ ] npm package works when installed (path resolution fix)
-- [ ] Zero-config works in external repos (not just dogfooding)
-- [ ] Available npm package name (rename if needed)
-- [ ] `@file` references render as clickable links
-- [ ] XML semantic blocks (`<objective>`, `<process>`, etc.) render with styling
-- [ ] Todo aggregation page (collect from all phases)
-- [ ] Phase dependencies visualization
-- [ ] Roadmap visualization page
+(None — ready for v1.2 planning)
 
 ### Out of Scope
 
@@ -88,7 +92,11 @@ Any repo with a `.planning` folder can instantly preview it as a clean, searchab
 | Pagefind for search | Compile-time indexing, no server | ✓ Good |
 | Native parseArgs | No external CLI dependencies | ✓ Good |
 | Content collection glob | Flexible markdown handling | ✓ Good |
-| process.cwd() for paths | Works for dogfooding | ⚠️ Revisit for npm publish |
+| PLANNING_ROOT env var | Enables npm package to find user's .planning folder | ✓ Good |
+| Scoped package name | @templeofsilicon/living-library available on npm | ✓ Good |
+| Two-plugin approach for GSD tags | Remark normalization + rehype styling | ✓ Good |
+| Cytoscape.js for graphs | Well-documented, dagre layout support | ✓ Good |
+| CSS Grid for Kanban | Responsive, no JS needed for layout | ✓ Good |
 
 ---
-*Last updated: 2026-01-25 after v1.0 milestone*
+*Last updated: 2026-01-27 after v1.1 milestone*

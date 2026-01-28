@@ -2,19 +2,19 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-01-25)
+See: .planning/PROJECT.md (updated 2026-01-27)
 
 **Core value:** Any repo with a `.planning` folder can instantly preview it as a clean, searchable documentation site
-**Current focus:** v1.1 Production Ready — Milestone complete
+**Current focus:** Planning next milestone (v1.2)
 
 ## Current Position
 
-Phase: 7 (GSD Enhancements) — complete
-Plan: 4 of 4
-Status: Phase 07 complete (Navigation & Homepage Wiring)
-Last activity: 2026-01-28 — Completed 07-04-PLAN.md
+Phase: Ready for next milestone
+Plan: Not started
+Status: v1.1 complete, ready to plan v1.2
+Last activity: 2026-01-27 — v1.1 milestone archived
 
-Progress: [████████████████████] 100% (v1.1 milestone complete)
+Progress: v1.0 + v1.1 shipped
 
 ## Performance Metrics
 
@@ -24,64 +24,20 @@ Progress: [████████████████████] 100% (v
 - Total execution time: ~1.6 hours
 - Timeline: 2 days (2026-01-24 → 2026-01-25)
 
-**By Phase:**
+**v1.1 Milestone:**
+- Total plans completed: 9
+- Timeline: 3 days (2026-01-25 → 2026-01-27)
 
-| Phase | Plans | Status |
-|-------|-------|--------|
-| 1. CLI Foundation & Dev Server | 3/3 | ✓ Complete |
-| 2. Content & Navigation | 4/4 | ✓ Complete |
-| 3. Theming & Search | 3/3 | ✓ Complete |
-| 4. Static Build & GSD Features | 3/3 | ✓ Complete |
-| 5. Distribution & Naming | 2/2 | ✓ Complete |
-| 6. Prettier Rendering | 3/3 | ✓ Complete |
-| 7. GSD Enhancements | 4/4 | ✓ Complete |
+**Cumulative:**
+- Phases: 7
+- Plans: 22
+- LOC: 5,708
 
 ## Accumulated Context
 
 ### Decisions
 
 See PROJECT.md Key Decisions table for complete record.
-
-Key v1.0 decisions:
-- Astro for site generation (✓ Good)
-- Pagefind for search (✓ Good)
-- Native parseArgs for CLI (✓ Good)
-- Dark theme added beyond original scope (✓ Good)
-
-Key v1.1 decisions (Phase 5):
-- Environment variable handoff for path resolution (PLANNING_ROOT pattern)
-- process.cwd() fallback preserves local development workflow
-- Include astro.config.mjs and tsconfig.json in npm package files
-- Scoped package: @templeofsilicon/living-library
-- langAlias for unknown code blocks (svg→xml, mermaid→text)
-
-Key v1.1 decisions (Phase 6):
-- Use mdast-util-find-and-replace for @path transformations (handles text fragmentation)
-- Internal links strip .planning/ prefix (@.planning/ROADMAP.md → /roadmap)
-- External refs are non-clickable spans with gsd-external-ref class
-- Two-plugin approach for GSD tags: remark normalization (underscore→hyphen) + rehype styling
-- execution_context blocks render as collapsible <details> elements (default collapsed)
-- Plugin order critical: remarkNormalizeGsdTags → remarkGsdLinks → rehypeRaw → rehypeGsdBlocks → relativeLinks
-- CSS uses existing global.css variables for consistency with site theme
-- Color palette for semantic meaning: blue (objective), purple (process), green (success), amber (context), cyan (verification), pink (output), slate (tasks)
-
-Key v1.1 decisions (Phase 7):
-- Use unified + remark-parse + remark-gfm for markdown parsing with GFM support
-- Derive area from plan file path (phases/XX-name/) for categorization
-- Sort todos by checked status first, then area, then creation date
-- Recursive text extraction for nested inline formatting in checkboxes
-- Cytoscape.js for dependency graph visualization (DEP-01)
-- Reuse phase parsing patterns from milestones.js for consistency (DEP-02)
-- Three-state status system (complete/active/pending) for visual differentiation (DEP-03)
-- Include milestone information in graph nodes for filtering (DEP-04)
-- Follow timeline.astro patterns for consistent visualization page layout (VIZ-01)
-- Server-render todo grouping in frontmatter for progressive enhancement (VIZ-02)
-- Use define:vars for server-to-client Cytoscape data handoff (VIZ-03)
-- CSS Grid for Kanban with three columns (pending/active/complete) (VIZ-05)
-- GSD section at top of navigation for prominent visualization page access (NAV-01)
-- Shared CSS file reduces duplication across visualization pages (NAV-02)
-- Homepage transformed into welcome hub with quick links instead of redirect (HOME-01)
-- Use emoji icons for quick link cards to avoid icon library dependencies (HOME-02)
 
 ### Pending Todos
 
@@ -94,11 +50,11 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-28
-Stopped at: Completed 07-04-PLAN.md (Phase 7 complete)
+Last session: 2026-01-27
+Stopped at: v1.1 milestone complete
 Resume file: None
-Next: `/gsd:audit-milestone` to verify v1.1 completion
+Next: `/gsd:new-milestone` to start v1.2
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-28 — Plan 07-04 complete (Navigation & Homepage Wiring) — Phase 7 complete*
+*Last updated: 2026-01-27 — v1.1 milestone complete*

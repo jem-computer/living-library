@@ -1,5 +1,34 @@
 # Project Milestones: living-library
 
+## v1.1 Production Ready (Shipped: 2026-01-27)
+
+**Delivered:** npm package distribution fix, GSD-specific markdown rendering with styled XML blocks, and visualization features (todos, dependencies, roadmap Kanban).
+
+**Phases completed:** 5-7 (9 plans total)
+
+**Key accomplishments:**
+
+- npm package works via npx with PLANNING_ROOT env var for path resolution
+- @path references render as clickable links to internal pages
+- GSD XML blocks (`<objective>`, `<process>`, etc.) render with colored semantic styling
+- Todo aggregation page with grouped display by area
+- Interactive dependency graph with Cytoscape.js
+- Roadmap Kanban board with milestone tabs
+- Welcome homepage with quick links to visualization features
+
+**Stats:**
+
+- ~30 files created/modified
+- 5,708 lines of JavaScript/Astro/TypeScript/CSS
+- 3 phases, 9 plans
+- 3 days (2026-01-25 → 2026-01-27)
+
+**Git range:** `82ed631` (phase 5 start) → `617705b` (phase 7 complete)
+
+**What's next:** Testing framework, additional visualization features, user feedback
+
+---
+
 ## v1.0 Initial Release (Shipped: 2026-01-25)
 
 **Delivered:** Zero-config documentation site generator for GSD `.planning` folders with dev server, static build, search, theming, and milestone timeline.
