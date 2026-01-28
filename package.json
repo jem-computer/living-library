@@ -32,6 +32,8 @@
     "astro": "^5.16.11",
     "astro-pagefind": "^1.8.5",
     "astro-rehype-relative-markdown-links": "^0.18.1",
+    "cytoscape": "^3.33.1",
+    "cytoscape-dagre": "^2.5.0",
     "find-up": "^7.0.0",
     "get-port": "^7.1.0",
     "mdast-util-find-and-replace": "^3.0.2",
