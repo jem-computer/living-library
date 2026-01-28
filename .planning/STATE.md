@@ -67,6 +67,7 @@ Key v1.1 decisions (Phase 6):
 ### Pending Todos
 
 1. Add vitest & @testing-library for testing (area: testing)
+2. Audit markdown parsing brittleness (area: general)
 
 ### Blockers/Concerns
 
