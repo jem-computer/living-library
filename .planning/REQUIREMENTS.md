@@ -22,9 +22,9 @@ Requirements for v1.2 release. Focus: Testing & Robustness.
 
 ### Plugin Tests
 
-- [ ] **PLUG-01**: Unit tests for remarkGsdLinks (@path transformations)
-- [ ] **PLUG-02**: Unit tests for rehypeGsdBlocks (XML block styling)
-- [ ] **PLUG-03**: Unit tests for remarkNormalizeGsdTags (tag normalization)
+- [x] **PLUG-01**: Unit tests for remarkGsdLinks (@path transformations) ✓
+- [x] **PLUG-02**: Unit tests for rehypeGsdBlocks (XML block styling) ✓
+- [x] **PLUG-03**: Unit tests for remarkNormalizeGsdTags (tag normalization) ✓
 
 ### Edge Case Handling
 
@@ -75,9 +75,9 @@ Explicitly excluded. Documented to prevent scope creep.
 | PARSE-02 | Phase 9 | Complete |
 | PARSE-03 | Phase 9 | Complete |
 | PARSE-04 | Phase 9 | Complete |
-| PLUG-01 | Phase 10 | Pending |
-| PLUG-02 | Phase 10 | Pending |
-| PLUG-03 | Phase 10 | Pending |
+| PLUG-01 | Phase 10 | Complete |
+| PLUG-02 | Phase 10 | Complete |
+| PLUG-03 | Phase 10 | Complete |
 | EDGE-01 | Phase 11 | Pending |
 | EDGE-02 | Phase 11 | Pending |
 | EDGE-03 | Phase 11 | Pending |
@@ -93,4 +93,4 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ---
 *Requirements defined: 2026-01-27*
-*Last updated: 2026-01-27 after initial definition*
+*Last updated: 2026-01-27 — Phase 10 complete*

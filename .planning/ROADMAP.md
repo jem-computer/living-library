@@ -14,7 +14,7 @@ v1.2 focuses on testing and robustness. We establish vitest infrastructure, writ
 
 - [x] **Phase 8: Test Infrastructure** - vitest setup, test utilities, coverage ✓
 - [x] **Phase 9: Parsing Tests** - Unit tests for milestone/todo/dependency parsing ✓
-- [ ] **Phase 10: Plugin Tests** - Unit tests for remark/rehype plugins
+- [x] **Phase 10: Plugin Tests** - Unit tests for remark/rehype plugins ✓
 - [ ] **Phase 11: Edge Cases & Errors** - Graceful handling of malformed input
 
 ## Phase Details
@@ -66,8 +66,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md — Remark plugin tests (remarkGsdLinks, remarkNormalizeGsdTags)
-- [ ] 10-02-PLAN.md — Rehype plugin tests (rehypeGsdBlocks)
+- [x] 10-01-PLAN.md — Remark plugin tests (remarkGsdLinks, remarkNormalizeGsdTags) ✓
+- [x] 10-02-PLAN.md — Rehype plugin tests (rehypeGsdBlocks) ✓
 
 ---
 
@@ -97,7 +97,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 8. Test Infrastructure | 1/1 | Complete | 2026-01-27 |
 | 9. Parsing Tests | 4/4 | Complete | 2026-01-27 |
-| 10. Plugin Tests | 0/2 | Not started | - |
+| 10. Plugin Tests | 2/2 | Complete | 2026-01-27 |
 | 11. Edge Cases & Errors | 0/? | Not started | - |
 
 ---
