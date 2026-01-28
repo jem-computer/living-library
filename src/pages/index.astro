@@ -1,9 +1,9 @@
 ---
 /**
- * Homepage - redirects to PROJECT.md or first available doc
+ * Homepage - welcome page with quick links to visualization pages
  *
- * Checks for PROJECT entry and redirects, falls back to first entry,
- * or shows message if .planning is empty.
+ * Shows quick links to roadmap, timeline, dependencies, and todos pages.
+ * Falls back to redirect if no planning entries exist.
  */
 
 import { getCollection } from 'astro:content';
@@ -12,58 +12,227 @@ import { getCollection } from 'astro:content';
 const allEntries = await getCollection('planning');
 const projectEntry = allEntries.find(entry => entry.id.toLowerCase() === 'project');
 
-if (projectEntry) {
-  // PROJECT.md exists - redirect to it
-  return Astro.redirect(`/${projectEntry.id}`);
-}
-
-if (allEntries.length > 0) {
-  // Redirect to first entry
-  const firstEntry = allEntries[0];
-  return Astro.redirect(`/${firstEntry.id}`);
-}
-
-// No entries at all - show message
+// If no entries, show empty message
+const isEmpty = allEntries.length === 0;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Living Library</title>
+  <title>Living Library - Home</title>
+  <link rel="stylesheet" href="/src/styles/global.css">
   <style>
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
       margin: 0;
-      background-color: #f5f5f5;
+      padding: 0;
     }
-    .message {
+
+    .home-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-xl);
+    }
+
+    .hero {
       text-align: center;
-      padding: 2rem;
-      background: white;
+      padding: var(--spacing-xl) 0;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0 0 var(--spacing-md) 0;
+      color: var(--text-primary);
+    }
+
+    .hero p {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .quick-links {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .quick-links h2 {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-primary);
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .link-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-lg);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .link-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: var(--link-color);
+    }
+
+    .dark .link-card:hover {
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    }
+
+    .link-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .link-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .link-desc {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .quick-start {
+      text-align: center;
+      padding: var(--spacing-xl);
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .quick-start h3 {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      margin: 0 0 var(--spacing-md) 0;
+      color: var(--text-primary);
+    }
+
+    .quick-start a {
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .quick-start a:hover {
+      text-decoration: underline;
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: var(--spacing-xl);
+      background: var(--bg-secondary);
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-      color: #333;
-      margin: 0 0 1rem;
+
+    .empty-message h1 {
+      color: var(--text-primary);
+      margin: 0 0 var(--spacing-md) 0;
     }
-    p {
-      color: #666;
-      margin: 0;
+
+    .empty-message p {
+      color: var(--text-secondary);
+      margin: var(--spacing-sm) 0;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .links-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-container {
+        padding: var(--spacing-lg);
+      }
     }
   </style>
+  <script>
+    // Theme detection
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.toggle('dark', isDark);
+  </script>
 </head>
 <body>
-  <div class="message">
-    <h1>No Planning Documents Found</h1>
-    <p>The .planning folder exists but contains no markdown files.</p>
-    <p>Add some .md files to get started.</p>
-  </div>
+  {isEmpty ? (
+    <div class="home-container">
+      <div class="empty-message">
+        <h1>No Planning Documents Found</h1>
+        <p>The .planning folder exists but contains no markdown files.</p>
+        <p>Add some .md files to get started.</p>
+      </div>
+    </div>
+  ) : (
+    <div class="home-container">
+      <div class="hero">
+        <h1>Living Library</h1>
+        <p>Browse and explore your project planning documentation</p>
+      </div>
+
+      <section class="quick-links">
+        <h2>Quick Links</h2>
+        <div class="links-grid">
+          <a href="/roadmap" class="link-card">
+            <span class="link-icon">📋</span>
+            <span class="link-title">Roadmap</span>
+            <span class="link-desc">View phase status and progress</span>
+          </a>
+
+          <a href="/timeline" class="link-card">
+            <span class="link-icon">📅</span>
+            <span class="link-title">Timeline</span>
+            <span class="link-desc">Milestone history and completion</span>
+          </a>
+
+          <a href="/dependencies" class="link-card">
+            <span class="link-icon">🔗</span>
+            <span class="link-title">Dependencies</span>
+            <span class="link-desc">See how phases connect</span>
+          </a>
+
+          <a href="/todos" class="link-card">
+            <span class="link-icon">✅</span>
+            <span class="link-title">Todos</span>
+            <span class="link-desc">Outstanding tasks and improvements</span>
+          </a>
+        </div>
+      </section>
+
+      <div class="quick-start">
+        <h3>Getting Started</h3>
+        <p>
+          {projectEntry ? (
+            <>View the <a href={`/${projectEntry.id}`}>PROJECT</a> overview</>
+          ) : (
+            <>Explore the documentation using the navigation sidebar</>
+          )}
+        </p>
+      </div>
+    </div>
+  )}
 </body>
 </html>
