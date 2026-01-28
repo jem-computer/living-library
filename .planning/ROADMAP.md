@@ -28,10 +28,10 @@ v1.2 focuses on testing and robustness. We establish vitest infrastructure, writ
   2. At least one passing test exists to validate setup
   3. Test utilities can mock Astro content collection structure
   4. Coverage report generates showing tested/untested files
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 08-01: vitest configuration and first test
+- [ ] 08-01-PLAN.md - Vitest setup, coverage config, mock utilities, first test
 
 ---
 
@@ -94,7 +94,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 8. Test Infrastructure | 0/? | Not started | - |
+| 8. Test Infrastructure | 0/1 | Planned | - |
 | 9. Parsing Tests | 0/? | Not started | - |
 | 10. Plugin Tests | 0/? | Not started | - |
 | 11. Edge Cases & Errors | 0/? | Not started | - |
