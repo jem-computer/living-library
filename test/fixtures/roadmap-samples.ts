@@ -28,7 +28,7 @@ export function createMilestone(options: {
 
   return `# Milestone ${version}: ${name}
 
-**Goal:** ${goal}
+**Goal**: ${goal}
 
 ${phaseBlocks}`;
 }
@@ -63,7 +63,8 @@ export function createArchivedMilestone(options: {
   phases: Array<{ num: number; name: string; date?: string }>;
 }): string {
   const { version, name, shippedDate, phases } = options;
-  const statusLine = shippedDate ? `**Status:** ✅ SHIPPED ${shippedDate}` : '';
+  // Match the pattern milestones.js expects: **Status**: (colon outside bold)
+  const statusLine = shippedDate ? `**Status**: ✅ SHIPPED ${shippedDate}` : '';
 
   const phaseBlocks = phases.map(p =>
     `### Phase ${p.num}: ${p.name} ✓\n**Completed:** ${p.date || '2026-01-01'}`
