@@ -66,7 +66,7 @@ Key v1.1 decisions (Phase 6):
 
 ### Pending Todos
 
-None.
+1. Add vitest & @testing-library for testing (area: testing)
 
 ### Blockers/Concerns
 
