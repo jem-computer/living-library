@@ -1,0 +1,549 @@
+---
+/**
+ * Roadmap Kanban Board Page
+ * Displays phases grouped by status (pending/active/complete)
+ * Alternative view to timeline page
+ */
+
+import DocLayout from '../layouts/DocLayout.astro';
+import { getMilestones } from '../lib/milestones.js';
+import { buildNavTree } from '../lib/navigation.js';
+import { getCollection } from 'astro:content';
+
+const docs = await getCollection('planning');
+const navTree = buildNavTree(docs);
+const currentPath = '/roadmap';
+const milestones = await getMilestones();
+
+// Helper: Generate phase URL
+function getPhaseUrl(phaseNumber, phaseName) {
+  const paddedNum = String(phaseNumber).padStart(2, '0');
+  const slug = phaseName
+    .toLowerCase()
+    .replace(/&/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `/phases/${paddedNum}-${slug}/`;
+}
+
+// Helper: Group phases by status
+function groupPhasesByStatus(phases) {
+  const pending = [];
+  const active = [];
+  const complete = [];
+
+  let foundFirstIncomplete = false;
+
+  for (const phase of phases) {
+    if (phase.complete) {
+      complete.push(phase);
+    } else if (!foundFirstIncomplete) {
+      active.push(phase);
+      foundFirstIncomplete = true;
+    } else {
+      pending.push(phase);
+    }
+  }
+
+  return { pending, active, complete };
+}
+---
+
+<DocLayout
+  headings={[]}
+  currentPath={currentPath}
+  navTree={navTree}
+  title="Roadmap"
+>
+  <div class="roadmap-page">
+    <header class="page-header">
+      <h1>Project Roadmap</h1>
+      <p class="page-description">
+        Phase status across milestones — Kanban board view
+      </p>
+    </header>
+
+    {milestones.length === 0 ? (
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 16 16" aria-hidden="true">
+          <rect x="2" y="2" width="4" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
+          <rect x="7" y="4" width="4" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
+          <rect x="12" y="6" width="2" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <h2>No milestones found</h2>
+        <p>Create a ROADMAP.md in .planning/ to see your project roadmap.</p>
+      </div>
+    ) : (
+      <div>
+        {milestones.length > 1 && (
+          <div class="milestone-tabs">
+            {milestones.map((milestone, index) => (
+              <button
+                class="tab-button"
+                data-milestone={milestone.version}
+                data-active={index === 0}
+              >
+                {milestone.version}
+                {milestone.active && <span class="tab-badge">Current</span>}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {milestones.map((milestone, index) => {
+          const { pending, active, complete } = groupPhasesByStatus(milestone.phases);
+
+          return (
+            <div
+              class="kanban-board"
+              data-milestone={milestone.version}
+              data-visible={index === 0}
+            >
+              <div class="board-header">
+                <h2 class="milestone-title">
+                  {milestone.version}: {milestone.name}
+                </h2>
+                <p class="milestone-description">{milestone.description}</p>
+                <div class="milestone-progress">
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      style={`width: ${(milestone.completedPhases / milestone.phaseCount) * 100}%`}
+                    ></div>
+                  </div>
+                  <span class="progress-text">
+                    {milestone.completedPhases} / {milestone.phaseCount} phases complete
+                  </span>
+                </div>
+              </div>
+
+              <div class="kanban-columns">
+                {/* Pending Column */}
+                <div class="kanban-column" data-status="pending">
+                  <h3 class="column-header">
+                    Pending
+                    <span class="count-badge">{pending.length}</span>
+                  </h3>
+                  <div class="column-content">
+                    {pending.length === 0 ? (
+                      <p class="empty-column">No pending phases</p>
+                    ) : (
+                      pending.map((phase) => (
+                        <a href={getPhaseUrl(phase.number, phase.name)} class="phase-card">
+                          <div class="phase-header">
+                            <span class="phase-number">Phase {phase.number}</span>
+                          </div>
+                          <h4 class="phase-name">{phase.name}</h4>
+                          <p class="phase-description">{phase.description}</p>
+                        </a>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {/* In Progress Column */}
+                <div class="kanban-column" data-status="active">
+                  <h3 class="column-header">
+                    In Progress
+                    <span class="count-badge">{active.length}</span>
+                  </h3>
+                  <div class="column-content">
+                    {active.length === 0 ? (
+                      <p class="empty-column">No active phases</p>
+                    ) : (
+                      active.map((phase) => (
+                        <a href={getPhaseUrl(phase.number, phase.name)} class="phase-card">
+                          <div class="phase-header">
+                            <span class="phase-number">Phase {phase.number}</span>
+                            <span class="phase-badge phase-badge--active">Active</span>
+                          </div>
+                          <h4 class="phase-name">{phase.name}</h4>
+                          <p class="phase-description">{phase.description}</p>
+                        </a>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {/* Complete Column */}
+                <div class="kanban-column" data-status="complete">
+                  <h3 class="column-header">
+                    Complete
+                    <span class="count-badge">{complete.length}</span>
+                  </h3>
+                  <div class="column-content">
+                    {complete.length === 0 ? (
+                      <p class="empty-column">No completed phases</p>
+                    ) : (
+                      complete.map((phase) => (
+                        <a href={getPhaseUrl(phase.number, phase.name)} class="phase-card">
+                          <div class="phase-header">
+                            <span class="phase-number">Phase {phase.number}</span>
+                            <span class="phase-badge phase-badge--complete">✓</span>
+                          </div>
+                          <h4 class="phase-name">{phase.name}</h4>
+                          <p class="phase-description">{phase.description}</p>
+                          {phase.completedDate && (
+                            <p class="phase-date">
+                              <time datetime={phase.completedDate}>{phase.completedDate}</time>
+                            </p>
+                          )}
+                        </a>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</DocLayout>
+
+<style>
+  .roadmap-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .page-header h1 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .page-description {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    color: var(--text-secondary);
+  }
+
+  .empty-state svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+  }
+
+  .empty-state h2 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+  }
+
+  .empty-state p {
+    margin: 0;
+    font-size: var(--font-size-base);
+  }
+
+  /* Milestone Tabs */
+  .milestone-tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-color);
+    overflow-x: auto;
+  }
+
+  .tab-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+    margin-bottom: -2px;
+  }
+
+  .tab-button:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-hover);
+  }
+
+  .tab-button[data-active="true"] {
+    color: var(--link-color);
+    border-bottom-color: var(--link-color);
+  }
+
+  .tab-badge {
+    display: inline-block;
+    margin-left: var(--spacing-xs);
+    padding: 2px 6px;
+    font-size: var(--font-size-xs);
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--link-color);
+    border-radius: 3px;
+  }
+
+  /* Kanban Board */
+  .kanban-board {
+    display: none;
+  }
+
+  .kanban-board[data-visible="true"] {
+    display: block;
+  }
+
+  .board-header {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+  }
+
+  .milestone-title {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .milestone-description {
+    margin: 0 0 var(--spacing-md) 0;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+  }
+
+  .milestone-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background-color: var(--link-color);
+    transition: width var(--transition-base);
+  }
+
+  .progress-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* Kanban Columns */
+  .kanban-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+  }
+
+  .kanban-column {
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+  }
+
+  .column-header {
+    margin: 0 0 var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+  }
+
+  /* Column-specific styling */
+  .kanban-column[data-status="pending"] .column-header {
+    background-color: rgba(107, 114, 128, 0.1);
+  }
+
+  .kanban-column[data-status="active"] .column-header {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--link-color);
+  }
+
+  .kanban-column[data-status="complete"] .column-header {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--text-success, #10b981);
+  }
+
+  /* Column Content */
+  .column-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .empty-column {
+    padding: var(--spacing-lg);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+  }
+
+  /* Phase Cards */
+  .phase-card {
+    padding: var(--spacing-md);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .phase-card:hover {
+    border-color: var(--link-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .phase-number {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .phase-badge {
+    padding: 2px 8px;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .phase-badge--active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--link-color);
+  }
+
+  .phase-badge--complete {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--text-success, #10b981);
+  }
+
+  .phase-name {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  .phase-description {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .phase-date {
+    margin: var(--spacing-xs) 0 0 0;
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+  }
+
+  /* Responsive - Tablet */
+  @media (max-width: 1024px) {
+    .roadmap-page {
+      padding: var(--spacing-lg);
+    }
+
+    .kanban-columns {
+      gap: var(--spacing-md);
+    }
+  }
+
+  /* Responsive - Mobile */
+  @media (max-width: 768px) {
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .kanban-columns {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .kanban-column {
+      min-height: auto;
+    }
+
+    .phase-card {
+      padding: var(--spacing-sm);
+    }
+  }
+</style>
+
+<script>
+  // Milestone tab switching
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const boards = document.querySelectorAll('.kanban-board');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const milestone = button.getAttribute('data-milestone');
+
+      // Update active tab
+      tabButtons.forEach(btn => btn.setAttribute('data-active', 'false'));
+      button.setAttribute('data-active', 'true');
+
+      // Show corresponding board
+      boards.forEach(board => {
+        if (board.getAttribute('data-milestone') === milestone) {
+          board.setAttribute('data-visible', 'true');
+        } else {
+          board.setAttribute('data-visible', 'false');
+        }
+      });
+    });
+  });
+</script>
