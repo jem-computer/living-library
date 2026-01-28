@@ -63,11 +63,11 @@ Plans:
   2. rehypeGsdBlocks wraps XML tags with styled containers
   3. remarkNormalizeGsdTags handles angle brackets in raw text
   4. Plugin tests run against markdown strings, not full Astro builds
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: Remark plugin tests (remarkGsdLinks, remarkNormalizeGsdTags)
-- [ ] 10-02: Rehype plugin tests (rehypeGsdBlocks)
+- [ ] 10-01-PLAN.md — Remark plugin tests (remarkGsdLinks, remarkNormalizeGsdTags)
+- [ ] 10-02-PLAN.md — Rehype plugin tests (rehypeGsdBlocks)
 
 ---
 
@@ -97,7 +97,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 8. Test Infrastructure | 1/1 | Complete | 2026-01-27 |
 | 9. Parsing Tests | 4/4 | Complete | 2026-01-27 |
-| 10. Plugin Tests | 0/? | Not started | - |
+| 10. Plugin Tests | 0/2 | Not started | - |
 | 11. Edge Cases & Errors | 0/? | Not started | - |
 
 ---
