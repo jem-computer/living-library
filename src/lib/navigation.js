@@ -25,6 +25,18 @@
  * @returns {NavNode[]} - Nested tree structure
  */
 export function buildNavTree(entries) {
+  // Create GSD section with visualization pages (at top of nav)
+  const gsdSection = {
+    name: 'GSD',
+    path: null,
+    children: [
+      { name: 'Roadmap', path: '/roadmap', children: [] },
+      { name: 'Timeline', path: '/timeline', children: [] },
+      { name: 'Dependencies', path: '/dependencies', children: [] },
+      { name: 'Todos', path: '/todos', children: [] }
+    ]
+  };
+
   const tree = {};
   const rootFiles = [];
 
@@ -76,7 +88,10 @@ export function buildNavTree(entries) {
   // Second pass: convert tree object to array of NavNodes
   const result = [];
 
-  // Add root files first (PROJECT, ROADMAP, STATE, etc.)
+  // Add GSD section at top
+  result.push(gsdSection);
+
+  // Add root files (PROJECT, ROADMAP, STATE, etc.)
   result.push(...sortGsdItems(rootFiles));
 
   // Add folder trees
@@ -89,11 +104,12 @@ export function buildNavTree(entries) {
     result.push(folderNode);
   }
 
-  // Sort folders using GSD-aware sorting
+  // Sort folders using GSD-aware sorting (but keep GSD section at top)
+  const gsd = result.shift(); // Remove GSD section temporarily
   const sortedFolders = result.filter(node => node.children);
   const sortedRootFiles = result.filter(node => !node.children);
 
-  return [...sortedRootFiles, ...sortGsdItems(sortedFolders)];
+  return [gsd, ...sortedRootFiles, ...sortGsdItems(sortedFolders)];
 }
 
 /**
