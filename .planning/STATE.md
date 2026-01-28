@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-27)
 
 **Core value:** Any repo with a `.planning` folder can instantly preview it as a clean, searchable documentation site
-**Current focus:** Phase 10 - Plugin Tests
+**Current focus:** Phase 11 - Edge Cases & Error Handling
 
 ## Current Position
 
-Phase: 10 of 11 (Plugin Tests) ✓
-Plan: 2 of 2 complete
-Status: Phase verified
-Last activity: 2026-01-27 — Completed Phase 10 (Plugin Tests)
+Phase: 11 of 11 (Edge Cases & Errors)
+Plan: 2 of 2 (plugin hardening complete)
+Status: In progress
+Last activity: 2026-01-28 — Completed 11-02-PLAN.md (Plugin Hardening)
 
-Progress: [###################.] v1.0+v1.1 shipped, v1.2 in progress (10/11 phases, 29 plans complete)
+Progress: [####################] v1.0+v1.1 shipped, v1.2 in progress (10/11 phases, 31 plans complete)
 
 ## Performance Metrics
 
@@ -28,14 +28,14 @@ Progress: [###################.] v1.0+v1.1 shipped, v1.2 in progress (10/11 phas
 - Timeline: 3 days
 
 **v1.2 Milestone:**
-- Plans completed: 7
-- Current phase: 10-plugin-tests (verified)
-- Average duration: 2.4 min per plan
+- Plans completed: 9
+- Current phase: 11-edge-cases-errors (in progress)
+- Average duration: 2.6 min per plan
 
 **Cumulative:**
-- Phases: 10 complete
-- Plans: 29 complete
-- LOC: ~8,600
+- Phases: 10 complete + 11 in progress
+- Plans: 31 complete
+- LOC: ~8,800
 
 ## Accumulated Context
 
@@ -56,6 +56,8 @@ Recent:
 - Comprehensive edge case coverage including empty entries and deep nesting (09-04)
 - Use unified ecosystem packages directly as dev dependencies for test clarity (10-01)
 - Test actual plugin behavior not assumptions (punctuation in URLs, HTML entities) (10-01)
+- Silent pass-through on error: no console.warn/error in plugins, user sees raw text (11-02)
+- Independent try-catch per visit pass for plugin resilience (11-02)
 
 ### Pending Todos
 
@@ -71,11 +73,11 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-27
-Stopped at: Phase 10 verified
+Last session: 2026-01-28
+Stopped at: Completed 11-02-PLAN.md
 Resume file: None
-Next: `/gsd:discuss-phase 11` or `/gsd:plan-phase 11`
+Next: Execute 11-01-PLAN.md or verify Phase 11
 
 ---
 *State initialized: 2026-01-24*
-*Last updated: 2026-01-27 — Phase 10 verified (Plugin Tests) - 68 plugin tests, 98% avg coverage*
+*Last updated: 2026-01-28 — Completed 11-02 (Plugin Hardening) - 15 new edge case tests, 153 total tests*
