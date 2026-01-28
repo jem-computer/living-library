@@ -63,6 +63,12 @@ Plans:
 3. `/roadmap` page shows interactive roadmap visualization from ROADMAP.md
 4. All visualization pages are linked from navigation
 
+Plans:
+- [ ] 07-01-PLAN.md — Create todo extraction module (getTodos from files + PLAN checkboxes)
+- [ ] 07-02-PLAN.md — Create dependency graph module (buildDependencyGraph for Cytoscape.js)
+- [ ] 07-03-PLAN.md — Create visualization pages (/todos, /dependencies, /roadmap)
+- [ ] 07-04-PLAN.md — Wire navigation and add shared visualization styles
+
 ---
 
 ## Milestone Summary
