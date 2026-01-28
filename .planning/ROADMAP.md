@@ -1,6 +1,6 @@
 # Milestone v1.1: Production Ready
 
-**Status:** In Progress
+**Status:** Complete
 **Phases:** 5-7
 **Goal:** Make living-library actually work for real users — fix npm distribution, enhance GSD rendering, add visualization features.
 
@@ -51,23 +51,24 @@ Plans:
 
 ---
 
-### Phase 7: GSD Enhancements
+### Phase 7: GSD Enhancements ✓
 
 **Goal**: Visualization features that make GSD planning docs genuinely useful to browse
 **Depends on**: Phase 6 (rendering infrastructure in place)
 **Requirements**: GSD-05, GSD-06, GSD-07
+**Completed**: 2026-01-28
 
 **Success Criteria:**
-1. `/todos` page shows all todos aggregated from phase files, grouped by status
-2. `/dependencies` page shows phase dependency graph (which phases block which)
-3. `/roadmap` page shows interactive roadmap visualization from ROADMAP.md
-4. All visualization pages are linked from navigation
+1. ✓ `/todos` page shows all todos aggregated from phase files, grouped by status
+2. ✓ `/dependencies` page shows phase dependency graph (which phases block which)
+3. ✓ `/roadmap` page shows interactive roadmap visualization from ROADMAP.md
+4. ✓ All visualization pages are linked from navigation
 
 Plans:
-- [ ] 07-01-PLAN.md — Create todo extraction module (getTodos from files + PLAN checkboxes)
-- [ ] 07-02-PLAN.md — Create dependency graph module (buildDependencyGraph for Cytoscape.js)
-- [ ] 07-03-PLAN.md — Create visualization pages (/todos, /dependencies, /roadmap)
-- [ ] 07-04-PLAN.md — Wire navigation and add shared visualization styles
+- [x] 07-01-PLAN.md — Create todo extraction module (getTodos from files + PLAN checkboxes)
+- [x] 07-02-PLAN.md — Create dependency graph module (buildDependencyGraph for Cytoscape.js)
+- [x] 07-03-PLAN.md — Create visualization pages (/todos, /dependencies, /roadmap)
+- [x] 07-04-PLAN.md — Wire navigation and add shared visualization styles
 
 ---
 
@@ -83,4 +84,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-01-25*
-*Last updated: 2026-01-26*
+*Last updated: 2026-01-28*

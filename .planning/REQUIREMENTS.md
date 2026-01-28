@@ -25,9 +25,9 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### GSD Enhancements
 
-- [ ] **GSD-05**: Todo aggregation page collects todos from all phases by status
-- [ ] **GSD-06**: Phase dependencies graph visualizes phase relationships
-- [ ] **GSD-07**: Roadmap visualization page (interactive view from ROADMAP.md)
+- [x] **GSD-05**: Todo aggregation page collects todos from all phases by status ✓
+- [x] **GSD-06**: Phase dependencies graph visualizes phase relationships ✓
+- [x] **GSD-07**: Roadmap visualization page (interactive view from ROADMAP.md) ✓
 
 ## Future Requirements
 
@@ -65,9 +65,9 @@ Explicitly excluded. Documented to prevent scope creep.
 | RENDER-04 | Phase 6 | Complete |
 | RENDER-05 | Phase 6 | Complete |
 | RENDER-06 | Phase 6 | Complete |
-| GSD-05 | Phase 7 | Pending |
-| GSD-06 | Phase 7 | Pending |
-| GSD-07 | Phase 7 | Pending |
+| GSD-05 | Phase 7 | Complete |
+| GSD-06 | Phase 7 | Complete |
+| GSD-07 | Phase 7 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 13 total
@@ -76,4 +76,4 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ---
 *Requirements defined: 2026-01-25*
-*Last updated: 2026-01-25 after v1.1 milestone start*
+*Last updated: 2026-01-28 after Phase 7 completion*
