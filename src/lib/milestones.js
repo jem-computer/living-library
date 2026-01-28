@@ -44,30 +44,60 @@ export async function getMilestones() {
     return [];
   }
 
-  // For v1, we have a single "active" milestone containing all phases
-  // Future: Parse milestones/ folder for versioned releases
+  // Parse milestone header: # Milestone vX.X: Name
+  const milestoneInfo = parseMilestoneHeader(body);
   const completedPhases = phases.filter(p => p.complete).length;
   const allComplete = completedPhases === phases.length;
 
   return [{
-    version: 'v1.0',
-    name: 'Initial Release',
+    version: milestoneInfo.version,
+    name: milestoneInfo.name,
     status: allComplete ? 'complete' : 'active',
     active: !allComplete,
     phaseCount: phases.length,
     completedPhases,
     phases,
-    description: 'First production release of living-library'
+    description: milestoneInfo.goal
   }];
 }
 
 /**
+ * Parse milestone version and name from ROADMAP.md header
+ * @param {string} body - Markdown body content
+ * @returns {{ version: string, name: string, goal: string }}
+ */
+function parseMilestoneHeader(body) {
+  // Match: # Milestone vX.X: Name
+  const headerMatch = body.match(/^#\s*Milestone\s+(v[\d.]+):\s*(.+)$/m);
+
+  // Match: **Goal:** description
+  const goalMatch = body.match(/^\*\*Goal\*\*:\s*(.+)$/m);
+
+  if (headerMatch) {
+    return {
+      version: headerMatch[1],
+      name: headerMatch[2].trim(),
+      goal: goalMatch ? goalMatch[1].trim() : headerMatch[2].trim()
+    };
+  }
+
+  // Fallback for simple # Title format
+  const simpleTitleMatch = body.match(/^#\s+([^\n]+)/m);
+
+  return {
+    version: 'v1.0',
+    name: simpleTitleMatch ? simpleTitleMatch[1].trim() : 'Current Milestone',
+    goal: goalMatch ? goalMatch[1].trim() : 'Project milestone'
+  };
+}
+
+/**
  * Parse phase data from ROADMAP.md body
- * Looks for patterns like:
- * - [x] **Phase 1: CLI Foundation** - Description
- * - [ ] **Phase 2: Content Navigation** - Description
+ * Supports multiple formats:
+ * 1. Header format: ### Phase N: Name ✓
+ * 2. Checkbox format: - [x] **Phase N: Name** - Description
  *
- * Also parses Progress table for completion dates
+ * Also extracts goal and completion dates from phase content
  *
  * @param {string} body - Markdown body content
  * @returns {Phase[]}
@@ -75,12 +105,43 @@ export async function getMilestones() {
 function parsePhases(body) {
   const phases = [];
 
-  // Match phase checkboxes in Phases section
-  // Pattern: - [x] **Phase N: Name** - Description
-  // Or: - [x] **Phase N: Name** — Description (em dash)
-  const phaseRegex = /^- \[(x| )\] \*\*Phase (\d+): ([^*]+)\*\*\s*[-—]\s*(.+)$/gm;
+  // First try header format: ### Phase N: Name (with optional ✓)
+  // This is the GSD workflow format
+  const headerRegex = /^###\s*Phase\s+(\d+):\s*([^\n✓]+)(✓)?/gm;
 
   let match;
+  while ((match = headerRegex.exec(body)) !== null) {
+    const phaseNum = parseInt(match[1], 10);
+    const phaseName = match[2].trim();
+    const isComplete = !!match[3];
+
+    // Extract goal from **Goal**: line that follows
+    const afterHeader = body.slice(match.index);
+    const goalMatch = afterHeader.match(/\*\*Goal\*\*:\s*([^\n]+)/);
+    const description = goalMatch ? goalMatch[1].trim() : phaseName;
+
+    // Extract completion date from **Completed**: line
+    const completedMatch = afterHeader.match(/\*\*Completed\*\*:\s*(\d{4}-\d{2}-\d{2})/);
+    const completedDate = completedMatch ? completedMatch[1] : undefined;
+
+    phases.push({
+      number: phaseNum,
+      name: phaseName,
+      description,
+      complete: isComplete,
+      completedDate
+    });
+  }
+
+  // If header format found phases, use those
+  if (phases.length > 0) {
+    return phases.sort((a, b) => a.number - b.number);
+  }
+
+  // Fallback: checkbox format (legacy)
+  // Pattern: - [x] **Phase N: Name** - Description
+  const phaseRegex = /^- \[(x| )\] \*\*Phase (\d+): ([^*]+)\*\*\s*[-—]\s*(.+)$/gm;
+
   while ((match = phaseRegex.exec(body)) !== null) {
     phases.push({
       number: parseInt(match[2], 10),
