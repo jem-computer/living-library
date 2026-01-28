@@ -83,11 +83,11 @@ Plans:
   5. Empty .planning folder shows "no content" message
   6. Parse errors include file path and line number
   7. Recoverable issues log warnings, not throw exceptions
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 11-01: Add edge case handling to parsers
-- [ ] 11-02: Add error formatting with context
+- [ ] 11-01-PLAN.md — Harden parsers with defensive edge case handling + tests
+- [ ] 11-02-PLAN.md — Harden plugins with defensive edge case handling + tests
 
 ---
 
@@ -98,7 +98,7 @@ Plans:
 | 8. Test Infrastructure | 1/1 | Complete | 2026-01-27 |
 | 9. Parsing Tests | 4/4 | Complete | 2026-01-27 |
 | 10. Plugin Tests | 2/2 | Complete | 2026-01-27 |
-| 11. Edge Cases & Errors | 0/? | Not started | - |
+| 11. Edge Cases & Errors | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-27*
