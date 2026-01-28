@@ -339,4 +339,116 @@ describe('dependencies.js', () => {
       expect(graph.milestones).toEqual(['v1.0']);
     });
   });
+
+  describe('edge cases', () => {
+    it('should handle null body from roadmap entry', async () => {
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', null as unknown as string)
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { buildDependencyGraph } = await import('../../../src/lib/dependencies.js');
+      const graph = await buildDependencyGraph();
+
+      expect(graph.nodes).toEqual([]);
+      expect(graph.edges).toEqual([]);
+    });
+
+    it('should silently drop edges referencing non-existent phases', async () => {
+      const mockBody = `# Milestone v1.0: Test
+
+### Phase 1: Setup
+**Goal:** Initial setup
+
+### Phase 3: Testing
+**Goal:** Add tests
+**Depends on**: Phase 99`;
+
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', mockBody)
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { buildDependencyGraph } = await import('../../../src/lib/dependencies.js');
+      const graph = await buildDependencyGraph();
+
+      // Phase 99 doesn't exist, so the edge is dropped
+      expect(graph.nodes).toHaveLength(2);
+      expect(graph.edges).toHaveLength(0);
+    });
+
+    it('should handle phase with no depends_on line', async () => {
+      const mockBody = `# Milestone v1.0: Test
+
+### Phase 1: Setup
+**Goal:** No dependency line here
+
+### Phase 2: Build
+**Goal:** Also no dependency`;
+
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', mockBody)
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { buildDependencyGraph } = await import('../../../src/lib/dependencies.js');
+      const graph = await buildDependencyGraph();
+
+      expect(graph.nodes).toHaveLength(2);
+      expect(graph.edges).toHaveLength(0);
+    });
+
+    it('should handle roadmap with only headers, no phase content', async () => {
+      const mockBody = `# Milestone v1.0: Sparse
+
+### Phase 1: Name
+### Phase 2: Other Name`;
+
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', mockBody)
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { buildDependencyGraph } = await import('../../../src/lib/dependencies.js');
+      const graph = await buildDependencyGraph();
+
+      // Nodes created with default values
+      expect(graph.nodes).toHaveLength(2);
+      expect(graph.nodes[0].id).toBe('phase-1');
+      expect(graph.nodes[1].id).toBe('phase-2');
+      expect(graph.edges).toHaveLength(0);
+    });
+
+    it('should handle getCollection throwing error for archived milestones', async () => {
+      const currentBody = `# Milestone v1.0: Test
+
+### Phase 1: Setup
+**Goal:** Testing`;
+
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', currentBody)
+      );
+      vi.mocked(getCollection).mockRejectedValue(new Error('Collection error'));
+
+      const { buildDependencyGraph } = await import('../../../src/lib/dependencies.js');
+      const graph = await buildDependencyGraph();
+
+      // Returns current roadmap data only, no throw
+      expect(graph.nodes).toHaveLength(1);
+      expect(graph.nodes[0].id).toBe('phase-1');
+    });
+
+    it('should handle whitespace-only body', async () => {
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', '   \n\n  ')
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { buildDependencyGraph } = await import('../../../src/lib/dependencies.js');
+      const graph = await buildDependencyGraph();
+
+      expect(graph.nodes).toEqual([]);
+      expect(graph.edges).toEqual([]);
+    });
+  });
 });

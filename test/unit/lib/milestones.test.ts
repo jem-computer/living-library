@@ -384,5 +384,118 @@ describe('milestones.js', () => {
       expect(milestones[0].phases[0].number).toBe(1);
       expect(milestones[0].phases[1].number).toBe(2);
     });
+
+    it('should handle null body from getEntry', async () => {
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', null as unknown as string)
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      expect(milestones).toEqual([]);
+    });
+
+    it('should handle ROADMAP.md with only whitespace', async () => {
+      vi.mocked(getEntry).mockResolvedValue(
+        mockContentEntry('roadmap', '   \n\n  ')
+      );
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      expect(milestones).toEqual([]);
+    });
+
+    it('should handle phase header without colon separator', async () => {
+      const mockBody = `# Milestone v1.0: Test
+
+### Phase 1 Setup
+**Goal:** Missing colon
+
+### Phase 2: Valid Phase
+**Goal:** Has colon`;
+
+      vi.mocked(getEntry).mockResolvedValue(mockContentEntry('roadmap', mockBody));
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      // Phase 1 is skipped (no colon after number), Phase 2 parsed
+      expect(milestones[0].phases).toHaveLength(1);
+      expect(milestones[0].phases[0].number).toBe(2);
+    });
+
+    it('should handle extremely long phase names', async () => {
+      const longName = 'A'.repeat(500);
+      const mockBody = `# Milestone v1.0: Test
+
+### Phase 1: ${longName}
+**Goal:** Long name phase`;
+
+      vi.mocked(getEntry).mockResolvedValue(mockContentEntry('roadmap', mockBody));
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      expect(milestones[0].phases).toHaveLength(1);
+      expect(milestones[0].phases[0].name).toBe(longName);
+    });
+
+    it('should handle [X] (uppercase) in legacy checkbox format', async () => {
+      const mockBody = `# Milestone v1.0: Legacy
+
+- [X] **Phase 1: Done Phase** - Completed with uppercase X
+- [ ] **Phase 2: Pending Phase** - Still pending`;
+
+      vi.mocked(getEntry).mockResolvedValue(mockContentEntry('roadmap', mockBody));
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      expect(milestones[0].phases).toHaveLength(2);
+      expect(milestones[0].phases[0].complete).toBe(true);
+      expect(milestones[0].phases[1].complete).toBe(false);
+    });
+
+    it('should handle malformed milestone header', async () => {
+      const mockBody = `# Not a milestone format
+
+### Phase 1: Setup
+**Goal:** Testing`;
+
+      vi.mocked(getEntry).mockResolvedValue(mockContentEntry('roadmap', mockBody));
+      vi.mocked(getCollection).mockResolvedValue([]);
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      // Uses fallback version/name from simple # Title format
+      expect(milestones[0].version).toBe('v1.0');
+      expect(milestones[0].name).toBe('Not a milestone format');
+    });
+
+    it('should handle getCollection throwing error', async () => {
+      const mockBody = createMilestone({
+        version: 'v1.0',
+        name: 'Test',
+        phases: [{ num: 1, name: 'Phase' }]
+      });
+
+      vi.mocked(getEntry).mockResolvedValue(mockContentEntry('roadmap', mockBody));
+      vi.mocked(getCollection).mockRejectedValue(new Error('Collection failed'));
+
+      const { getMilestones } = await import('../../../src/lib/milestones.js');
+      const milestones = await getMilestones();
+
+      // Returns current milestone only, no throw
+      expect(milestones).toHaveLength(1);
+      expect(milestones[0].version).toBe('v1.0');
+    });
   });
 });

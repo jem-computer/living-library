@@ -297,6 +297,113 @@ describe('todos.js', () => {
     });
   });
 
+  describe('edge cases', () => {
+    it('should handle plan file with empty body', async () => {
+      const plan = mockContentEntry(
+        'phases/06-prettier-rendering/06-01-PLAN.md',
+        ''
+      );
+
+      vi.mocked(getCollection).mockResolvedValue([plan]);
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      expect(todos).toEqual([]);
+    });
+
+    it('should handle plan file with null body', async () => {
+      const plan = mockContentEntry(
+        'phases/06-prettier-rendering/06-01-PLAN.md',
+        null as unknown as string
+      );
+
+      vi.mocked(getCollection).mockResolvedValue([plan]);
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      // No crash, skipped
+      expect(todos).toEqual([]);
+    });
+
+    it('should handle standalone todo with no frontmatter fields', async () => {
+      const standalone = mockContentEntry('todos/pending/empty-frontmatter.md', '', {});
+
+      vi.mocked(getCollection).mockResolvedValue([standalone]);
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      expect(todos).toHaveLength(1);
+      expect(todos[0].title).toBe('Untitled Todo');
+      expect(todos[0].area).toBe('general');
+      expect(todos[0].created).toBe(null);
+    });
+
+    it('should handle getCollection throwing for standalone todos', async () => {
+      vi.mocked(getCollection).mockRejectedValue(new Error('Collection failed'));
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      // Returns empty array, no throw
+      expect(todos).toEqual([]);
+    });
+
+    it('should handle plan file with markdown but no checkboxes', async () => {
+      const plan = mockContentEntry(
+        'phases/06-prettier-rendering/06-01-PLAN.md',
+        '## Overview\n\nSome description.\n\n- Regular bullet\n- Another bullet\n\n### Section\n\nMore content.'
+      );
+
+      vi.mocked(getCollection).mockResolvedValue([plan]);
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      expect(todos).toEqual([]);
+    });
+
+    it('should handle plan file with whitespace-only body', async () => {
+      const plan = mockContentEntry(
+        'phases/06-prettier-rendering/06-01-PLAN.md',
+        '   \n\n  '
+      );
+
+      vi.mocked(getCollection).mockResolvedValue([plan]);
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      expect(todos).toEqual([]);
+    });
+
+    it('should handle mix of valid and invalid plan files', async () => {
+      const validPlan = createPlanWithTodos({
+        phase: '06-prettier-rendering',
+        plan: '01',
+        todos: [
+          { text: 'Valid task', checked: false }
+        ]
+      });
+
+      const nullPlan = mockContentEntry(
+        'phases/07-nav/07-01-PLAN.md',
+        null as unknown as string
+      );
+
+      vi.mocked(getCollection).mockResolvedValue([validPlan, nullPlan]);
+
+      const { getTodos } = await import('../../../src/lib/todos.js');
+      const todos = await getTodos();
+
+      // Only the valid plan's todo is returned
+      expect(todos).toHaveLength(1);
+      expect(todos[0].title).toBe('Valid task');
+    });
+  });
+
   describe('deriveAreaFromPath', () => {
     it('should extract phase name from path', async () => {
       const plan = createPlanWithTodos({

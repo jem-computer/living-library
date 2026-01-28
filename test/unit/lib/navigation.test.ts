@@ -301,6 +301,91 @@ describe('navigation.js', () => {
     });
   });
 
+  describe('edge cases', () => {
+    it('should handle null entries parameter', () => {
+      const tree = buildNavTree(null as unknown as any[]);
+
+      // Returns array with GSD section only
+      expect(tree).toHaveLength(1);
+      expect(tree[0].name).toBe('GSD');
+    });
+
+    it('should handle undefined entries parameter', () => {
+      const tree = buildNavTree(undefined as unknown as any[]);
+
+      expect(tree).toHaveLength(1);
+      expect(tree[0].name).toBe('GSD');
+    });
+
+    it('should handle entries with empty id', () => {
+      const entries = [
+        { id: '' },
+        { id: 'PROJECT' },
+      ];
+
+      const tree = buildNavTree(entries);
+
+      // Empty id entry is skipped, PROJECT is present
+      const allNodes = tree.flatMap(node =>
+        node.children ? [node, ...node.children] : [node]
+      );
+      expect(allNodes.find(n => n.name === 'PROJECT.md')).toBeDefined();
+      // Should not crash
+      expect(tree.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should handle entries with null id', () => {
+      const entries = [
+        { id: null },
+        { id: 'PROJECT' },
+      ] as any[];
+
+      const tree = buildNavTree(entries);
+
+      // Null id entry is skipped
+      const allNodes = tree.flatMap(node =>
+        node.children ? [node, ...node.children] : [node]
+      );
+      expect(allNodes.find(n => n.name === 'PROJECT.md')).toBeDefined();
+    });
+
+    it('should handle entries with deeply nested paths', () => {
+      const entries = [
+        { id: 'a/b/c/d/e/file' },
+      ];
+
+      const tree = buildNavTree(entries);
+
+      // Should build nested tree without error
+      const aFolder = tree.find(n => n.name === 'a');
+      expect(aFolder).toBeDefined();
+      expect(aFolder!.children).toBeDefined();
+    });
+
+    it('should handle sortGsdItems with items missing path', () => {
+      const items = [
+        { name: 'normal', path: '/normal', children: [] },
+        { name: 'no-path', path: null as unknown as string, children: [] },
+        { name: 'another', path: '/another', children: [] },
+      ];
+
+      const sorted = sortGsdItems(items);
+
+      // Items with null path should be placed last
+      expect(sorted[sorted.length - 1].name).toBe('no-path');
+    });
+
+    it('should handle sortGsdItems with empty array', () => {
+      const sorted = sortGsdItems([]);
+      expect(sorted).toEqual([]);
+    });
+
+    it('should handle non-array input to sortGsdItems', () => {
+      const sorted = sortGsdItems(null as unknown as any[]);
+      expect(sorted).toEqual([]);
+    });
+  });
+
   describe('integration scenarios', () => {
     it('builds complete navigation with all features', () => {
       const entries = [
