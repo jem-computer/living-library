@@ -12,7 +12,7 @@ v1.2 focuses on testing and robustness. We establish vitest infrastructure, writ
 
 ## Phases
 
-- [ ] **Phase 8: Test Infrastructure** - vitest setup, test utilities, coverage
+- [x] **Phase 8: Test Infrastructure** - vitest setup, test utilities, coverage ✓
 - [ ] **Phase 9: Parsing Tests** - Unit tests for milestone/todo/dependency parsing
 - [ ] **Phase 10: Plugin Tests** - Unit tests for remark/rehype plugins
 - [ ] **Phase 11: Edge Cases & Errors** - Graceful handling of malformed input
@@ -31,7 +31,7 @@ v1.2 focuses on testing and robustness. We establish vitest infrastructure, writ
 **Plans**: 1 plan
 
 Plans:
-- [ ] 08-01-PLAN.md - Vitest setup, coverage config, mock utilities, first test
+- [x] 08-01-PLAN.md - Vitest setup, coverage config, mock utilities, first test ✓
 
 ---
 
@@ -94,7 +94,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 8. Test Infrastructure | 0/1 | Planned | - |
+| 8. Test Infrastructure | 1/1 | Complete | 2026-01-27 |
 | 9. Parsing Tests | 0/? | Not started | - |
 | 10. Plugin Tests | 0/? | Not started | - |
 | 11. Edge Cases & Errors | 0/? | Not started | - |

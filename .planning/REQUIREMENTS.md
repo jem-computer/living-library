@@ -9,9 +9,9 @@ Requirements for v1.2 release. Focus: Testing & Robustness.
 
 ### Testing Infrastructure
 
-- [ ] **TEST-01**: vitest installed and configured with test script in package.json
-- [ ] **TEST-02**: Test utilities for mocking Astro content collections
-- [ ] **TEST-03**: Test coverage reporting configured
+- [x] **TEST-01**: vitest installed and configured with test script in package.json ✓
+- [x] **TEST-02**: Test utilities for mocking Astro content collections ✓
+- [x] **TEST-03**: Test coverage reporting configured ✓
 
 ### Parsing Tests
 
@@ -68,9 +68,9 @@ Explicitly excluded. Documented to prevent scope creep.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TEST-01 | Phase 8 | Pending |
-| TEST-02 | Phase 8 | Pending |
-| TEST-03 | Phase 8 | Pending |
+| TEST-01 | Phase 8 | Complete |
+| TEST-02 | Phase 8 | Complete |
+| TEST-03 | Phase 8 | Complete |
 | PARSE-01 | Phase 9 | Pending |
 | PARSE-02 | Phase 9 | Pending |
 | PARSE-03 | Phase 9 | Pending |
